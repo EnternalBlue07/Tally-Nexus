@@ -54,7 +54,7 @@
 ---
 
 ### ADR-004: Primary Database Engine (SQLite via `better-sqlite3` in WAL Mode)
-- **Status:** SUPERSEDED by ADR-015 (Pending User / CTO Confirmation).
+- **Status:** SUPERSEDED by ADR-015 (Formally Adopted at Gate 1).
 - **Context:** Tally Nexus requires an ACID-compliant, self-contained relational database capable of running embedded in desktop, CI/CD, and local demo environments with zero external daemon configuration.
 - **Decision:** Use **SQLite 3 via `better-sqlite3`** operating in Write-Ahead Logging mode (`PRAGMA journal_mode = WAL;`) and synchronous normal (`PRAGMA synchronous = NORMAL;`).
 - **Rationale:**
@@ -161,7 +161,7 @@
 ---
 
 ### ADR-015: Adoption of Node.js 24 Native node:sqlite Driver (Superseding ADR-004)
-- **Status:** PROPOSED (Awaiting User / CTO Review and Formal Disposition).
+- **Status:** Accepted (Formally Authorized by User / CTO at Gate 1).
 - **Context:**
   1. ADR-004 originally specified SQLite via `better-sqlite3@11.8.1`.
   2. In the target Node.js `v24.17.0` (Node 24 LTS) environment on Windows x64, prebuilt native binary distributions do not exist for the Node 24 ABI (`node-v131`).
