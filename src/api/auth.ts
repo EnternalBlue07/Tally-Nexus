@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
+import { createHash, timingSafeEqual } from 'node:crypto';
 
 export interface ApiErrorResponse {
   error: {
@@ -31,6 +32,15 @@ export function getOperatorApiKey(): string {
 }
 
 /**
+ * Constant-time string comparison using SHA-256 digests to protect against timing attacks.
+ */
+export function isTimingSafeEqual(provided: string, expected: string): boolean {
+  const hashProvided = createHash('sha256').update(provided).digest();
+  const hashExpected = createHash('sha256').update(expected).digest();
+  return timingSafeEqual(hashProvided, hashExpected);
+}
+
+/**
  * Middleware enforcing operator authentication for administrative and clearing operations.
  */
 export function requireOperatorAuth(req: Request, res: Response, next: NextFunction): void {
@@ -42,7 +52,7 @@ export function requireOperatorAuth(req: Request, res: Response, next: NextFunct
     return;
   }
 
-  if (authHeader !== expectedKey) {
+  if (!isTimingSafeEqual(authHeader, expectedKey)) {
     sendError(res, 403, 'FORBIDDEN', 'Invalid operator authentication credentials.');
     return;
   }
@@ -55,7 +65,7 @@ export function requireOperatorAuth(req: Request, res: Response, next: NextFunct
  */
 export function requireAgentOrOperatorAuth(req: Request, res: Response, next: NextFunction): void {
   const operatorKey = req.header('X-Operator-Key') || req.header('Authorization')?.replace(/^Bearer\s+/i, '');
-  if (operatorKey && operatorKey === getOperatorApiKey()) {
+  if (operatorKey && isTimingSafeEqual(operatorKey, getOperatorApiKey())) {
     return next();
   }
 

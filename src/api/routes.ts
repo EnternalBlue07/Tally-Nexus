@@ -15,8 +15,18 @@ import {
   FirewallApproveSchema,
 } from './schemas.js';
 import { requireOperatorAuth, requireAgentOrOperatorAuth, sendError } from './auth.js';
+import {
+  IPayPalClient,
+  MockPayPalClient,
+  PayPalOrdersService,
+  PayPalPayoutsService,
+  PayPalWebhookService,
+} from '../paypal/index.js';
 
-export function createApiRouter(db: DatabaseManager): Router {
+export function createApiRouter(
+  db: DatabaseManager,
+  paypalClient: IPayPalClient = new MockPayPalClient()
+): Router {
   const router = Router();
 
   // =========================================================================
@@ -413,6 +423,136 @@ export function createApiRouter(db: DatabaseManager): Router {
       clearInterval(heartbeatInterval);
       res.end();
     });
+  });
+
+  // =========================================================================
+  // 9. PAYPAL DEBTOR COLLECTION & CREDITOR DISBURSEMENT (OPERATOR ONLY)
+  // =========================================================================
+  router.post('/settlement/:cycleId/orders', requireOperatorAuth, async (req: Request, res: Response) => {
+    const cycleId = String(req.params.cycleId);
+    const debtorAgentId = String(req.body.debtorAgentId || '');
+
+    if (!debtorAgentId) {
+      sendError(res, 400, 'VALIDATION_ERROR', 'debtorAgentId is required in request body.');
+      return;
+    }
+
+    try {
+      const order = await PayPalOrdersService.createDebtorOrder(cycleId, debtorAgentId, db, paypalClient, {
+        returnUrl: req.body.returnUrl,
+        cancelUrl: req.body.cancelUrl,
+      });
+      res.status(201).json(order);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg.includes('CYCLE_NOT_FOUND')) {
+        sendError(res, 404, 'NOT_FOUND', msg);
+        return;
+      }
+      if (msg.includes('INVALID_CYCLE_STATE') || msg.includes('INVALID_DEBTOR')) {
+        sendError(res, 400, 'BAD_REQUEST', msg);
+        return;
+      }
+      sendError(res, 500, 'INTERNAL_ERROR', msg);
+    }
+  });
+
+  router.post('/settlement/:cycleId/capture', requireOperatorAuth, async (req: Request, res: Response) => {
+    const cycleId = String(req.params.cycleId);
+    const paypalOrderId = String(req.body.paypalOrderId || req.query.paypalOrderId || '');
+
+    if (!paypalOrderId) {
+      sendError(res, 400, 'VALIDATION_ERROR', 'paypalOrderId is required.');
+      return;
+    }
+
+    try {
+      const captured = await PayPalOrdersService.captureDebtorOrder(cycleId, paypalOrderId, db, paypalClient);
+      res.json(captured);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg.includes('ORDER_NOT_FOUND')) {
+        sendError(res, 404, 'NOT_FOUND', msg);
+        return;
+      }
+      sendError(res, 500, 'INTERNAL_ERROR', msg);
+    }
+  });
+
+  router.post('/settlement/:cycleId/payouts', requireOperatorAuth, async (req: Request, res: Response) => {
+    const cycleId = String(req.params.cycleId);
+
+    try {
+      const batch = await PayPalPayoutsService.dispatchCreditorPayouts(cycleId, db, paypalClient);
+      res.status(201).json(batch);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg.includes('CYCLE_NOT_FOUND')) {
+        sendError(res, 404, 'NOT_FOUND', msg);
+        return;
+      }
+      if (msg.includes('PRECONDITION_FAILED') || msg.includes('INSUFFICIENT_COLLECTED_FUNDS') || msg.includes('NO_NET_CREDITORS')) {
+        sendError(res, 400, 'BAD_REQUEST', msg);
+        return;
+      }
+      sendError(res, 500, 'INTERNAL_ERROR', msg);
+    }
+  });
+
+  router.get('/settlement/:cycleId/payouts', (req: Request, res: Response) => {
+    const cycleId = String(req.params.cycleId);
+    const payout = db
+      .prepare('SELECT payout_id, paypal_payout_batch_id, cycle_id, sender_batch_id, batch_status, total_amount_cents, total_fee_cents, created_at FROM paypal_payouts WHERE cycle_id = ?')
+      .get(cycleId);
+
+    if (!payout) {
+      sendError(res, 404, 'NOT_FOUND', `Payout batch for cycle '${cycleId}' was not found.`);
+      return;
+    }
+
+    const items = db
+      .prepare('SELECT item_id, creditor_agent_id, sender_item_id, paypal_item_id, amount_cents, fee_cents, receiver_email, status, transaction_id FROM paypal_payout_items WHERE cycle_id = ?')
+      .all(cycleId);
+
+    res.json({ payout, items });
+  });
+
+  // =========================================================================
+  // 10. PAYPAL WEBHOOK INGESTION (WORKSTREAM L)
+  // =========================================================================
+  router.post('/webhooks/paypal', async (req: Request, res: Response) => {
+    const transmissionId = req.header('paypal-transmission-id') || req.header('PAYPAL-TRANSMISSION-ID') || '';
+    const transmissionTime = req.header('paypal-transmission-time') || req.header('PAYPAL-TRANSMISSION-TIME') || '';
+    const certUrl = req.header('paypal-cert-url') || req.header('PAYPAL-CERT-URL') || '';
+    const authAlgo = req.header('paypal-auth-algo') || req.header('PAYPAL-AUTH-ALGO') || '';
+    const transmissionSig = req.header('paypal-transmission-sig') || req.header('PAYPAL-TRANSMISSION-SIG') || '';
+
+    try {
+      const result = await PayPalWebhookService.processWebhook(
+        {
+          transmissionId,
+          transmissionTime,
+          certUrl,
+          authAlgo,
+          transmissionSig,
+        },
+        req.body,
+        db,
+        paypalClient
+      );
+      res.json(result);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg.includes('MISSING_WEBHOOK_HEADERS') || msg.includes('MALFORMED_WEBHOOK_BODY')) {
+        sendError(res, 400, 'BAD_REQUEST', msg);
+        return;
+      }
+      if (msg.includes('INVALID_WEBHOOK_SIGNATURE')) {
+        sendError(res, 401, 'INVALID_SIGNATURE', msg);
+        return;
+      }
+      sendError(res, 500, 'INTERNAL_ERROR', msg);
+    }
   });
 
   return router;

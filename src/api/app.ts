@@ -2,9 +2,11 @@ import express, { Express, Request, Response, NextFunction } from 'express';
 import { DatabaseManager } from '../db/index.js';
 import { createApiRouter } from './routes.js';
 import { sendError } from './auth.js';
+import { IPayPalClient } from '../paypal/index.js';
 
 export interface AppOptions {
   db: DatabaseManager;
+  paypalClient?: IPayPalClient;
 }
 
 export function createApp(options: AppOptions): Express {
@@ -21,7 +23,7 @@ export function createApp(options: AppOptions): Express {
   });
 
   // Mount API router under /api
-  const apiRouter = createApiRouter(options.db);
+  const apiRouter = createApiRouter(options.db, options.paypalClient);
   app.use('/api', apiRouter);
 
   // 404 handler

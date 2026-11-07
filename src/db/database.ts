@@ -20,6 +20,7 @@ export class DatabaseManager {
   private db: DatabaseSync;
   private dbPath: string;
   private isOpen: boolean = false;
+  private transactionDepth: number = 0;
 
   constructor(options: DatabaseManagerOptions = {}) {
     this.dbPath = options.dbPath || process.env.DATABASE_PATH || './data/tally_nexus.db';
@@ -84,8 +85,14 @@ export class DatabaseManager {
   /**
    * Execute a unit of work inside a BEGIN IMMEDIATE transaction.
    * Acquires the reserved write lock up front to prevent deadlocks under concurrent writes.
+   * Supports nested transaction calls by joining the active outer transaction.
    */
   public withTransaction<T>(fn: () => T): T {
+    if (this.transactionDepth > 0) {
+      return fn();
+    }
+
+    this.transactionDepth++;
     this.db.exec('BEGIN IMMEDIATE;');
     try {
       const result = fn();
@@ -98,6 +105,8 @@ export class DatabaseManager {
         // Rollback error secondary to original failure
       }
       throw error;
+    } finally {
+      this.transactionDepth = 0;
     }
   }
 
