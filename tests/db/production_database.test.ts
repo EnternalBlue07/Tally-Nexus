@@ -2,6 +2,7 @@ import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
 import { DatabaseManager } from '../../src/db/index.js';
 import { existsSync, unlinkSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
+import { spawn } from 'node:child_process';
 
 const TEST_DB_PATH = resolve(process.cwd(), './data/test_production.db');
 
@@ -81,6 +82,30 @@ describe('Stage 1 Production Database Verification Suite', () => {
 
       // Restore parent to CHILD_ACTIVE for subsequent tests
       dbManager.exec("UPDATE paypal_payout_items SET reissue_authorization_state = 'CHILD_ACTIVE' WHERE item_id = 'item_01';");
+    });
+
+    it('T1b: Trigger 4 (trg_reissue_child_failure_sync) resets parent to PARENT_TERMINAL_CONFIRMED on child failure', () => {
+      // 1. Setup parent item in REISSUE_AUTHORIZED
+      dbManager.exec(`
+        INSERT INTO paypal_payout_items (item_id, cycle_id, status, amount_cents, receiver_email, reissue_authorization_state, sender_item_id)
+        VALUES ('item_child_fail', 'cyc_01', 'RETURNED', 2500, 'agent_fail_old@nexus.local', 'REISSUE_AUTHORIZED', 'snd_item_fail');
+
+        INSERT INTO paypal_payout_reissues (reissue_id, original_item_id, cycle_id, reissue_attempt, sender_item_id, receiver_email, amount_cents, status)
+        VALUES ('reissue_fail_1', 'item_child_fail', 'cyc_01', 1, 'snd_reissue_fail_1', 'agent_fail_new@nexus.local', 2500, 'DISPATCHED');
+      `);
+
+      // Verify parent was marked CHILD_ACTIVE with active child ID by Trigger 2
+      const activeState = dbManager.prepare("SELECT reissue_authorization_state, reissue_active_child_id FROM paypal_payout_items WHERE item_id = 'item_child_fail'").get() as { reissue_authorization_state: string; reissue_active_child_id: string };
+      expect(activeState.reissue_authorization_state).toBe('CHILD_ACTIVE');
+      expect(activeState.reissue_active_child_id).toBe('reissue_fail_1');
+
+      // 2. Child fails (status becomes FAILED) -> Trigger 4 (trg_reissue_child_failure_sync) must fire
+      dbManager.exec("UPDATE paypal_payout_reissues SET status = 'FAILED' WHERE reissue_id = 'reissue_fail_1';");
+
+      // 3. Verify parent item was atomically reset to PARENT_TERMINAL_CONFIRMED and active child ID cleared to NULL
+      const resetState = dbManager.prepare("SELECT reissue_authorization_state, reissue_active_child_id FROM paypal_payout_items WHERE item_id = 'item_child_fail'").get() as { reissue_authorization_state: string; reissue_active_child_id: string | null };
+      expect(resetState.reissue_authorization_state).toBe('PARENT_TERMINAL_CONFIRMED');
+      expect(resetState.reissue_active_child_id).toBeNull();
     });
 
     it('T2: Concurrent reissue serialization requires REISSUE_AUTHORIZED', () => {
@@ -605,6 +630,79 @@ describe('Stage 1 Production Database Verification Suite', () => {
       expect(row.count).toBe(0);
       conn2.close();
     });
+
+    it('R3: Multi-process crash recovery under ungraceful hard termination (SIGKILL)', async () => {
+      const crashDbPath = resolve(process.cwd(), './data/test_crash_recovery.db');
+      cleanupDbFiles(crashDbPath);
+
+      try {
+        // 1. Parent process initializes database and commits baseline record
+        const initMgr = new DatabaseManager({ dbPath: crashDbPath });
+        initMgr.runMigrations();
+        initMgr.withTransaction(() => {
+          initMgr.exec(`
+            INSERT INTO settlement_cycles (cycle_id, status) VALUES ('cyc_baseline_committed', 'CREATED');
+          `);
+        });
+        initMgr.close();
+
+        // 2. Spawn independent child worker process
+        const workerScript = resolve(process.cwd(), './tests/db/crash_worker.cjs');
+        const child = spawn(process.execPath, [workerScript, crashDbPath], {
+          stdio: ['pipe', 'pipe', 'pipe'],
+        });
+
+        // 3. Deterministic synchronization: await readiness signal from child
+        await new Promise<void>((resolvePromise, rejectPromise) => {
+          const timeout = setTimeout(() => {
+            child.kill('SIGKILL');
+            rejectPromise(new Error('Timed out waiting for child worker readiness signal'));
+          }, 10000);
+
+          child.stdout?.on('data', (chunk: Buffer) => {
+            if (chunk.toString().includes('CRASH_CHILD_READY')) {
+              clearTimeout(timeout);
+              resolvePromise();
+            }
+          });
+
+          child.on('error', (err) => {
+            clearTimeout(timeout);
+            rejectPromise(err);
+          });
+        });
+
+        // 4. Child is in an uncommitted transaction with a dirty WAL frame.
+        // Parent issues hard ungraceful termination (SIGKILL / TerminateProcess).
+        const exitPromise = new Promise<{ code: number | null; signal: string | null }>((res) => {
+          child.on('exit', (code, signal) => {
+            res({ code, signal });
+          });
+        });
+
+        child.kill('SIGKILL');
+        await exitPromise;
+
+        // 5. Parent opens database afresh, triggering SQLite WAL crash recovery
+        const recoveryMgr = new DatabaseManager({ dbPath: crashDbPath });
+
+        // Baseline committed record must survive
+        const baseline = recoveryMgr
+          .prepare("SELECT COUNT(*) as count FROM settlement_cycles WHERE cycle_id = 'cyc_baseline_committed'")
+          .get() as { count: number };
+        expect(baseline.count).toBe(1);
+
+        // In-flight uncommitted record written by terminated child must be 100% rolled back by WAL engine
+        const ghost = recoveryMgr
+          .prepare("SELECT COUNT(*) as count FROM settlement_cycles WHERE cycle_id = 'cyc_crash_ghost'")
+          .get() as { count: number };
+        expect(ghost.count).toBe(0);
+
+        recoveryMgr.close();
+      } finally {
+        cleanupDbFiles(crashDbPath);
+      }
+    });
   });
 
   // ==========================================================================
@@ -673,6 +771,12 @@ describe('Stage 1 Production Database Verification Suite', () => {
           VALUES ('item_fk_fail', 'non_existent_cycle', 'PENDING', 1000, 'test@nexus.local', 'snd_fk_fail');
         `);
       }).toThrow(/FOREIGN KEY constraint failed/);
+    });
+
+    it('M1: DatabaseManager helper methods and property getters', () => {
+      expect(dbManager.isConnected()).toBe(true);
+      expect(dbManager.getDbPath()).toBe(TEST_DB_PATH);
+      expect(dbManager.getRawDb()).toBeDefined();
     });
   });
 });

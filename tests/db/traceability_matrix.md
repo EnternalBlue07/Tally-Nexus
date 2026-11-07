@@ -14,6 +14,7 @@ This traceability matrix provides a 1-to-1 mapping between the specification-lev
 | Test ID | Vitest Test Name | Architecture / Specification Ref | Database Engine Enforcement Mechanism | Expected Empirical Outcome |
 | :--- | :--- | :--- | :--- | :--- |
 | **T1** | `T1: Duplicate child reissue blocked by partial unique index` | ADR-011 §2.1, PRD §5.4 | Partial Unique Index `uq_active_child_per_parent` on `paypal_payout_reissues(original_item_id) WHERE status IN ('DRAFT', 'DISPATCHED', 'AMBIGUOUS_HOLD', 'SUCCESS')` | Second active child insert throws `SQLITE_CONSTRAINT` / `UNIQUE constraint failed`. Exactly 1 active child allowed. |
+| **T1b** | `T1b: Trigger 4 (trg_reissue_child_failure_sync) resets parent on child failure` | ADR-011 §2.3, PRD §5.4 | Trigger `trg_reissue_child_failure_sync` on `paypal_payout_reissues` | Child transitioning to `FAILED` atomically resets parent item to `PARENT_TERMINAL_CONFIRMED` and `reissue_active_child_id = NULL`. |
 | **T2** | `T2: Concurrent reissue serialization requires REISSUE_AUTHORIZED` | ADR-011 §2.2, State Machine §3.2 | Trigger `trg_reissue_entitlement_check` on `paypal_payout_reissues` | Insertion fails with `REISSUE_PROHIBITED: Reissue requires full atomic return verification sequence reaching REISSUE_AUTHORIZED state.` |
 | **T3** | `T3: Concurrent Stage 6 recovery requests blocked by monotonic sequence guard` | ADR-012 §3.1, PRD §6.2 | Trigger `trg_recovery_claim_events_sequence_check` & `trg_recovery_claim_events_transition_check` | Second concurrent collection request attempts invalid from_stage (already 6) and is rejected with `STAGE_MISMATCH`. |
 | **T4** | `T4: Duplicate webhook delivery blocked by primary key idempotency` | ADR-008 §4.1, API Spec §5.1 | Primary Key constraint on `processed_webhooks(paypal_event_id)` & `UNIQUE(transmission_id)` | Duplicate webhook insert rejected with `UNIQUE constraint failed: processed_webhooks.paypal_event_id`. |
@@ -48,6 +49,7 @@ This traceability matrix provides a 1-to-1 mapping between the specification-lev
 | :--- | :--- | :--- | :--- |
 | **R1** | `R1: Committed transaction durability across disk database reopen` | Conn 1 inserts records in committed transaction. Connection closed. Conn 2 opens same disk file. | 100% of committed rows and indexes survive process reopen. |
 | **R2** | `R2: Uncommitted transaction rollback cleanliness across abnormal disconnect` | Conn 1 begins transaction, writes rows, but encounters error and rolls back / closes without commit. Conn 2 opens database. | Exactly 0 uncommitted rows persist; WAL cleanly recovers. |
+| **R3** | `R3: Multi-process crash recovery under ungraceful hard termination (SIGKILL)` | Child worker spawned, begins transaction, writes uncommitted row, parent hard-kills child with SIGKILL before commit. Parent reopens database. | Committed records survive; in-flight uncommitted rows are 100% rolled back by SQLite WAL engine recovery. |
 
 ---
 
@@ -59,3 +61,4 @@ This traceability matrix provides a 1-to-1 mapping between the specification-lev
 | **N2** | `N2: Non-monotonic sequence ID rejected in event log` | Inserting `sequence_id = 3` when highest existing sequence is 1. | Rejected by `trg_recovery_claim_events_sequence_check`. |
 | **N3** | `N3: Append-only immutability on audit log tables` | `UPDATE` or `DELETE` executed against `system_events` or `recovery_claim_events`. | Rejected by immutability constraints. |
 | **N4** | `N4: Foreign key constraint enforcement` | Inserting task or payout with non-existent `agent_id` or `cycle_id`. | Strictly rejected by `FOREIGN KEY constraint failed`. |
+

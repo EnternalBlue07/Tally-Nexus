@@ -22,6 +22,7 @@
 - [ADR-012: Transactional Outbox Pattern & SSE Event Stream](#adr-012-transactional-outbox-pattern--sse-event-stream)
 - [ADR-013: Decoupling AI Cognition from Financial Authorization](#adr-013-decoupling-ai-cognition-from-financial-authorization)
 - [ADR-014: Single-Container Deployment Strategy on Render](#adr-014-single-container-deployment-strategy-on-render)
+- [ADR-015: Adoption of Node.js 24 Native node:sqlite Driver (Superseding ADR-004)](#adr-015-adoption-of-nodejs-24-native-nodesqlite-driver-superseding-adr-004)
 
 ---
 
@@ -53,7 +54,7 @@
 ---
 
 ### ADR-004: Primary Database Engine (SQLite via `better-sqlite3` in WAL Mode)
-- **Status:** Accepted.
+- **Status:** SUPERSEDED by ADR-015 (Pending User / CTO Confirmation).
 - **Context:** Tally Nexus requires an ACID-compliant, self-contained relational database capable of running embedded in desktop, CI/CD, and local demo environments with zero external daemon configuration.
 - **Decision:** Use **SQLite 3 via `better-sqlite3`** operating in Write-Ahead Logging mode (`PRAGMA journal_mode = WAL;`) and synchronous normal (`PRAGMA synchronous = NORMAL;`).
 - **Rationale:**
@@ -156,4 +157,35 @@
 - **Context:** The project requires a cloud deployment plan that is simple, cost-effective, reproducible, and compliant with SQLite data persistence.
 - **Decision:** Deploy Tally Nexus as a single Docker container / Web Service on **Render** configured with a **Persistent Disk** mounted at `/data`.
 - **Rationale:** Avoids the multi-container orchestration overhead of Kubernetes for MVP while guaranteeing SQLite database persistence across container restarts.
+
+---
+
+### ADR-015: Adoption of Node.js 24 Native node:sqlite Driver (Superseding ADR-004)
+- **Status:** PROPOSED (Awaiting User / CTO Review and Formal Disposition).
+- **Context:**
+  1. ADR-004 originally specified SQLite via `better-sqlite3@11.8.1`.
+  2. In the target Node.js `v24.17.0` (Node 24 LTS) environment on Windows x64, prebuilt native binary distributions do not exist for the Node 24 ABI (`node-v131`).
+  3. Consequently, npm triggered `node-gyp rebuild` during installation, which failed due to the absence of the 7GB+ Microsoft Visual Studio C++ desktop development workload.
+  4. Node.js v24 ships with native built-in SQLite bindings (`node:sqlite` via `DatabaseSync`), implementing official SQLite 3.47+ embedded into the runtime binary itself. In Node.js v24.15+, `node:sqlite` has graduated to Release Candidate (Stability 1.2).
+- **Decision:** Formally propose migrating the primary database driver from `better-sqlite3` to Node.js 24's native `node:sqlite` (`DatabaseSync`), superseding ADR-004.
+- **Rationale:**
+  1. **Zero External Build Toolchain:** Eliminates all dependency on `node-gyp`, Python, and Microsoft Visual Studio C++ toolchains on Windows, macOS, and Linux.
+  2. **Identical Synchronous Execution Model:** `node:sqlite` operates 100% synchronously on the calling thread, exactly like `better-sqlite3`. This eliminates JavaScript event-loop concurrency races during financial transaction boundaries (`BEGIN IMMEDIATE ... COMMIT`).
+  3. **Identical SQLite C Engine Capabilities:** Both drivers link directly against SQLite 3 C APIs (`sqlite3_prepare_v2`, `sqlite3_step`, `sqlite3_exec`). Both support identical WAL mode (`PRAGMA journal_mode = WAL;`), foreign key enforcement (`PRAGMA foreign_keys = ON;`), declarative triggers with `RAISE(ABORT, ...)`, check constraints, and partial unique indexes (`CREATE UNIQUE INDEX ... WHERE ...`).
+  4. **Strict Official Typing:** `@types/node` includes official type definitions in `node_modules/@types/node/sqlite.d.ts`, providing strict compile-time type safety.
+- **Synchronous API Implications:**
+  1. Prepared statements execute synchronously via `.prepare(sql)`, `.run(...params)`, `.get(...params)`, and `.all(...params)`.
+  2. Transaction scoping is managed by `DatabaseManager.withTransaction<T>(fn: () => T): T`, which executes `BEGIN IMMEDIATE;` to acquire an exclusive write lock up front, runs `fn()`, issues `COMMIT;`, and catches errors to issue `ROLLBACK;`.
+  3. Lock contention is managed by `DatabaseManager.executeWithRetry<T>(fn: () => T, maxRetries, baseDelayMs)`, which absorbs `database is locked` / `SQLITE_BUSY` errors using zero-CPU synchronous backoff via `Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, delayMs)`.
+- **Deployment Compatibility:**
+  1. **Render / Cloud Containers:** Zero compilation step during Docker builds; executes identically on Alpine Linux, Debian, Ubuntu, and macOS.
+  2. **Local Development:** Developers on Windows, macOS, or Linux can clone and run `npm install` and `npm run test` with zero prerequisite compilers.
+- **Rollback Path:**
+  1. Application business logic, financial ledgers, and settlement state machines interact exclusively through the abstract `DatabaseManager` interface (`src/db/database.ts`).
+  2. Zero application code imports `node:sqlite` directly.
+  3. Should unexpected engine defects arise, reverting to `better-sqlite3` requires only swapping the underlying connection instance inside `src/db/database.ts` without modifying any schema, trigger, or business logic.
+- **Consequences:**
+  1. Node.js runtime must remain pinned to Node.js `>=24.0.0` (specifically verified on `v24.17.0`).
+  2. Node.js v24 native `node:sqlite` is maintained as the single authoritative database driver for Tally Nexus.
+
 
