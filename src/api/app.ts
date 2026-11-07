@@ -3,6 +3,7 @@ import { DatabaseManager } from '../db/index.js';
 import { createApiRouter } from './routes.js';
 import { sendError } from './auth.js';
 import { IPayPalClient } from '../paypal/index.js';
+import { getDashboardHtml } from '../dashboard/index.js';
 
 export interface AppOptions {
   db: DatabaseManager;
@@ -20,6 +21,11 @@ export function createApp(options: AppOptions): Express {
     res.setHeader('X-Frame-Options', 'DENY');
     res.setHeader('X-XSS-Protection', '1; mode=block');
     next();
+  });
+
+  // Root dashboard routes
+  app.get(['/', '/dashboard'], (_req: Request, res: Response) => {
+    res.setHeader('Content-Type', 'text/html; charset=utf-8').send(getDashboardHtml());
   });
 
   // Mount API router under /api

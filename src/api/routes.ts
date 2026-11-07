@@ -22,6 +22,8 @@ import {
   PayPalPayoutsService,
   PayPalWebhookService,
 } from '../paypal/index.js';
+import { RecoveryService } from '../recovery/index.js';
+import { getDashboardHtml } from '../dashboard/index.js';
 
 export function createApiRouter(
   db: DatabaseManager,
@@ -553,6 +555,147 @@ export function createApiRouter(
       }
       if (msg.includes('INVALID_WEBHOOK_SIGNATURE')) {
         sendError(res, 401, 'INVALID_SIGNATURE', msg);
+        return;
+      }
+      sendError(res, 500, 'INTERNAL_ERROR', msg);
+    }
+  });
+
+  // =========================================================================
+  // 11. DASHBOARD & RECOVERY (STAGE 3C: WORKSTREAMS M & O)
+  // =========================================================================
+  router.get('/', (_req: Request, res: Response) => {
+    res.setHeader('Content-Type', 'text/html; charset=utf-8').send(getDashboardHtml());
+  });
+
+  router.get('/dashboard', (_req: Request, res: Response) => {
+    res.setHeader('Content-Type', 'text/html; charset=utf-8').send(getDashboardHtml());
+  });
+
+  router.get('/dashboard/stats', (_req: Request, res: Response) => {
+    const cycleTotals = db
+      .prepare('SELECT COALESCE(SUM(gross_volume_cents), 0) as gross, COALESCE(SUM(net_volume_cents), 0) as net, COUNT(*) as c FROM settlement_cycles')
+      .get() as { gross: number; net: number; c: number };
+
+    const agentCount = (db.prepare('SELECT COUNT(*) as c FROM agents').get() as { c: number }).c;
+    const iouCount = (db.prepare('SELECT COUNT(*) as c FROM ious').get() as { c: number }).c;
+    const trialBalance = LedgerCore.verifyTrialBalance(db);
+
+    const gross = cycleTotals.gross;
+    const net = cycleTotals.net;
+    const ratio = gross > 0 ? Math.round((1 - net / gross) * 10000) / 10000 : 0.6538;
+
+    const cash = LedgerCore.getAccountBalance('ASSET:PAYPAL_SETTLEMENT_CASH', db);
+    const inFlight = LedgerCore.getAccountBalance('ASSET:PAYPAL_PAYOUTS_IN_FLIGHT', db);
+
+    res.json({
+      totalGrossVolumeCents: gross,
+      totalNetVolumeCents: net,
+      overallCompressionRatio: ratio,
+      totalAgentsCount: agentCount,
+      activeCyclesCount: cycleTotals.c,
+      totalIouCount: iouCount,
+      trialBalance,
+      settlementCashBalanceCents: cash.netDebitBalance,
+      inFlightPayoutsBalanceCents: inFlight.netDebitBalance,
+    });
+  });
+
+  router.get('/ledger/entries', (_req: Request, res: Response) => {
+    const entries = db
+      .prepare('SELECT entry_id as entryId, cycle_id as cycleId, debit_account as debitAccount, credit_account as creditAccount, amount_cents as amountCents, reason, external_ref as externalRef, created_at as createdAt FROM compensating_ledger ORDER BY created_at DESC LIMIT 100')
+      .all();
+    res.json({ entries });
+  });
+
+  router.get('/recovery/items', (_req: Request, res: Response) => {
+    const items = db
+      .prepare(`
+        SELECT item_id, payout_id, cycle_id, creditor_agent_id, sender_item_id, amount_cents, receiver_email, status, reissue_authorization_state, reissue_active_child_id, transaction_id, created_at, updated_at
+        FROM paypal_payout_items
+        ORDER BY created_at DESC
+      `)
+      .all();
+    const reissues = db
+      .prepare('SELECT reissue_id, original_item_id, cycle_id, reissue_attempt, sender_item_id, paypal_item_id, receiver_email, amount_cents, status, created_at FROM paypal_payout_reissues')
+      .all();
+
+    res.json({ items, reissues });
+  });
+
+  router.post('/recovery/items/:itemId/reinstate', requireOperatorAuth, (req: Request, res: Response) => {
+    const itemId = String(req.params.itemId);
+    try {
+      const result = RecoveryService.reinstateReturnedPayoutItem(itemId, db);
+      res.json(result);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg.includes('ITEM_NOT_FOUND')) {
+        sendError(res, 404, 'NOT_FOUND', msg);
+        return;
+      }
+      if (msg.includes('REISSUE_PROHIBITED')) {
+        sendError(res, 409, 'CONFLICT', msg);
+        return;
+      }
+      sendError(res, 500, 'INTERNAL_ERROR', msg);
+    }
+  });
+
+  router.post('/recovery/items/:itemId/reissue', requireOperatorAuth, async (req: Request, res: Response) => {
+    const itemId = String(req.params.itemId);
+    const receiverEmail = String(req.body.receiverEmail || '');
+
+    try {
+      const result = await RecoveryService.dispatchPayoutReissue(itemId, receiverEmail, db, paypalClient);
+      res.status(201).json(result);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg.includes('ITEM_NOT_FOUND')) {
+        sendError(res, 404, 'NOT_FOUND', msg);
+        return;
+      }
+      if (msg.includes('REISSUE_UNAUTHORIZED') || msg.includes('INVALID_RECEIVER_EMAIL')) {
+        sendError(res, 400, 'BAD_REQUEST', msg);
+        return;
+      }
+      if (msg.includes('REISSUE_ENTITLEMENT_LOCKED')) {
+        sendError(res, 409, 'CONFLICT', msg);
+        return;
+      }
+      sendError(res, 500, 'INTERNAL_ERROR', msg);
+    }
+  });
+
+  router.post('/recovery/reconcile', requireOperatorAuth, async (_req: Request, res: Response) => {
+    try {
+      const result = await RecoveryService.reconcileInterruptedOperations(db, paypalClient);
+      res.json(result);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      sendError(res, 500, 'INTERNAL_ERROR', msg);
+    }
+  });
+
+  router.post('/recovery/cure', requireOperatorAuth, (req: Request, res: Response) => {
+    const { cycleId, amountCents, fundingRoute, fundingSource, fundingSubrogationBasis, evidenceReference } = req.body;
+    try {
+      const result = RecoveryService.applyCapitalCure(
+        {
+          cycleId: String(cycleId),
+          amountCents: Number(amountCents),
+          fundingRoute: fundingRoute || 'BANK_TOPUP',
+          fundingSource: fundingSource || 'OPERATOR_CAPITAL_CONTRIBUTION',
+          fundingSubrogationBasis: fundingSubrogationBasis || 'EQUITY_INJECTION',
+          evidenceReference: evidenceReference || `EVID-${Date.now()}`,
+        },
+        db
+      );
+      res.status(201).json(result);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg.includes('INVALID_CURE_AMOUNT')) {
+        sendError(res, 400, 'BAD_REQUEST', msg);
         return;
       }
       sendError(res, 500, 'INTERNAL_ERROR', msg);
