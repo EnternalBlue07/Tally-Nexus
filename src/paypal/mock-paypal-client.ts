@@ -20,6 +20,7 @@ export class MockPayPalClient implements IPayPalClient {
 
   public forceWebhookVerificationResult: 'SUCCESS' | 'FAILURE' | null = null;
   public forcePayoutBatchStatus: 'PENDING' | 'PROCESSING' | 'SUCCESS' | 'DENIED' | null = null;
+  public forceOrderAlreadyCapturedOrderId: string | null = null;
 
   public async createOrder(params: CreateOrderParams): Promise<CreateOrderResponse> {
     if (this.idempotencyOrders.has(params.idempotencyKey)) {
@@ -49,6 +50,11 @@ export class MockPayPalClient implements IPayPalClient {
     const order = this.orders.get(paypalOrderId);
     if (!order) {
       throw new Error(`ORDER_NOT_FOUND: PayPal order '${paypalOrderId}' does not exist.`);
+    }
+
+    // Support testing 422 ORDER_ALREADY_CAPTURED failure & reconciliation
+    if (this.forceOrderAlreadyCapturedOrderId === paypalOrderId) {
+      throw new Error(`PAYPAL_CAPTURE_ORDER_FAILED: 422 ORDER_ALREADY_CAPTURED: Order '${paypalOrderId}' has already been captured.`);
     }
 
     if (order.status === 'COMPLETED' && order.captureId) {
@@ -144,14 +150,32 @@ export class MockPayPalClient implements IPayPalClient {
       return { verification_status: this.forceWebhookVerificationResult };
     }
 
-    // Default mock verification logic:
-    // Requires valid transmission headers
+    // 1. Mandatory transmission headers
     if (!params.transmissionId || !params.transmissionSig || !params.certUrl || !params.transmissionTime) {
       return { verification_status: 'FAILURE' };
     }
 
-    // Simulated rejection for invalid signature
-    if (params.transmissionSig === 'INVALID_FORGED_SIGNATURE') {
+    // 2. Validate certificate URL format and domain
+    try {
+      const parsed = new URL(params.certUrl);
+      if (parsed.protocol !== 'https:' || !parsed.hostname.toLowerCase().endsWith('paypal.com')) {
+        return { verification_status: 'FAILURE' };
+      }
+    } catch {
+      return { verification_status: 'FAILURE' };
+    }
+
+    // 3. Supported algorithms check
+    if (params.authAlgo !== 'SHA256withRSA' && params.authAlgo !== 'SHA256withECDSA') {
+      return { verification_status: 'FAILURE' };
+    }
+
+    // 4. Simulated rejection for forged or invalid signature tokens
+    if (
+      params.transmissionSig === 'INVALID_FORGED_SIGNATURE' ||
+      params.transmissionSig.startsWith('INVALID_') ||
+      params.transmissionSig.startsWith('FORGED_')
+    ) {
       return { verification_status: 'FAILURE' };
     }
 

@@ -186,6 +186,23 @@ export class PayPalSandboxClient implements IPayPalClient {
 
     if (!res.ok) {
       const text = await res.text();
+      // Authoritative reconciliation if already captured
+      if (res.status === 422 && text.includes('ORDER_ALREADY_CAPTURED')) {
+        const orderRes = await fetch(`${this.config.apiBase}/v2/checkout/orders/${paypalOrderId}`, {
+          method: 'GET',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (orderRes.ok) {
+          const orderData = (await orderRes.json()) as any;
+          const captureId =
+            orderData.purchase_units?.[0]?.payments?.captures?.[0]?.id || `CAP-${paypalOrderId}`;
+          return {
+            id: paypalOrderId,
+            status: 'COMPLETED',
+            captureId,
+          };
+        }
+      }
       throw new Error(`PAYPAL_CAPTURE_ORDER_FAILED: ${res.status} ${text}`);
     }
 

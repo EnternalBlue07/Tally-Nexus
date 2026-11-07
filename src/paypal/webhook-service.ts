@@ -21,10 +21,42 @@ export interface WebhookEventPayload {
   create_time?: string;
 }
 
+export function validatePayPalCertUrl(certUrl: string): void {
+  if (!certUrl) {
+    throw new Error('INVALID_CERT_URL: Certificate URL is required.');
+  }
+
+  let parsed: URL;
+  try {
+    parsed = new URL(certUrl);
+  } catch {
+    throw new Error(`INVALID_CERT_URL: Certificate URL '${certUrl}' is not a valid URL.`);
+  }
+
+  if (parsed.protocol !== 'https:') {
+    throw new Error(`INVALID_CERT_URL: Certificate URL must use HTTPS (received '${parsed.protocol}').`);
+  }
+
+  const hostname = parsed.hostname.toLowerCase();
+  const isTrustedPayPalHost =
+    hostname === 'api-m.sandbox.paypal.com' ||
+    hostname === 'api.sandbox.paypal.com' ||
+    hostname === 'api.paypal.com' ||
+    hostname === 'api-m.paypal.com' ||
+    hostname.endsWith('.paypal.com');
+
+  if (!isTrustedPayPalHost) {
+    throw new Error(
+      `INVALID_CERT_URL: Certificate URL host '${hostname}' is not a trusted PayPal certificate server.`
+    );
+  }
+}
+
 export class PayPalWebhookService {
   /**
    * Verifies and processes an incoming PayPal webhook event.
    * Guarantees anti-replay idempotency via processed_webhooks tracking.
+   * Validates certificate URL against authentic PayPal domains before verification or storage.
    */
   public static async processWebhook(
     headers: WebhookHeaders,
@@ -48,7 +80,10 @@ export class PayPalWebhookService {
       throw new Error('MALFORMED_WEBHOOK_BODY: Webhook payload missing authoritative id or event_type.');
     }
 
-    // 2. Anti-Replay Idempotency Check in processed_webhooks
+    // 2. Validate Certificate URL Host & Protocol (P2-03 Remediation)
+    validatePayPalCertUrl(headers.certUrl);
+
+    // 3. Anti-Replay Idempotency Check in processed_webhooks
     const existing = db
       .prepare('SELECT webhook_id, status FROM processed_webhooks WHERE paypal_event_id = ? OR transmission_id = ?')
       .get(eventId, headers.transmissionId) as { webhook_id: string; status: string } | undefined;
@@ -61,7 +96,7 @@ export class PayPalWebhookService {
       };
     }
 
-    // 3. Cryptographic Signature Verification via PayPal API
+    // 4. Cryptographic Signature Verification via PayPal API
     const config = getPayPalConfig();
     const verifyRes = await client.verifyWebhookSignature({
       authAlgo: headers.authAlgo,
@@ -77,24 +112,40 @@ export class PayPalWebhookService {
       throw new Error('INVALID_WEBHOOK_SIGNATURE: PayPal webhook signature verification failed.');
     }
 
-    // 4. Route and Process Supported Webhook Events
+    // 5. Route and Process Supported Webhook Events
     const eventType = rawBody.event_type;
 
-    db.withTransaction(() => {
-      if (eventType === 'PAYMENT.CAPTURE.COMPLETED') {
-        const customId = rawBody.resource?.custom_id;
-        const supplementaryData = rawBody.resource?.supplementary_data?.related_ids;
-        const paypalOrderId = supplementaryData?.order_id || rawBody.resource?.id;
+    // Asynchronous capture reconciliation if PAYMENT.CAPTURE.COMPLETED
+    if (eventType === 'PAYMENT.CAPTURE.COMPLETED') {
+      const customId = rawBody.resource?.custom_id;
+      const supplementaryData = rawBody.resource?.supplementary_data?.related_ids;
+      const paypalOrderId = supplementaryData?.order_id || rawBody.resource?.id;
+      const captureId = rawBody.resource?.id;
 
-        if (customId && paypalOrderId) {
-          // Idempotent capture reconciliation
-          try {
-            PayPalOrdersService.captureDebtorOrder(customId, paypalOrderId, db, client);
-          } catch {
-            // Already captured or order not found; keep webhook recorded
+      if (customId && paypalOrderId) {
+        try {
+          await PayPalOrdersService.captureDebtorOrder(customId, paypalOrderId, db, client, {
+            knownCaptureId: captureId,
+          });
+        } catch (err: unknown) {
+          const msg = err instanceof Error ? err.message : String(err);
+          // If unexpected failure (not already completed), record diagnostic event
+          if (!msg.includes('ORDER_NOT_FOUND')) {
+            db.prepare(`
+              INSERT INTO system_events (event_id, event_type, cycle_id, payload_json)
+              VALUES (?, 'WEBHOOK_RECONCILIATION_WARNING', ?, ?)
+            `).run(
+              uuidv4(),
+              customId,
+              JSON.stringify({ error: msg, eventType, paypalOrderId, captureId })
+            );
           }
         }
-      } else if (eventType === 'PAYMENT.PAYOUTS-ITEM.SUCCESS') {
+      }
+    }
+
+    db.withTransaction(() => {
+      if (eventType === 'PAYMENT.PAYOUTS-ITEM.SUCCESS') {
         const senderItemId = rawBody.resource?.payout_item?.sender_item_id;
         const transactionId = rawBody.resource?.transaction_id || `TXN-${uuidv4()}`;
         const feeVal = rawBody.resource?.payout_item_fee?.value || '0.25';
@@ -146,7 +197,7 @@ export class PayPalWebhookService {
         }
       }
 
-      // 5. Persist to processed_webhooks log
+      // 6. Persist to processed_webhooks log
       db.prepare(`
         INSERT INTO processed_webhooks (
           webhook_id, paypal_event_id, transmission_id, event_type, transmission_time, cert_url, auth_algo, status

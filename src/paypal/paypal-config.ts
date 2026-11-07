@@ -7,15 +7,24 @@ export interface PayPalConfig {
 }
 
 export function assertSandboxEnvironment(config?: Partial<PayPalConfig>): void {
-  const env = (config?.environment || process.env.PAYPAL_ENV || 'sandbox').toLowerCase();
-  const base = (config?.apiBase || process.env.PAYPAL_API_BASE || 'https://api-m.sandbox.paypal.com').toLowerCase();
+  const env = (config?.environment || process.env.PAYPAL_ENV || 'sandbox').toLowerCase().trim();
+  const base = (config?.apiBase || process.env.PAYPAL_API_BASE || 'https://api-m.sandbox.paypal.com').toLowerCase().trim();
 
-  if (env === 'live' || env === 'production') {
-    throw new Error('FATAL_SAFETY_VIOLATION: Live PayPal production mode is prohibited in Tally Nexus Sandbox stage.');
+  // Strict allowlist: Only 'sandbox' environment is authorized
+  if (env !== 'sandbox') {
+    throw new Error(
+      `FATAL_SAFETY_VIOLATION: Environment '${env}' is prohibited. Only 'sandbox' mode is authorized for Tally Nexus settlement.`
+    );
   }
 
-  if (base.includes('api-m.paypal.com') && !base.includes('sandbox')) {
-    throw new Error('FATAL_SAFETY_VIOLATION: Production PayPal API endpoint detected. Only sandbox.paypal.com is allowed.');
+  // Strict endpoint validation: If targeting paypal.com, only sandbox.paypal.com hosts are permitted
+  if (base.includes('paypal.com')) {
+    const isSandboxDomain = /^https:\/\/(?:api|api-m)\.sandbox\.paypal\.com(?:\/.*)?$/i.test(base);
+    if (!isSandboxDomain) {
+      throw new Error(
+        `FATAL_SAFETY_VIOLATION: Production PayPal API endpoint detected ('${base}'). Only https://api-m.sandbox.paypal.com or https://api.sandbox.paypal.com are permitted.`
+      );
+    }
   }
 }
 

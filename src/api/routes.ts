@@ -543,7 +543,11 @@ export function createApiRouter(
       res.json(result);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
-      if (msg.includes('MISSING_WEBHOOK_HEADERS') || msg.includes('MALFORMED_WEBHOOK_BODY')) {
+      if (
+        msg.includes('MISSING_WEBHOOK_HEADERS') ||
+        msg.includes('MALFORMED_WEBHOOK_BODY') ||
+        msg.includes('INVALID_CERT_URL')
+      ) {
         sendError(res, 400, 'BAD_REQUEST', msg);
         return;
       }
