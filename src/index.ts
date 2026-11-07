@@ -6,3 +6,4 @@ export * from './netting/netting-engine.js';
 export * from './firewall/financial-firewall.js';
 export * from './ledger/ledger-core.js';
 export * from './events/event-bus.js';
+export * from './api/index.js';
