@@ -8,24 +8,31 @@ dotenv.config();
 
 async function runAiEvaluation() {
   console.log('========================================================================');
-  console.log('TALLY NEXUS — PHASE 5.4: SLA JUDGE IN THE LOOP EVALUATION & AUDIT');
+  console.log('TALLY NEXUS — PHASE 5.6: SLA JUDGE MULTI-MODEL AI EVALUATION & AUDIT');
   console.log('========================================================================\n');
 
+  const freemodelKey = process.env.FREEMODEL_API_KEY;
   const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
   const anthropicKey = process.env.ANTHROPIC_API_KEY;
   const openaiKey = process.env.OPENAI_API_KEY;
-  const isRealProviderConfigured = !!(geminiKey || anthropicKey || openaiKey);
+  const isRealProviderConfigured = !!(freemodelKey || geminiKey || anthropicKey || openaiKey);
 
-  if (geminiKey) {
-    console.log('[AI CONFIG] Active Provider: GOOGLE GEMINI (Key detected in environment)');
-  } else if (anthropicKey) {
+  if (freemodelKey && !freemodelKey.includes('placeholder')) {
+    console.log('[AI CONFIG] Active Provider: FREEMODEL (Key detected in environment)');
+    console.log(`[AI CONFIG] Base URL       : ${process.env.FREEMODEL_BASE_URL || 'https://freemodel.in/v1'}`);
+    console.log(`[AI CONFIG] Primary Model  : ${process.env.FREEMODEL_PRIMARY_MODEL || 'gemini-3.7-flash'}`);
+    console.log(`[AI CONFIG] Fallback Model : ${process.env.FREEMODEL_FALLBACK_MODEL || 'deepseek-v4.1-flash'}`);
+  } else if (geminiKey && !geminiKey.includes('placeholder')) {
+    console.log('[AI CONFIG] Active Provider: GOOGLE GEMINI (Direct API Key detected in environment)');
+    console.log(`[AI CONFIG] Model          : ${process.env.GEMINI_MODEL || 'gemini-flash-lite-latest'}`);
+  } else if (anthropicKey && !anthropicKey.includes('placeholder')) {
     console.log('[AI CONFIG] Active Provider: ANTHROPIC (Key detected in environment)');
-  } else if (openaiKey) {
+  } else if (openaiKey && !openaiKey.includes('placeholder')) {
     console.log('[AI CONFIG] Active Provider: OPENAI (Key detected in environment)');
   } else {
     console.log('[AI CONFIG] No commercial LLM API key detected in .env.');
     console.log('[AI CONFIG] Mode: HONEST OFFLINE DETERMINISTIC FALLBACK.');
-    console.log('            Note: Real provider execution requires GEMINI_API_KEY, ANTHROPIC_API_KEY, or OPENAI_API_KEY in .env.\n');
+    console.log('            Note: Real provider execution requires FREEMODEL_API_KEY or GEMINI_API_KEY in .env.\n');
   }
 
   const db = new DatabaseManager({ dbPath: ':memory:' });
@@ -65,6 +72,12 @@ async function runAiEvaluation() {
   const latency1 = Date.now() - start1;
 
   console.log(`- Provider / Model   : ${result1.provider} (${result1.model})`);
+  if (result1.modelUsed) {
+    console.log(`- Model Used         : ${result1.modelUsed}`);
+  }
+  if (result1.fallbackTriggered !== undefined) {
+    console.log(`- Failover Triggered : ${result1.fallbackTriggered ? 'YES (Recovered via fallback model)' : 'NO (Primary model succeeded)'}`);
+  }
   console.log(`- AI Available       : ${result1.aiAvailable}`);
   console.log(`- Latency            : ${latency1}ms`);
   if (result1.tokenUsage) {
@@ -118,9 +131,8 @@ async function runAiEvaluation() {
   const evidenceDir = join(process.cwd(), 'docs', 'evidence');
   if (!existsSync(evidenceDir)) mkdirSync(evidenceDir, { recursive: true });
 
-  const evidenceFilename = isRealProviderConfigured
-    ? `ai-judge-real-${new Date().toISOString().replace(/[:.]/g, '-')}.json`
-    : 'ai-judge-offline-fallback.json';
+  const prefix = freemodelKey ? 'ai-judge-freemodel' : (isRealProviderConfigured ? 'ai-judge-real' : 'ai-judge-offline');
+  const evidenceFilename = `${prefix}-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
 
   const evidencePath = join(evidenceDir, evidenceFilename);
 
@@ -133,7 +145,9 @@ async function runAiEvaluation() {
         providerSummary: {
           configured: isRealProviderConfigured,
           provider: result1.provider,
-          model: result1.model,
+          modelConfigured: result1.model,
+          modelUsed: result1.modelUsed,
+          fallbackTriggered: result1.fallbackTriggered,
         },
         legitimateScenario: {
           ...result1,

@@ -32,7 +32,7 @@ export interface StrictLlmJudgeResponse {
 export interface LlmJudgeEvaluationResult {
   evaluationId: string;
   taskId: string;
-  provider: 'GEMINI' | 'ANTHROPIC' | 'OPENAI' | 'OFFLINE_DETERMINISTIC_FALLBACK';
+  provider: 'FREEMODEL' | 'GEMINI' | 'ANTHROPIC' | 'OPENAI' | 'OFFLINE_DETERMINISTIC_FALLBACK';
   model: string;
   aiAvailable: boolean;
   promptHash: string;
@@ -54,6 +54,8 @@ export interface LlmJudgeEvaluationResult {
     completionTokens?: number;
     totalTokens?: number;
   };
+  modelUsed?: string;
+  fallbackTriggered?: boolean;
 }
 
 export class LlmJudgeService {
@@ -69,6 +71,7 @@ export class LlmJudgeService {
     const evaluationId = uuidv4();
 
     // 1. Resolve Provider & Key
+    const freemodelKey = process.env.FREEMODEL_API_KEY;
     const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
     const anthropicKey = process.env.ANTHROPIC_API_KEY;
     const openaiKey = process.env.OPENAI_API_KEY;
@@ -77,7 +80,11 @@ export class LlmJudgeService {
     let model = 'deterministic-rules-engine-v1';
     let apiKey = '';
 
-    if (geminiKey && !geminiKey.includes('placeholder')) {
+    if (freemodelKey && !freemodelKey.includes('placeholder')) {
+      provider = 'FREEMODEL';
+      model = process.env.FREEMODEL_PRIMARY_MODEL || 'gemini-3.7-flash';
+      apiKey = freemodelKey;
+    } else if (geminiKey && !geminiKey.includes('placeholder')) {
       provider = 'GEMINI';
       model = process.env.GEMINI_MODEL || 'gemini-flash-lite-latest';
       apiKey = geminiKey;
@@ -144,8 +151,50 @@ EVALUATION RULES:
     let rawJson: StrictLlmJudgeResponse | null = null;
     let aiAvailable = false;
     let tokenUsage: LlmJudgeEvaluationResult['tokenUsage'] = undefined;
+    let modelUsed: string | undefined = undefined;
+    let fallbackTriggered: boolean | undefined = undefined;
 
-    if (provider !== 'OFFLINE_DETERMINISTIC_FALLBACK') {
+    if (provider === 'FREEMODEL') {
+      const freemodelBaseUrl = process.env.FREEMODEL_BASE_URL || 'https://freemodel.in/v1';
+      const primaryModel = process.env.FREEMODEL_PRIMARY_MODEL || 'gemini-3.7-flash';
+      const fallbackModel = process.env.FREEMODEL_FALLBACK_MODEL || 'deepseek-v4.1-flash';
+
+      try {
+        // Attempt Primary Model (e.g., gemini-3.7-flash)
+        modelUsed = primaryModel;
+        const aiResult = await this.callOpenAiCompatible(freemodelBaseUrl, primaryModel, apiKey, promptText);
+        rawResponseText = aiResult.text;
+        tokenUsage = aiResult.tokenUsage;
+        rawJson = this.parseAndValidateLlmJson(rawResponseText);
+        if (!rawJson) {
+          throw new Error('Primary model returned unparseable or schema-violating JSON');
+        }
+        aiAvailable = true;
+        fallbackTriggered = false;
+      } catch (primaryErr: unknown) {
+        const primaryErrMsg = primaryErr instanceof Error ? primaryErr.message : String(primaryErr);
+        // Attempt Fallback Model (e.g., deepseek-v4.1-flash)
+        try {
+          modelUsed = fallbackModel;
+          fallbackTriggered = true;
+          const aiResult = await this.callOpenAiCompatible(freemodelBaseUrl, fallbackModel, apiKey, promptText);
+          rawResponseText = aiResult.text;
+          tokenUsage = aiResult.tokenUsage;
+          rawJson = this.parseAndValidateLlmJson(rawResponseText);
+          if (!rawJson) {
+            throw new Error('Fallback model returned unparseable or schema-violating JSON');
+          }
+          aiAvailable = true;
+        } catch (fallbackErr: unknown) {
+          const fallbackErrMsg = fallbackErr instanceof Error ? fallbackErr.message : String(fallbackErr);
+          rawResponseText = `[FREEMODEL_FAILED: Primary (${primaryModel}) failed: ${primaryErrMsg}; Fallback (${fallbackModel}) failed: ${fallbackErrMsg}]`;
+          rawJson = null;
+          aiAvailable = false;
+        }
+      }
+    } else if (provider !== 'OFFLINE_DETERMINISTIC_FALLBACK') {
+      modelUsed = model;
+      fallbackTriggered = false;
       try {
         const aiResult = await this.callLlmProvider(provider, model, apiKey, promptText);
         rawResponseText = aiResult.text;
@@ -249,6 +298,10 @@ EVALUATION RULES:
       reasons.push('SLA evaluation inconclusive: Task quarantined for manual operator dispute adjudication.');
     }
 
+    if (fallbackTriggered) {
+      reasons.unshift(`FreeModel failover: Primary model failed; successfully recovered using fallback model (${modelUsed}).`);
+    }
+
     const authorizedCreditCents = contractualCreditCents; // Legacy alias for backward compatibility
 
     // 6. Persist Cryptographic Event in Ledger Outbox
@@ -263,6 +316,8 @@ EVALUATION RULES:
         taskId: context.taskId,
         provider,
         model,
+        modelUsed,
+        fallbackTriggered,
         aiAvailable,
         promptHash,
         validatedVerdict,
@@ -274,6 +329,7 @@ EVALUATION RULES:
         authorizedCreditCents,
         injectionAttemptDetected,
         reasons,
+        tokenUsage,
       })
     );
 
@@ -282,6 +338,8 @@ EVALUATION RULES:
       taskId: context.taskId,
       provider,
       model,
+      modelUsed,
+      fallbackTriggered,
       aiAvailable,
       promptHash,
       rawResponseText,
@@ -300,13 +358,61 @@ EVALUATION RULES:
     };
   }
 
-  private static async callLlmProvider(
-    provider: 'GEMINI' | 'ANTHROPIC' | 'OPENAI',
+  public static async callOpenAiCompatible(
+    baseUrl: string,
+    model: string,
+    apiKey: string,
+    prompt: string,
+    timeoutMs = 12000
+  ): Promise<{ text: string; tokenUsage?: { promptTokens?: number; completionTokens?: number; totalTokens?: number } }> {
+    const cleanBaseUrl = baseUrl.replace(/\/+$/, '');
+    const url = `${cleanBaseUrl}/chat/completions`;
+    const timeoutSignal = AbortSignal.timeout(timeoutMs);
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model,
+        messages: [{ role: 'user', content: prompt }],
+        response_format: { type: 'json_object' },
+      }),
+      signal: timeoutSignal,
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(`OPENAI_COMPATIBLE_HTTP_${res.status}: ${err}`);
+    }
+
+    const data = (await res.json()) as any;
+    const text = data.choices?.[0]?.message?.content || '';
+    const usage = data.usage
+      ? {
+          promptTokens: data.usage.prompt_tokens,
+          completionTokens: data.usage.completion_tokens,
+          totalTokens: data.usage.total_tokens,
+        }
+      : undefined;
+
+    return { text, tokenUsage: usage };
+  }
+
+  public static async callLlmProvider(
+    provider: 'FREEMODEL' | 'GEMINI' | 'ANTHROPIC' | 'OPENAI',
     model: string,
     apiKey: string,
     prompt: string
   ): Promise<{ text: string; tokenUsage?: { promptTokens?: number; completionTokens?: number; totalTokens?: number } }> {
     const timeoutSignal = AbortSignal.timeout(8000);
+
+    if (provider === 'FREEMODEL') {
+      const baseUrl = process.env.FREEMODEL_BASE_URL || 'https://freemodel.in/v1';
+      return this.callOpenAiCompatible(baseUrl, model, apiKey, prompt);
+    }
 
     if (provider === 'GEMINI') {
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
@@ -383,40 +489,13 @@ EVALUATION RULES:
     }
 
     if (provider === 'OPENAI') {
-      const url = 'https://api.openai.com/v1/chat/completions';
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model,
-          messages: [{ role: 'user', content: prompt }],
-          response_format: { type: 'json_object' },
-        }),
-        signal: timeoutSignal,
-      });
-
-      if (!res.ok) {
-        const err = await res.text();
-        throw new Error(`OPENAI_API_HTTP_${res.status}: ${err}`);
-      }
-
-      const data = (await res.json()) as any;
-      const text = data.choices?.[0]?.message?.content || '';
-      const usage = data.usage ? {
-        promptTokens: data.usage.prompt_tokens,
-        completionTokens: data.usage.completion_tokens,
-        totalTokens: data.usage.total_tokens,
-      } : undefined;
-      return { text, tokenUsage: usage };
+      return this.callOpenAiCompatible('https://api.openai.com/v1', model, apiKey, prompt);
     }
 
     throw new Error(`UNSUPPORTED_PROVIDER: ${provider}`);
   }
 
-  private static parseAndValidateLlmJson(text: string): StrictLlmJudgeResponse | null {
+  public static parseAndValidateLlmJson(text: string): StrictLlmJudgeResponse | null {
     try {
       // Clean up markdown code blocks if present
       const clean = text.replace(/```(?:json)?/gi, '').trim();
