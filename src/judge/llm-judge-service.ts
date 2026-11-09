@@ -304,6 +304,9 @@ EVALUATION RULES:
 
     const authorizedCreditCents = contractualCreditCents; // Legacy alias for backward compatibility
 
+    const sanitizedRawResponse = this.sanitize(rawResponseText);
+    const sanitizedReasons = reasons.map((r) => this.sanitize(r));
+
     // 6. Persist Cryptographic Event in Ledger Outbox
     db.prepare(`
       INSERT INTO system_events (event_id, event_type, cycle_id, payload_json)
@@ -328,7 +331,7 @@ EVALUATION RULES:
         clampedCreditBps,
         authorizedCreditCents,
         injectionAttemptDetected,
-        reasons,
+        reasons: sanitizedReasons,
         tokenUsage,
       })
     );
@@ -342,7 +345,7 @@ EVALUATION RULES:
       fallbackTriggered,
       aiAvailable,
       promptHash,
-      rawResponseText,
+      rawResponseText: sanitizedRawResponse,
       rawJson,
       validatedVerdict,
       confidenceScore,
@@ -351,11 +354,18 @@ EVALUATION RULES:
       contractualCreditCents,
       clampedCreditBps,
       authorizedCreditCents,
-      reasons,
+      reasons: sanitizedReasons,
       injectionAttemptDetected,
       evaluatedAt,
       tokenUsage,
     };
+  }
+
+  private static sanitize(text: string): string {
+    return text
+      .replace(/Bearer\s+[A-Za-z0-9_\-\.]+/gi, 'Bearer [REDACTED]')
+      .replace(/key=[A-Za-z0-9_\-\.]+/gi, 'key=[REDACTED]')
+      .replace(/fm_[A-Za-z0-9]+/gi, 'fm_[REDACTED]');
   }
 
   public static async callOpenAiCompatible(
