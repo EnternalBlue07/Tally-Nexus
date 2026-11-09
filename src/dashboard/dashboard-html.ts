@@ -6,10 +6,10 @@ export function getDashboardHtml(): string {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tally Nexus — Autonomous Agent Clearinghouse & Multilateral Settlement Engine</title>
   
-  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- AG Grid Community Styles & Script (Vendored Locally via Express with CDN Fallback) -->
   <link rel="stylesheet" href="/vendor/ag-grid/styles/ag-grid.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/ag-grid-community@32.3.3/styles/ag-grid.css';">
@@ -18,42 +18,49 @@ export function getDashboardHtml(): string {
 
   <style>
     :root {
-      /* Premium Dark Fintech Palette (Warm Obsidian & Amber-Orange) */
-      --bg-primary: #08090C;
-      --bg-secondary: #0D1016;
-      --surface-primary: #121722;
-      --surface-elevated: #171D29;
-      --surface-secondary: #171D29;
-      --surface-hover: rgba(255, 255, 255, 0.04);
-      --border-subtle: rgba(255, 255, 255, 0.07);
-      --card-border: rgba(255, 255, 255, 0.07);
-      --border-active: rgba(255, 107, 53, 0.45);
+      /* Official PayPal Enterprise & Developer Platform Theme (Deep Midnight Navy & Signature Blues) */
+      --bg-primary: #040914;
+      --bg-secondary: #071224;
+      --surface-primary: rgba(11, 23, 44, 0.72);
+      --surface-elevated: rgba(16, 34, 64, 0.82);
+      --surface-secondary: #0A172C;
+      --surface-hover: rgba(0, 112, 186, 0.1);
+      
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glass: rgba(0, 112, 186, 0.22);
+      --card-border: rgba(0, 112, 186, 0.22);
+      --border-active: #009CDE;
 
-      --text-main: #F5F7FA;
-      --text-secondary: #929BAA;
-      --text-muted: #929BAA;
-      --text-subtle: #5B6473;
+      --text-main: #F8FAFC;
+      --text-secondary: #94A3B8;
+      --text-muted: #64748B;
+      --text-subtle: #475569;
 
-      /* Primary Brand: Warm Orange Accent & Gradient */
-      --accent-primary: #FF6B35;
-      --accent-secondary: #FF9A52;
-      --accent-gradient: linear-gradient(135deg, #FF6B35 0%, #FF914D 50%, #FFB36B 100%);
-      --accent-glow: 0 0 24px rgba(255, 107, 53, 0.32);
+      /* Signature PayPal Brand Colors */
+      --paypal-blue: #0070BA;
+      --paypal-marine: #009CDE;
+      --paypal-deep: #003087;
+      --paypal-dark: #001C3D;
+      
+      --accent-primary: #0070BA;
+      --accent-secondary: #009CDE;
+      --accent-gradient: linear-gradient(135deg, #003087 0%, #0070BA 55%, #009CDE 100%);
+      --accent-glow: 0 0 28px rgba(0, 112, 186, 0.4);
 
       /* Semantic Financial Values */
-      --accent-emerald: #22C55E;
+      --accent-emerald: #10B981;
       --accent-amber: #F59E0B;
       --accent-rose: #EF4444;
-      --accent-cyan: #38BDF8;
-      --accent-turquoise: #FF6B35; /* Orange takes primary position */
+      --accent-cyan: #00CFDE;
+      --accent-turquoise: #009CDE;
 
-      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.35);
-      --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(255, 255, 255, 0.04) inset;
-      --shadow-modal: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(255, 107, 53, 0.15);
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4);
+      --shadow-card: 0 10px 30px -5px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      --shadow-modal: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(0, 112, 186, 0.25);
 
       --sidebar-width: 250px;
       --topbar-height: 72px;
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
 
@@ -63,9 +70,10 @@ export function getDashboardHtml(): string {
       background-color: var(--bg-primary);
       color: var(--text-main);
       font-family: var(--font-sans);
-      line-height: 1.5;
+      line-height: 1.55;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.01em;
     }
 
     /* Tabular numbers for all financial figures */
@@ -112,8 +120,9 @@ export function getDashboardHtml(): string {
       background: var(--accent-gradient);
       border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 18px; color: #08090C;
-      box-shadow: 0 4px 16px rgba(255, 107, 53, 0.35);
+      font-weight: 800; font-size: 16px; color: #FFF;
+      box-shadow: 0 4px 18px rgba(0, 112, 186, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       flex-shrink: 0;
     }
     .brand-title {
@@ -165,13 +174,13 @@ export function getDashboardHtml(): string {
     }
     .sidebar-nav-btn.active {
       color: #FFF;
-      background: var(--surface-elevated);
-      border-color: rgba(255, 107, 53, 0.3);
+      background: rgba(0, 112, 186, 0.16);
+      border-color: rgba(0, 156, 222, 0.35);
       font-weight: 600;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 2px 12px rgba(0, 112, 186, 0.2);
     }
     .sidebar-nav-btn.active .nav-icon {
-      color: var(--accent-primary);
+      color: var(--accent-secondary);
     }
     .nav-icon {
       font-size: 15px;
@@ -187,8 +196,8 @@ export function getDashboardHtml(): string {
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: var(--accent-primary);
-      box-shadow: 0 0 8px var(--accent-primary);
+      background: var(--accent-secondary);
+      box-shadow: 0 0 10px var(--accent-secondary);
     }
 
     /* Sidebar User / System Bottom Footer */
@@ -204,8 +213,8 @@ export function getDashboardHtml(): string {
     .user-avatar {
       width: 36px; height: 36px;
       border-radius: 10px;
-      background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
-      border: 1px solid var(--border-subtle);
+      background: linear-gradient(135deg, #0A1B36 0%, #040914 100%);
+      border: 1px solid var(--border-glass);
       display: flex; align-items: center; justify-content: center;
       font-weight: 700; font-size: 13px; color: var(--accent-secondary);
       flex-shrink: 0;
@@ -242,16 +251,18 @@ export function getDashboardHtml(): string {
     /* Top Toolbar */
     header.topbar {
       height: var(--topbar-height);
-      background: var(--bg-secondary);
-      border-bottom: 1px solid var(--border-subtle);
-      padding: 0 28px;
+      background: rgba(7, 18, 36, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-glass);
+      padding: 0 32px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       position: sticky;
       top: 0;
       z-index: 900;
-      gap: 16px;
+      gap: 18px;
     }
 
     /* Search / Command Palette Bar */
@@ -259,21 +270,24 @@ export function getDashboardHtml(): string {
       display: flex;
       align-items: center;
       gap: 10px;
-      background: var(--surface-primary);
-      border: 1px solid var(--border-subtle);
+      background: rgba(11, 23, 44, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-glass);
       padding: 8px 16px;
       border-radius: 12px;
-      width: 320px;
+      width: 260px;
       max-width: 100%;
       cursor: pointer;
       transition: all 0.2s ease;
     }
     .command-search:hover {
-      border-color: rgba(255, 255, 255, 0.15);
-      background: var(--surface-elevated);
+      border-color: rgba(0, 156, 222, 0.45);
+      background: rgba(16, 34, 64, 0.8);
+      box-shadow: 0 0 16px rgba(0, 112, 186, 0.2);
     }
     .command-search-text {
-      font-size: 13px;
+      font-size: 12.5px;
       color: var(--text-secondary);
       flex: 1;
     }
@@ -282,7 +296,7 @@ export function getDashboardHtml(): string {
       border: 1px solid var(--border-subtle);
       border-radius: 6px;
       padding: 2px 7px;
-      font-size: 10.5px;
+      font-size: 10px;
       font-family: var(--font-mono);
       color: var(--text-muted);
     }
@@ -290,8 +304,9 @@ export function getDashboardHtml(): string {
     .topbar-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+      gap: 8px;
+      flex-wrap: nowrap;
+      white-space: nowrap;
     }
 
     .badge {
@@ -300,14 +315,14 @@ export function getDashboardHtml(): string {
       letter-spacing: 0.2px; font-variant-numeric: tabular-nums;
     }
     .badge-sandbox {
-      background: rgba(255, 107, 53, 0.12);
+      background: rgba(0, 112, 186, 0.16);
       color: var(--accent-secondary);
-      border: 1px solid rgba(255, 107, 53, 0.3);
+      border: 1px solid rgba(0, 156, 222, 0.35);
     }
     .badge-live-stream {
-      background: rgba(34, 197, 94, 0.12);
+      background: rgba(16, 185, 129, 0.14);
       color: var(--accent-emerald);
-      border: 1px solid rgba(34, 197, 94, 0.3);
+      border: 1px solid rgba(16, 185, 129, 0.35);
     }
     .badge-sponsor {
       background: rgba(255, 255, 255, 0.06);
@@ -321,31 +336,33 @@ export function getDashboardHtml(): string {
 
     /* Buttons */
     .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-      padding: 9px 16px; border-radius: 10px; font-size: 12.5px; font-weight: 600;
-      cursor: pointer; border: none; transition: all 0.15s ease;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 10px 18px; border-radius: 10px; font-size: 13px; font-weight: 600;
+      cursor: pointer; border: none; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .btn:active { transform: scale(0.98); }
     .btn-primary {
       background: var(--accent-gradient);
-      color: #08090C;
+      color: #FFF;
       font-weight: 700;
-      box-shadow: 0 4px 16px rgba(255, 107, 53, 0.35);
+      box-shadow: 0 4px 18px rgba(0, 112, 186, 0.45);
+      border: 1px solid rgba(0, 156, 222, 0.4);
     }
     .btn-primary:hover {
-      filter: brightness(1.08);
-      box-shadow: 0 6px 20px rgba(255, 107, 53, 0.45);
+      filter: brightness(1.1);
+      box-shadow: 0 6px 24px rgba(0, 112, 186, 0.6);
     }
     .btn-demo {
       background: var(--accent-gradient);
-      color: #08090C;
+      color: #FFF;
       font-weight: 700;
-      box-shadow: 0 4px 16px rgba(255, 107, 53, 0.35);
+      box-shadow: 0 4px 18px rgba(0, 112, 186, 0.45);
+      border: 1px solid rgba(0, 156, 222, 0.4);
     }
     .btn-demo:hover {
-      filter: brightness(1.08);
+      filter: brightness(1.1);
       transform: translateY(-1px);
-      box-shadow: 0 6px 22px rgba(255, 107, 53, 0.45);
+      box-shadow: 0 6px 24px rgba(0, 112, 186, 0.6);
     }
     .btn-secondary {
       background: var(--surface-primary);
@@ -354,11 +371,11 @@ export function getDashboardHtml(): string {
     }
     .btn-secondary:hover {
       background: var(--surface-elevated);
-      border-color: rgba(255, 255, 255, 0.15);
+      border-color: rgba(0, 156, 222, 0.3);
     }
     .btn-white {
       background: #FFFFFF;
-      color: #08090C;
+      color: #040914;
       font-weight: 700;
       border: none;
     }
@@ -380,8 +397,8 @@ export function getDashboardHtml(): string {
 
     /* Content Canvas */
     main.content-canvas {
-      padding: 26px 28px 60px 28px;
-      max-width: 1440px;
+      padding: 28px 36px 60px 36px;
+      max-width: 1560px;
       width: 100%;
       margin: 0 auto;
     }
@@ -401,125 +418,223 @@ export function getDashboardHtml(): string {
        ========================================================================== */
     .card {
       background: var(--surface-primary);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md, 14px);
-      padding: 22px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      border-radius: 16px;
+      padding: 24px;
       box-shadow: var(--shadow-card);
       position: relative;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card:hover {
+      border-color: rgba(0, 156, 222, 0.4);
+      box-shadow: 0 14px 40px -5px rgba(0, 112, 186, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      transform: translateY(-2px);
     }
     .card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px;
     }
     .card-title {
       font-size: 15px;
       font-weight: 700;
       color: var(--text-main);
       letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     .card-desc {
-      font-size: 12px;
+      font-size: 12.5px;
       color: var(--text-secondary);
-      margin-top: 3px;
+      margin-top: 4px;
+      line-height: 1.5;
     }
 
     /* Executive Hero Grid Layout */
     .hero-fintech-grid {
       display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 20px;
-      margin-bottom: 22px;
+      grid-template-columns: 1.8fr 1.2fr;
+      gap: 24px;
+      margin-bottom: 26px;
     }
 
     /* Primary Balance Chart Card */
     .balance-chart-card {
       background: var(--surface-primary);
-      border: 1px solid var(--border-subtle);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
       border-radius: 18px;
-      padding: 24px;
+      padding: 26px;
       position: relative;
       overflow: hidden;
       box-shadow: var(--shadow-card);
+      transition: all 0.25s ease;
+    }
+    .balance-chart-card:hover {
+      border-color: rgba(0, 156, 222, 0.4);
     }
     .balance-chart-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
     .balance-label {
-      font-size: 13px;
+      font-size: 12.5px;
       color: var(--text-secondary);
-      font-weight: 500;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     .balance-main-num {
-      font-size: 34px;
+      font-size: 36px;
       font-weight: 800;
       color: #FFF;
       letter-spacing: -0.8px;
       display: flex;
       align-items: baseline;
-      gap: 10px;
-      margin-top: 4px;
+      gap: 12px;
+      margin-top: 6px;
       font-variant-numeric: tabular-nums;
     }
     .balance-pill {
       font-size: 12px;
       font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 6px;
-      background: rgba(34, 197, 94, 0.15);
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
       color: var(--accent-emerald);
+      letter-spacing: 0.2px;
     }
     .chart-time-filter {
       display: flex;
       gap: 4px;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(4, 9, 20, 0.6);
+      backdrop-filter: blur(8px);
       padding: 3px;
-      border-radius: 8px;
+      border-radius: 10px;
       border: 1px solid var(--border-subtle);
     }
     .time-pill {
       background: none;
       border: none;
       color: var(--text-secondary);
-      font-size: 11px;
+      font-size: 11.5px;
       font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 6px;
+      padding: 5px 12px;
+      border-radius: 8px;
       cursor: pointer;
+      transition: all 0.15s ease;
     }
     .time-pill.active {
-      background: var(--surface-elevated);
-      color: var(--text-main);
-      border: 1px solid var(--border-subtle);
+      background: rgba(0, 112, 186, 0.25);
+      color: #FFF;
+      border: 1px solid rgba(0, 156, 222, 0.4);
+      box-shadow: 0 2px 8px rgba(0, 112, 186, 0.25);
     }
 
-    /* Primary Orange Anchor Card (Matching Reference "My cards" Stack!) */
+    /* Featured Authentic PayPal Commercial Card Stack */
+    .anchor-card-stack-wrapper {
+      position: relative;
+      height: 100%;
+      min-height: 290px;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-stack-back-2 {
+      position: absolute;
+      top: 0px;
+      left: 18px;
+      right: 18px;
+      height: 50px;
+      background: rgba(0, 48, 135, 0.45);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(0, 156, 222, 0.25);
+      border-radius: 16px;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 3px 16px;
+      font-size: 9.5px;
+      line-height: 12px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.65);
+      letter-spacing: 0.5px;
+      pointer-events: none;
+    }
+    .card-stack-back-1 {
+      position: absolute;
+      top: 16px;
+      left: 9px;
+      right: 9px;
+      height: 52px;
+      background: rgba(0, 80, 160, 0.55);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(0, 156, 222, 0.35);
+      border-radius: 16px;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 3px 16px;
+      font-size: 9.5px;
+      line-height: 12px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.85);
+      letter-spacing: 0.5px;
+      pointer-events: none;
+    }
     .anchor-card-showcase {
-      background: linear-gradient(145deg, #FF6B35 0%, #E65100 50%, #B73800 100%);
+      margin-top: 32px;
+      z-index: 3;
+      background: linear-gradient(135deg, #001C3D 0%, #003087 50%, #0070BA 100%);
+      border: 1px solid rgba(0, 156, 222, 0.45);
       border-radius: 18px;
-      padding: 24px;
+      padding: 22px 24px;
       color: #FFF;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 12px 30px rgba(255, 107, 53, 0.28);
+      box-shadow: 0 16px 40px rgba(0, 48, 135, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25), inset 0 0 0 1px rgba(0, 156, 222, 0.2);
+      flex: 1;
+      transition: all 0.3s ease;
+    }
+    .anchor-card-showcase:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 22px 50px rgba(0, 112, 186, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+      border-color: rgba(0, 207, 222, 0.6);
+    }
+    .anchor-card-showcase::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.14) 48%, transparent 58%);
+      pointer-events: none;
     }
     .anchor-card-showcase::after {
       content: '';
       position: absolute;
-      right: -20px;
-      bottom: -30px;
-      width: 180px;
-      height: 180px;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+      right: -30px;
+      bottom: -40px;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(0, 156, 222, 0.35) 0%, transparent 70%);
       border-radius: 50%;
       pointer-events: none;
     }
@@ -527,19 +642,42 @@ export function getDashboardHtml(): string {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 24px;
+      margin-bottom: 16px;
     }
     .anchor-title {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       letter-spacing: -0.2px;
+      color: #FFF;
     }
     .anchor-card-chip {
       width: 38px;
       height: 28px;
-      background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+      background: linear-gradient(135deg, #F6D365 0%, #FDA085 100%);
       border-radius: 5px;
-      border: 1px solid rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(0, 0, 0, 0.25);
+      position: relative;
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4);
+    }
+    .anchor-card-chip::before {
+      content: '';
+      position: absolute;
+      top: 30%;
+      left: 0;
+      right: 0;
+      height: 40%;
+      border-top: 1px solid rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    }
+    .anchor-card-chip::after {
+      content: '';
+      position: absolute;
+      left: 45%;
+      top: 0;
+      bottom: 0;
+      width: 10%;
+      border-left: 1px solid rgba(0, 0, 0, 0.2);
+      border-right: 1px solid rgba(0, 0, 0, 0.2);
     }
     .anchor-balance-label {
       font-size: 12px;
@@ -547,7 +685,7 @@ export function getDashboardHtml(): string {
       font-weight: 500;
     }
     .anchor-balance-val {
-      font-size: 30px;
+      font-size: 32px;
       font-weight: 800;
       letter-spacing: -0.5px;
       margin-top: 2px;
@@ -555,24 +693,48 @@ export function getDashboardHtml(): string {
     }
     .anchor-actions {
       display: flex;
-      gap: 10px;
-      margin-top: 24px;
+      gap: 12px;
+      margin-top: 20px;
     }
     .anchor-actions .btn {
       flex: 1;
-      padding: 10px;
+      padding: 11px;
       font-size: 13px;
+    }
+    .btn-glass {
+      background: rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #FFF;
+      font-weight: 600;
+    }
+    .btn-glass:hover {
+      background: rgba(255, 255, 255, 0.22);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+    .btn-paypal {
+      background: #0070BA;
+      border: 1px solid #009CDE;
+      color: #FFF;
+      font-weight: 700;
+      box-shadow: 0 4px 16px rgba(0, 112, 186, 0.5);
+    }
+    .btn-paypal:hover {
+      background: #0079C1;
+      box-shadow: 0 6px 20px rgba(0, 156, 222, 0.6);
+      transform: translateY(-1px);
     }
 
     /* 4-Card Metrics Grid */
     .metrics-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-bottom: 22px;
+      gap: 20px;
+      margin-bottom: 26px;
     }
     .metric-value {
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 800;
       letter-spacing: -0.5px;
       color: #FFF;
@@ -580,7 +742,7 @@ export function getDashboardHtml(): string {
       font-variant-numeric: tabular-nums;
     }
     .metric-sub {
-      font-size: 12px;
+      font-size: 12.5px;
       color: var(--text-secondary);
       margin-top: 4px;
       display: flex;
@@ -588,12 +750,12 @@ export function getDashboardHtml(): string {
       gap: 6px;
     }
 
-    /* Secondary Insights Grid (Promotional Trust + Bar Chart + Recent Transactions) */
+    /* Secondary Insights Grid */
     .insights-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1.15fr 1fr;
       gap: 20px;
-      margin-bottom: 24px;
+      margin-bottom: 26px;
     }
 
     /* Recent Transactions List */
@@ -601,23 +763,23 @@ export function getDashboardHtml(): string {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 0;
+      padding: 12px 0;
       border-bottom: 1px solid var(--border-subtle);
     }
     .tx-item:last-child { border-bottom: none; }
-    .tx-left { display: flex; align-items: center; gap: 10px; }
+    .tx-left { display: flex; align-items: center; gap: 12px; }
     .tx-avatar {
-      width: 34px; height: 34px;
-      border-radius: 9px;
+      width: 36px; height: 36px;
+      border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 12px;
+      font-weight: 700; font-size: 13px;
       background: var(--surface-elevated);
       color: var(--accent-secondary);
-      border: 1px solid var(--border-subtle);
+      border: 1px solid var(--border-glass);
     }
-    .tx-title { font-size: 12.5px; font-weight: 600; color: var(--text-main); }
-    .tx-date { font-size: 11px; color: var(--text-secondary); }
-    .tx-amount { font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .tx-title { font-size: 13px; font-weight: 600; color: var(--text-main); }
+    .tx-date { font-size: 11.5px; color: var(--text-secondary); }
+    .tx-amount { font-size: 13.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
     .tx-amount.pos { color: var(--accent-emerald); }
     .tx-amount.neg { color: var(--accent-rose); }
 
@@ -625,20 +787,26 @@ export function getDashboardHtml(): string {
     .stepper {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
-      gap: 10px;
-      margin-top: 14px;
+      gap: 12px;
+      margin-top: 16px;
     }
     .step-card {
       background: var(--surface-elevated);
-      border: 1px solid var(--border-subtle);
-      border-radius: 10px;
-      padding: 14px 12px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border-glass);
+      border-radius: 12px;
+      padding: 16px 14px;
       font-size: 12px;
       transition: all 0.2s ease;
     }
+    .step-card:hover {
+      border-color: rgba(0, 156, 222, 0.4);
+      transform: translateY(-2px);
+    }
     .step-card.done {
-      border-color: rgba(34, 197, 94, 0.35);
-      background: rgba(34, 197, 94, 0.05);
+      border-color: rgba(16, 185, 129, 0.4);
+      background: rgba(16, 185, 129, 0.08);
     }
     .step-num {
       font-weight: 800; font-size: 10px;
@@ -654,110 +822,113 @@ export function getDashboardHtml(): string {
        HACKATHON JUDGE BRIEFING PANEL
        ========================================================================== */
     #judge-briefing-panel {
-      margin-bottom: 22px;
-      border: 1px solid rgba(255, 107, 53, 0.28);
-      background: linear-gradient(135deg, rgba(23, 29, 41, 0.95) 0%, rgba(13, 16, 22, 0.98) 100%);
-      box-shadow: 0 8px 30px -4px rgba(255, 107, 53, 0.12);
+      margin-bottom: 26px;
+      border: 1px solid rgba(0, 112, 186, 0.3);
+      background: linear-gradient(135deg, rgba(7, 18, 36, 0.95) 0%, rgba(11, 23, 44, 0.98) 100%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 10px 32px -4px rgba(0, 112, 186, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.12);
     }
     .judge-panel-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-bottom: 18px;
+      gap: 16px;
+      margin-bottom: 20px;
     }
     .judge-tour-grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
-      gap: 8px;
+      gap: 10px;
     }
 
     /* ==========================================================================
        DATA TABLES & AG GRID THEME
        ========================================================================== */
     .table-responsive { width: 100%; overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 12.5px; text-align: left; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
     th {
-      padding: 12px 14px;
-      background: var(--surface-elevated);
+      padding: 13px 16px;
+      background: rgba(16, 34, 64, 0.85);
       color: var(--text-secondary);
       font-weight: 600;
       border-bottom: 1px solid var(--border-subtle);
       text-transform: uppercase;
-      font-size: 10.5px;
+      font-size: 11px;
       letter-spacing: 0.5px;
     }
     td {
-      padding: 12px 14px;
+      padding: 13px 16px;
       border-bottom: 1px solid var(--border-subtle);
       color: #E2E8F0;
       font-variant-numeric: tabular-nums;
     }
     tr:hover td { background: var(--surface-hover); }
 
-    /* Custom AG Grid Dark Theme with Warm Orange Highlights */
+    /* Custom AG Grid Dark Theme with PayPal Blue Highlights */
     .ag-theme-nexus-dark,
     .ag-theme-alpine-dark {
-      --ag-background-color: #0D1016;
-      --ag-header-background-color: #121722;
-      --ag-odd-row-background-color: #0F131B;
-      --ag-border-color: rgba(255, 255, 255, 0.07);
-      --ag-header-foreground-color: #929BAA;
-      --ag-foreground-color: #F5F7FA;
+      --ag-background-color: #071224;
+      --ag-header-background-color: #0A1B36;
+      --ag-odd-row-background-color: #09162D;
+      --ag-border-color: rgba(0, 112, 186, 0.22);
+      --ag-header-foreground-color: #94A3B8;
+      --ag-foreground-color: #F8FAFC;
       --ag-data-color: #E2E8F0;
-      --ag-selected-row-background-color: rgba(255, 107, 53, 0.18);
-      --ag-row-hover-color: rgba(255, 255, 255, 0.04);
+      --ag-selected-row-background-color: rgba(0, 112, 186, 0.22);
+      --ag-row-hover-color: rgba(0, 112, 186, 0.1);
       --ag-font-family: var(--font-sans);
-      --ag-font-size: 12px;
+      --ag-font-size: 12.5px;
       --ag-grid-size: 6px;
-      --ag-row-height: 40px;
-      --ag-header-height: 42px;
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px 12px 0 0;
+      --ag-row-height: 42px;
+      --ag-header-height: 44px;
+      border: 1px solid rgba(0, 112, 186, 0.25);
+      border-radius: 14px 14px 0 0;
       overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     }
     .ag-theme-nexus-dark .ag-header-cell,
     .ag-theme-alpine-dark .ag-header-cell {
       font-weight: 700;
       text-transform: uppercase;
-      font-size: 10.5px;
+      font-size: 11px;
       letter-spacing: 0.5px;
-      color: #929BAA;
+      color: #94A3B8;
     }
     .grid-status-bar {
       display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
-      background: var(--surface-primary); border: 1px solid var(--border-subtle); border-top: none;
-      padding: 10px 18px; font-size: 12px; border-radius: 0 0 12px 12px; color: var(--text-secondary);
+      background: var(--surface-primary); border: 1px solid rgba(0, 112, 186, 0.25); border-top: none;
+      padding: 12px 20px; font-size: 12.5px; border-radius: 0 0 14px 14px; color: var(--text-secondary);
     }
     .status-chip-proof {
-      display: inline-flex; align-items: center; gap: 5px;
-      background: rgba(255, 107, 53, 0.12); border: 1px solid rgba(255, 107, 53, 0.35);
-      color: var(--accent-secondary); padding: 3px 9px; border-radius: 12px; font-size: 11px; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(0, 112, 186, 0.15); border: 1px solid rgba(0, 156, 222, 0.35);
+      color: var(--accent-secondary); padding: 4px 10px; border-radius: 12px; font-size: 11px; cursor: pointer;
       transition: all 0.15s ease; font-variant-numeric: tabular-nums;
     }
     .status-chip-proof:hover {
-      background: rgba(255, 107, 53, 0.25); border-color: var(--accent-primary); transform: translateY(-1px);
+      background: rgba(0, 112, 186, 0.25); border-color: var(--accent-primary); transform: translateY(-1px);
     }
 
     /* Tags */
     .tag {
-      display: inline-block; padding: 3px 8px; border-radius: 6px;
-      font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+      display: inline-block; padding: 4px 9px; border-radius: 6px;
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
       letter-spacing: 0.3px; font-variant-numeric: tabular-nums;
     }
-    .tag-success { background: rgba(34,197,94,0.14); color: var(--accent-emerald); border: 1px solid rgba(34,197,94,0.3); }
-    .tag-pending { background: rgba(245,158,11,0.14); color: var(--accent-amber); border: 1px solid rgba(245,158,11,0.3); }
-    .tag-info { background: rgba(255,107,53,0.14); color: var(--accent-secondary); border: 1px solid rgba(255,107,53,0.3); }
-    .tag-error { background: rgba(239,68,68,0.14); color: var(--accent-rose); border: 1px solid rgba(239,68,68,0.3); }
+    .tag-success { background: rgba(16,185,129,0.14); color: var(--accent-emerald); border: 1px solid rgba(16,185,129,0.35); }
+    .tag-pending { background: rgba(245,158,11,0.14); color: var(--accent-amber); border: 1px solid rgba(245,158,11,0.35); }
+    .tag-info { background: rgba(0,112,186,0.16); color: var(--accent-secondary); border: 1px solid rgba(0,156,222,0.35); }
+    .tag-error { background: rgba(239,68,68,0.14); color: var(--accent-rose); border: 1px solid rgba(239,68,68,0.35); }
 
     .search-input {
-      background: var(--surface-elevated); border: 1px solid var(--border-subtle); color: #FFF; padding: 9px 14px;
-      border-radius: 8px; font-size: 12.5px; min-width: 260px;
+      background: var(--surface-elevated); border: 1px solid var(--border-glass); color: #FFF; padding: 10px 16px;
+      border-radius: 10px; font-size: 13px; min-width: 280px; font-family: var(--font-sans);
     }
-    .search-input:focus { outline: none; border-color: var(--accent-primary); }
+    .search-input:focus { outline: none; border-color: var(--accent-primary); box-shadow: 0 0 12px rgba(0, 112, 186, 0.3); }
 
     /* Live Stream Log */
     .stream-box {
-      background: #050608; border: 1px solid var(--border-subtle); border-radius: 12px;
+      background: #030712; border: 1px solid var(--border-glass); border-radius: 12px;
       padding: 16px; font-family: var(--font-mono); font-size: 12px; height: 380px;
       overflow-y: auto; color: #FF9A52; line-height: 1.7;
     }
@@ -772,10 +943,10 @@ export function getDashboardHtml(): string {
       pointer-events: none;
     }
     .toast {
-      pointer-events: auto; background: rgba(23, 29, 41, 0.98);
-      border: 1px solid var(--border-subtle); backdrop-filter: blur(14px);
+      pointer-events: auto; background: rgba(7, 18, 36, 0.98);
+      border: 1px solid var(--border-glass); backdrop-filter: blur(14px);
       border-radius: 12px; padding: 14px 18px;
-      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 107, 53, 0.12);
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 112, 186, 0.2);
       color: #F1F5F9; animation: toastSlideIn 0.25s ease-out; transition: all 0.2s ease;
     }
     @keyframes toastSlideIn { from { transform: translateX(30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
@@ -794,7 +965,7 @@ export function getDashboardHtml(): string {
     .toast-success .toast-title { color: var(--accent-emerald); }
     .toast-error { border-color: rgba(239, 68, 68, 0.45); box-shadow: 0 0 15px rgba(239, 68, 68, 0.18); }
     .toast-error .toast-title { color: var(--accent-rose); }
-    .toast-info { border-color: rgba(255, 107, 53, 0.45); box-shadow: 0 0 15px rgba(255, 107, 53, 0.18); }
+    .toast-info { border-color: rgba(0, 156, 222, 0.45); box-shadow: 0 0 15px rgba(0, 112, 186, 0.25); }
     .toast-info .toast-title { color: var(--accent-primary); }
 
     /* Accessibility */
@@ -979,7 +1150,7 @@ export function getDashboardHtml(): string {
           <span class="badge badge-live-stream" id="sse-badge">
             <span class="pulse-dot"></span>SSE Live
           </span>
-          <button class="btn btn-secondary" onclick="refreshDashboardData()">Refresh</button>
+          <button class="btn btn-secondary" onclick="refreshDashboardData()" style="padding: 7px 12px; font-size: 12px;">🔄 Refresh</button>
         </div>
       </header>
 
@@ -1019,8 +1190,8 @@ export function getDashboardHtml(): string {
           <div id="judge-panel-body">
             <!-- 3 Headline Claims Grid -->
             <div class="judge-panel-grid">
-              <div style="background: rgba(23, 29, 41, 0.7); border: 1px solid rgba(255, 107, 53, 0.25); border-radius: 12px; padding: 16px;">
-                <div style="color: var(--accent-secondary); font-weight: 700; font-size: 13px; margin-bottom: 6px;">1. AI-Assisted SLA Evaluation</div>
+              <div style="background: rgba(11, 23, 44, 0.72); border: 1px solid rgba(0, 156, 222, 0.3); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 12px; padding: 18px;">
+                <div style="color: var(--accent-secondary); font-weight: 700; font-size: 13.5px; margin-bottom: 6px;">1. AI-Assisted SLA Evaluation</div>
                 <p style="font-size: 12px; color: #CBD5E1; line-height: 1.5; margin-bottom: 12px;">
                   Autonomous task deliverables adjudicated via <strong>FreeModel (Gemini 3.7 Flash)</strong> with automatic <strong>DeepSeek v4.1 Flash</strong> failover. Purely advisory: zero access to money movement, enforced by deterministic credit clamps.
                 </p>
@@ -1030,8 +1201,8 @@ export function getDashboardHtml(): string {
                 </div>
               </div>
 
-              <div style="background: rgba(23, 29, 41, 0.7); border: 1px solid rgba(34, 197, 94, 0.25); border-radius: 12px; padding: 16px;">
-                <div style="color: var(--accent-emerald); font-weight: 700; font-size: 13px; margin-bottom: 6px;">2. Deterministic Netting & PayPal Rails</div>
+              <div style="background: rgba(11, 23, 44, 0.72); border: 1px solid rgba(16, 185, 129, 0.3); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 12px; padding: 18px;">
+                <div style="color: var(--accent-emerald); font-weight: 700; font-size: 13.5px; margin-bottom: 6px;">2. Deterministic Netting & PayPal Rails</div>
                 <p style="font-size: 12px; color: #CBD5E1; line-height: 1.5; margin-bottom: 12px;">
                   Compresses circular bilateral agent debt by <strong>65.38% to 99.4%</strong>. Settles conserved net debtor balances via <strong>PayPal Orders v2</strong> capture ($1.00) and creditor disbursements via <strong>PayPal Payouts v1</strong> ($0.50 + $0.50).
                 </p>
@@ -1041,8 +1212,8 @@ export function getDashboardHtml(): string {
                 </div>
               </div>
 
-              <div style="background: rgba(23, 29, 41, 0.7); border: 1px solid rgba(255, 154, 82, 0.25); border-radius: 12px; padding: 16px;">
-                <div style="color: var(--accent-secondary); font-weight: 700; font-size: 13px; margin-bottom: 6px;">3. Verifiable Subledger & Cryptography</div>
+              <div style="background: rgba(11, 23, 44, 0.72); border: 1px solid rgba(0, 112, 186, 0.35); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 12px; padding: 18px;">
+                <div style="color: var(--accent-secondary); font-weight: 700; font-size: 13.5px; margin-bottom: 6px;">3. Verifiable Subledger & Cryptography</div>
                 <p style="font-size: 12px; color: #CBD5E1; line-height: 1.5; margin-bottom: 12px;">
                   Double-entry subledger asserted by <strong>14 SQLite database triggers</strong>, Ed25519 RFC 8785 signatures, cryptographic SHA-256 Merkle tree anchors, and mathematical zero-variance (<span class="mono">Δ = $0.00</span>).
                 </p>
@@ -1074,9 +1245,9 @@ export function getDashboardHtml(): string {
         <!-- 1. OVERVIEW TAB (RECONSTRUCTED WITH HERO FINTECH CARDS & CHARTS) -->
         <div id="tab-overview" class="tab-content active">
 
-          <!-- EXECUTIVE HERO GRID (AREA CHART + FEATURED ORANGE ANCHOR CARD) -->
+          <!-- EXECUTIVE HERO GRID (AREA CHART + FEATURED PAYPAL ENTERPRISE CARD STACK) -->
           <div class="hero-fintech-grid">
-            <!-- Left Chart Card: Total Balance & Area Chart with Warm Orange Gradient -->
+            <!-- Left Chart Card: Total Balance & Area Chart with PayPal Signature Cyan-Blue Gradient -->
             <div class="balance-chart-card">
               <div class="balance-chart-header">
                 <div>
@@ -1094,17 +1265,17 @@ export function getDashboardHtml(): string {
                 </div>
               </div>
 
-              <!-- Interactive SVG Area Chart with Warm Orange Gradient Fill -->
+              <!-- Interactive SVG Area Chart with PayPal Electric Cyan-Blue Gradient Fill -->
               <div style="position: relative; width: 100%; height: 180px; margin-top: 10px;">
                 <svg viewBox="0 0 700 180" style="width: 100%; height: 100%; overflow: visible;">
                   <defs>
-                    <linearGradient id="orangeChartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stop-color="#FF6B35" stop-opacity="0.45" />
-                      <stop offset="60%" stop-color="#FF914D" stop-opacity="0.15" />
-                      <stop offset="100%" stop-color="#08090C" stop-opacity="0.0" />
+                    <linearGradient id="paypalChartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#009CDE" stop-opacity="0.45" />
+                      <stop offset="60%" stop-color="#0070BA" stop-opacity="0.15" />
+                      <stop offset="100%" stop-color="#040914" stop-opacity="0.0" />
                     </linearGradient>
-                    <filter id="glowOrange" x="-20%" y="-20%" width="140%" height="140%">
-                      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#FF6B35" flood-opacity="0.6"/>
+                    <filter id="glowPaypal" x="-20%" y="-20%" width="140%" height="140%">
+                      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#009CDE" flood-opacity="0.6"/>
                     </filter>
                   </defs>
                   
@@ -1121,7 +1292,7 @@ export function getDashboardHtml(): string {
                            C 440 40, 480 80, 530 50 
                            C 580 20, 620 90, 700 60 
                            L 700 180 L 0 180 Z" 
-                        fill="url(#orangeChartGradient)" />
+                        fill="url(#paypalChartGradient)" />
 
                   <!-- Stroke Line -->
                   <path d="M 0 140 
@@ -1130,14 +1301,14 @@ export function getDashboardHtml(): string {
                            C 300 60, 340 100, 390 70 
                            C 440 40, 480 80, 530 50 
                            C 580 20, 620 90, 700 60" 
-                        fill="none" stroke="#FF6B35" stroke-width="2.5" filter="url(#glowOrange)" />
+                        fill="none" stroke="#009CDE" stroke-width="2.5" filter="url(#glowPaypal)" />
 
-                  <!-- Active Pin Tooltip (Matching Reference: 09 Dec, 2024 / 9,780.90 USD) -->
-                  <circle cx="480" cy="80" r="5" fill="#FFF" stroke="#FF6B35" stroke-width="3" />
-                  <g transform="translate(420, 15)">
-                    <rect width="120" height="42" rx="8" fill="#FFFFFF" filter="drop-shadow(0 4px 12px rgba(0,0,0,0.5))" />
-                    <text x="12" y="18" font-size="10" font-weight="600" fill="#64748B" font-family="var(--font-sans)">Live Settlement ↗</text>
-                    <text x="12" y="34" font-size="13" font-weight="800" fill="#0F172A" font-family="var(--font-sans)">$9,780.90 USD</text>
+                  <!-- Active Pin Tooltip (Matching Reference: 09 Dec, 2024 / 9,780.90 USD in Dark Glass) -->
+                  <circle cx="480" cy="80" r="5" fill="#FFF" stroke="#009CDE" stroke-width="3" />
+                  <g transform="translate(415, 12)">
+                    <rect width="130" height="46" rx="10" fill="#0A1832" stroke="rgba(0, 156, 222, 0.45)" filter="drop-shadow(0 6px 16px rgba(0,0,0,0.7))" />
+                    <text x="14" y="20" font-size="10" font-weight="600" fill="#8BA2C4" font-family="var(--font-sans)">09 Dec, 2024 ↗</text>
+                    <text x="14" y="37" font-size="13" font-weight="800" fill="#FFFFFF" font-family="var(--font-sans)">$9,780.90 USD</text>
                   </g>
                 </svg>
               </div>
@@ -1151,25 +1322,73 @@ export function getDashboardHtml(): string {
               </div>
             </div>
 
-            <!-- Right: Primary Orange Anchor Card (Matching "My cards" Stack in Reference!) -->
-            <div class="anchor-card-showcase">
-              <div class="anchor-top">
-                <div class="anchor-title">Consortium Liquidity Pool</div>
-                <div class="anchor-card-chip"></div>
+            <!-- Right: 3D Stacked Card Showcase ("My cards" - Exact PayPal Theme + Glassmorphism Outline) -->
+            <div class="anchor-card-stack-wrapper">
+              <!-- Header matching reference -->
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 0 4px;">
+                <div style="font-size: 15px; font-weight: 700; color: #FFF; letter-spacing: -0.2px;">My cards</div>
+                <button class="btn btn-secondary" style="font-size: 11.5px; padding: 4px 12px; border-radius: 9999px; background: rgba(11, 23, 44, 0.7); border: 1px solid var(--border-glass); color: #CBD5E1; cursor: pointer;">+ Add new</button>
               </div>
 
-              <div>
-                <div style="font-size: 13px; font-family: var(--font-mono); opacity: 0.9; margin-bottom: 8px;">TALLY NEXUS CARD</div>
-                <div class="anchor-balance-label">Net Cleared Balance</div>
-                <div class="anchor-balance-val">$12,850.00</div>
-                <div style="margin-top: 6px;">
-                  <span style="font-size: 11.5px; font-weight: 700; background: rgba(0,0,0,0.25); padding: 3px 8px; border-radius: 6px;">↑ 3.52% Liquidity Yield</span>
+              <div style="position: relative; flex: 1; display: flex; flex-direction: column;">
+                <!-- Back Card 2: Visa Commercial -->
+                <div class="card-stack-back-2">
+                  <span style="letter-spacing: 1px;">VISA <span style="font-size: 9.5px; opacity: 0.6; margin-left: 4px; font-weight: 600;">COMMERCIAL</span></span>
+                  <span style="font-family: var(--font-mono); font-weight: 600; opacity: 0.85;">$6,150.00</span>
                 </div>
-              </div>
 
-              <div class="anchor-actions">
-                <button class="btn btn-white" onclick="tourStep(1)">↘ Request</button>
-                <button class="btn" style="background: rgba(0,0,0,0.3); color: #FFF; border: 1px solid rgba(255,255,255,0.2);" onclick="runFlagshipDemo()">↗ Clear & Settle</button>
+                <!-- Back Card 1: Mastercard Reserve -->
+                <div class="card-stack-back-1">
+                  <span style="display: flex; align-items: center; gap: 6px;">
+                    <svg width="24" height="15" viewBox="0 0 36 24" style="vertical-align: middle;">
+                      <circle cx="12" cy="12" r="10" fill="#EB001B" fill-opacity="0.95"/>
+                      <circle cx="24" cy="12" r="10" fill="#FF5F00" fill-opacity="0.9"/>
+                    </svg>
+                    <span style="letter-spacing: 0.5px; opacity: 0.8; font-size: 10px;">RESERVE</span>
+                  </span>
+                  <span style="font-family: var(--font-mono); font-weight: 600; opacity: 0.9;">$3,140.00</span>
+                </div>
+
+                <!-- Front Featured Card: Authentic PayPal Commercial Clearing Card -->
+                <div class="anchor-card-showcase">
+                  <div class="anchor-top">
+                    <!-- PayPal Dual-P Monogram + Wordmark -->
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <svg width="30" height="24" viewBox="0 0 100 80" fill="none" style="vertical-align: middle;">
+                        <path d="M26.4 75L35.2 19.3H56.5C64.3 19.3 70.3 21.4 73.7 25.4C77.1 29.5 77.4 35.3 75.4 41.8C73.3 48.7 69.2 54.2 63.8 57.5C59.2 60.3 53.6 61.6 47.4 61.6H38.5L34.3 75H26.4Z" fill="#003087"/>
+                        <path d="M38.5 61.6H47.4C53.6 61.6 59.2 60.3 63.8 57.5C69.2 54.2 73.3 48.7 75.4 41.8C77.4 35.3 77.1 29.5 73.7 25.4C72.8 24.3 71.7 23.4 70.4 22.6C68.3 22.4 65.8 22.4 63.1 22.4H47.1L40.2 66.2L38.5 61.6Z" fill="#002169" opacity="0.4"/>
+                        <path d="M38.5 61.6L44.8 22.4H63.1C70.9 22.4 76.9 24.5 80.3 28.5C83.7 32.6 84 38.4 82 44.9C79.9 51.8 75.8 57.3 70.4 60.6C65.8 63.4 60.2 64.7 54 64.7H43.3L40.2 84H32.3L38.5 61.6Z" fill="#009CDE"/>
+                      </svg>
+                      <span style="font-weight: 800; font-size: 16px; letter-spacing: -0.3px; color: #FFFFFF;">PayPal</span>
+                    </div>
+
+                    <!-- NFC Waves + EMV Smart Chip -->
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="2" stroke-linecap="round">
+                        <path d="M8.5 16.5a5 5 0 0 1 0-7"/>
+                        <path d="M12 19a8.5 8.5 0 0 0 0-14"/>
+                        <path d="M15.5 21.5a12 12 0 0 0 0-19"/>
+                      </svg>
+                      <div class="anchor-card-chip"></div>
+                    </div>
+                  </div>
+
+                  <!-- Card Number & Net Balance -->
+                  <div style="margin-top: 8px; margin-bottom: 6px;">
+                    <div style="font-family: var(--font-mono); letter-spacing: 2px; font-size: 13px; color: rgba(255,255,255,0.75); margin-bottom: 8px;">•••• &nbsp; •••• &nbsp; •••• &nbsp; 822V</div>
+                    <div class="anchor-balance-label">Net Cleared Balance</div>
+                    <div style="display: flex; align-items: baseline; justify-content: space-between; margin-top: 2px;">
+                      <div class="anchor-balance-val">$12,850.00</div>
+                      <span style="font-size: 11.5px; font-weight: 700; color: #22C55E; background: rgba(34, 197, 94, 0.16); border: 1px solid rgba(34, 197, 94, 0.35); padding: 3px 9px; border-radius: 9999px;">↑ 3.52%</span>
+                    </div>
+                  </div>
+
+                  <!-- Card Actions (Request / Clear & Settle) -->
+                  <div class="anchor-actions">
+                    <button class="btn btn-glass" onclick="tourStep(1)">↘ Request</button>
+                    <button class="btn btn-paypal" onclick="runFlagshipDemo()">↗ Clear & Settle</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1201,7 +1420,7 @@ export function getDashboardHtml(): string {
           <!-- SECONDARY INSIGHTS GRID (TRUST CARD + AGENT BAR CHART + RECENT SETTLEMENTS) -->
           <div class="insights-grid">
             <!-- Left: Trust by Autonomous Agents -->
-            <div class="card" style="background: linear-gradient(145deg, #1A1F2C 0%, #121722 100%);">
+            <div class="card" style="background: linear-gradient(145deg, rgba(16, 34, 64, 0.85) 0%, rgba(10, 23, 44, 0.72) 100%);">
               <div style="font-size: 18px; font-weight: 800; color: #FFF; line-height: 1.3; margin-bottom: 8px;">
                 Trusted by Autonomous Swarms Worldwide
               </div>
@@ -1211,11 +1430,11 @@ export function getDashboardHtml(): string {
 
               <!-- Agent Avatars Row -->
               <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 22px;">
-                <div style="width: 32px; height: 32px; border-radius: 50%; background: #FF6B35; color: #08090C; font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center;">α</div>
-                <div style="width: 32px; height: 32px; border-radius: 50%; background: #38BDF8; color: #08090C; font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center;">β</div>
-                <div style="width: 32px; height: 32px; border-radius: 50%; background: #22C55E; color: #08090C; font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center;">γ</div>
-                <div style="width: 32px; height: 32px; border-radius: 50%; background: #F59E0B; color: #08090C; font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center;">δ</div>
-                <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--surface-elevated); border: 1px solid var(--border-subtle); color: #FFF; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">+10</div>
+                <div style="width: 32px; height: 32px; border-radius: 50%; background: #0070BA; color: #FFFFFF; font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px rgba(0, 112, 186, 0.4);">α</div>
+                <div style="width: 32px; height: 32px; border-radius: 50%; background: #009CDE; color: #FFFFFF; font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px rgba(0, 156, 222, 0.4);">β</div>
+                <div style="width: 32px; height: 32px; border-radius: 50%; background: #10B981; color: #FFFFFF; font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);">γ</div>
+                <div style="width: 32px; height: 32px; border-radius: 50%; background: #003087; color: #FFFFFF; font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0, 156, 222, 0.3);">δ</div>
+                <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--surface-elevated); border: 1px solid var(--border-glass); color: #FFF; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">+10</div>
               </div>
 
               <button class="btn btn-white" style="width: 100%; padding: 11px;" onclick="switchTab('security')">🛡️ Invariant Center</button>
@@ -1235,28 +1454,28 @@ export function getDashboardHtml(): string {
               <div style="display: flex; align-items: flex-end; justify-content: space-between; height: 130px; padding-top: 20px; gap: 8px;">
                 <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;">
                   <span style="font-size: 10px; color: var(--text-muted);">$200</span>
-                  <div style="width: 100%; height: 45px; background: rgba(255, 107, 53, 0.25); border-radius: 6px 6px 0 0;"></div>
+                  <div style="width: 100%; height: 45px; background: rgba(0, 112, 186, 0.25); border-radius: 6px 6px 0 0;"></div>
                   <span style="font-size: 10px; color: var(--text-secondary);">Sep</span>
                 </div>
                 <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;">
                   <span style="font-size: 10px; color: var(--text-muted);">$300</span>
-                  <div style="width: 100%; height: 65px; background: rgba(255, 107, 53, 0.4); border-radius: 6px 6px 0 0;"></div>
+                  <div style="width: 100%; height: 65px; background: rgba(0, 112, 186, 0.4); border-radius: 6px 6px 0 0;"></div>
                   <span style="font-size: 10px; color: var(--text-secondary);">Oct</span>
                 </div>
                 <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;">
                   <span style="font-size: 10px; color: var(--text-muted);">$400</span>
-                  <div style="width: 100%; height: 85px; background: rgba(255, 107, 53, 0.55); border-radius: 6px 6px 0 0;"></div>
+                  <div style="width: 100%; height: 85px; background: rgba(0, 112, 186, 0.55); border-radius: 6px 6px 0 0;"></div>
                   <span style="font-size: 10px; color: var(--text-secondary);">Nov</span>
                 </div>
                 <!-- Peak Highlight Bar (Emerald in Reference) -->
                 <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;">
-                  <span style="font-size: 10px; font-weight: 800; background: var(--accent-emerald); color: #08090C; padding: 1px 4px; border-radius: 4px;">$500</span>
-                  <div style="width: 100%; height: 105px; background: linear-gradient(180deg, #22C55E 0%, #15803D 100%); border-radius: 6px 6px 0 0; box-shadow: 0 0 12px rgba(34, 197, 94, 0.4);"></div>
+                  <span style="font-size: 10px; font-weight: 800; background: var(--accent-emerald); color: #040914; padding: 1px 4px; border-radius: 4px;">$500</span>
+                  <div style="width: 100%; height: 105px; background: linear-gradient(180deg, #10B981 0%, #059669 100%); border-radius: 6px 6px 0 0; box-shadow: 0 0 14px rgba(16, 185, 129, 0.45);"></div>
                   <span style="font-size: 10px; color: #FFF; font-weight: 700;">Dec</span>
                 </div>
                 <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;">
                   <span style="font-size: 10px; color: var(--text-muted);">$400</span>
-                  <div style="width: 100%; height: 85px; background: rgba(255, 107, 53, 0.55); border-radius: 6px 6px 0 0;"></div>
+                  <div style="width: 100%; height: 85px; background: rgba(0, 112, 186, 0.55); border-radius: 6px 6px 0 0;"></div>
                   <span style="font-size: 10px; color: var(--text-secondary);">Jan</span>
                 </div>
               </div>
@@ -1769,8 +1988,8 @@ export function getDashboardHtml(): string {
   </div>
 
   <!-- Interactive Merkle Proof & Ed25519 Cryptographic Modal (AG Grid Custom Widget) -->
-  <div id="merkle-proof-modal" style="display: none; position: fixed; inset: 0; background: rgba(8,9,12,0.85); backdrop-filter: blur(10px); z-index: 10000; justify-content: center; align-items: center; padding: 20px;">
-    <div style="background: var(--surface-primary); border: 1px solid rgba(255, 107, 53, 0.4); border-radius: 16px; max-width: 700px; width: 100%; box-shadow: var(--shadow-modal); overflow: hidden;">
+  <div id="merkle-proof-modal" style="display: none; position: fixed; inset: 0; background: rgba(4, 9, 20, 0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); z-index: 10000; justify-content: center; align-items: center; padding: 20px;">
+    <div style="background: var(--surface-primary); border: 1px solid rgba(0, 156, 222, 0.4); border-radius: 18px; max-width: 700px; width: 100%; box-shadow: var(--shadow-modal); overflow: hidden; backdrop-filter: blur(20px);">
       <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; border-bottom: 1px solid var(--border-subtle); background: var(--surface-elevated);">
         <div style="display: flex; align-items: center; gap: 10px;">
           <span style="font-size: 20px;">🛡️</span>
@@ -2277,9 +2496,9 @@ export function getDashboardHtml(): string {
               envBadge.innerHTML = '<span class="pulse-dot"></span>[ENV: LIVE SANDBOX VERIFIED]';
             } else {
               envBadge.className = 'badge';
-              envBadge.style.background = 'rgba(255,107,53,0.15)';
-              envBadge.style.color = '#FF9A52';
-              envBadge.style.border = '1px solid rgba(255,107,53,0.3)';
+              envBadge.style.background = 'rgba(245, 158, 11, 0.15)';
+              envBadge.style.color = '#F59E0B';
+              envBadge.style.border = '1px solid rgba(245, 158, 11, 0.35)';
               envBadge.innerHTML = '<span class="pulse-dot"></span>[ENV: SIMULATION / MOCK FALLBACK]';
             }
           }
@@ -2497,8 +2716,8 @@ export function getDashboardHtml(): string {
       });
       const activeBtn = document.getElementById('tour-step-' + step);
       if (activeBtn) {
-        activeBtn.style.borderColor = 'var(--accent-primary)';
-        activeBtn.style.background = 'rgba(255, 107, 53, 0.15)';
+        activeBtn.style.borderColor = 'var(--accent-secondary)';
+        activeBtn.style.background = 'rgba(0, 112, 186, 0.22)';
       }
 
       if (step === 1) {

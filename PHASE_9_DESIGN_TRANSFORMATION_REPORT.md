@@ -122,3 +122,4 @@ Every single functional invariant, business rule, and integration was preserved 
 - **Mobile Viewport (390×844):** The fixed sidebar automatically collapses into an off-canvas drawer triggered by the topbar hamburger menu. Large financial tables use local horizontal scrolling rather than breaking window bounds.
 - **Reduced Motion:** If `prefers-reduced-motion: reduce` is enabled, all transition durations and radar pulses clamp to zero ms without breaking UI state transitions.
 - **AG Grid Responsiveness:** AG Grid container dynamically adapts to available content canvas width while maintaining virtualized DOM recycling.
+
