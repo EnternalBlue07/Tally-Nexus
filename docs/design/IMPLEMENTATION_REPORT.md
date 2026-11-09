@@ -114,3 +114,4 @@ The upgraded UI is structured to directly support the 3-minute hackathon demo vi
    Click "Run Live AI Evaluation" and open the modal to display FreeModel Gemini telemetry, token count, and latency. Show the Trust & Security Center table highlighting prompt injection defense and Ed25519 signature checks.
 5. **2:30 – 3:00 (PayPal Rails & Closing Proof):**  
    Click "Verify Live Capture" to showcase PayPal Sandbox Order ID `7PV82720RX415822V`. Conclude on the Double-Entry Ledger tab demonstrating perfect balance.
+

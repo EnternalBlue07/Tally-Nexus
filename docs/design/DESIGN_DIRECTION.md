@@ -79,3 +79,4 @@ We selected an intentional blend of **Direction A (Institutional Terminal)** and
      2. Multilateral Netting (65.38% to 99.4% liquidity compression)
      3. Double-Entry Subledger (14 SQLite database triggers, $\Delta = \$0.00$)
    - 6-step guided tour for fast self-service verification by hackathon judges.
+

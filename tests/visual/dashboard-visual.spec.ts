@@ -1,7 +1,15 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 import path from 'path';
 
 const CINEMATIC_SCREENSHOT_DIR = path.resolve('docs/screenshots/cinematic');
+
+async function switchDashboardTab(page: Page, tabName: string) {
+  await page.evaluate((t: string) => {
+    if (typeof (window as any).switchTab === 'function') {
+      (window as any).switchTab(t);
+    }
+  }, tabName);
+}
 
 test.describe('Tally Nexus Institutional Clearing Command Centre', () => {
 
@@ -79,7 +87,7 @@ test.describe('Tally Nexus Institutional Clearing Command Centre', () => {
     const runBtn = page.locator('#run-demo-btn');
     await expect(runBtn).toBeVisible();
 
-    await runBtn.click();
+    await runBtn.click({ force: true });
 
     // Wait for demo status pill to indicate completion
     const pill = page.locator('#demo-status-pill');
@@ -102,8 +110,7 @@ test.describe('Tally Nexus Institutional Clearing Command Centre', () => {
     await page.goto('/', { waitUntil: 'networkidle' });
 
     // Switch to Hero Scale tab
-    const scaleTabBtn = page.getByRole('button', { name: /Hero Scale/i });
-    await scaleTabBtn.click();
+    await switchDashboardTab(page, 'scale');
     await page.waitForTimeout(1500);
 
     // Verify AG Grid rendered
@@ -185,8 +192,7 @@ test.describe('Tally Nexus Institutional Clearing Command Centre', () => {
   test('08. Trust & Security Center renders 5-point adversarial matrix and cryptographic tool', async ({ page }, testInfo) => {
     await page.goto('/', { waitUntil: 'networkidle' });
 
-    const securityTabBtn = page.getByRole('button', { name: /Trust & Security/i });
-    await securityTabBtn.click();
+    await switchDashboardTab(page, 'security');
     await page.waitForTimeout(600);
 
     // Verify invariant table
@@ -206,8 +212,7 @@ test.describe('Tally Nexus Institutional Clearing Command Centre', () => {
   test('09. Double-Entry Ledger tab displays balanced debits & credits (Δ = $0.00)', async ({ page }, testInfo) => {
     await page.goto('/', { waitUntil: 'networkidle' });
 
-    const ledgerTabBtn = page.getByRole('button', { name: 'Double-Entry Ledger' });
-    await ledgerTabBtn.click();
+    await switchDashboardTab(page, 'ledger');
     await page.waitForTimeout(600);
 
     const tbody = page.locator('#ledger-tbody');

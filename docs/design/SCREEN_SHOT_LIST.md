@@ -190,3 +190,4 @@ graph LR
 | **Mobile Standard** | 9:19.5 / 390×844 | 1-column metric stack, card-based navigation, touch-friendly CTA | **ZERO (`hasOverflow: false`)** |
 
 *All screenshots programmatically captured by Playwright and stored in `docs/screenshots/cinematic/`.*
+

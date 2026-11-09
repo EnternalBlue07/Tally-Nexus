@@ -155,3 +155,4 @@ Following the `ui-ux-pro-max` token specification, Tally Nexus implements a stri
 - Glassmorphic slate card (`rgba(16, 24, 39, 0.95)` with `backdrop-filter: blur(12px)`).
 - Semantic accent line on left border or icon badge.
 - Native expandable `<details>` block for technical JSON dumps without blocking UI.
+
