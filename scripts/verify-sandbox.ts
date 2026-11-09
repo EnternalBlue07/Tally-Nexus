@@ -178,3 +178,4 @@ verifySandboxConnectivity().catch((err) => {
   console.error('Failed to verify sandbox:', err);
   process.exit(1);
 });
+

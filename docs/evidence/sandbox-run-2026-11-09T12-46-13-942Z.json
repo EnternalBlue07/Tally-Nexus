@@ -1,0 +1,39 @@
+{
+  "executedAt": "2026-11-09T12:46:13.944Z",
+  "environment": "https://api-m.sandbox.paypal.com (PayPal Developer Sandbox)",
+  "classification": "REAL_SANDBOX_PARTIAL_EXECUTION",
+  "summary": "Orders v2 Capture SUCCEEDED with real PayPal Capture ID. Payouts v1 returned HTTP 403 due to merchant country restriction (India account country constraint on Payouts API).",
+  "capture": {
+    "orderId": "0HC67112BH930554G",
+    "payerId": "ZMZQ3PXC4ZU5L",
+    "httpStatus": 201,
+    "orderStatus": "COMPLETED",
+    "captureId": "7L347871B95300004",
+    "captureStatus": "COMPLETED",
+    "amount": {
+      "currency_code": "USD",
+      "value": "1.00"
+    },
+    "payee": {
+      "email_address": "sb-kmpmt53795647@business.example.com",
+      "merchant_id": "W8X58KBDA3SE2"
+    }
+  },
+  "payouts": {
+    "endpoint": "https://api-m.sandbox.paypal.com/v1/payments/payouts",
+    "httpStatus": 403,
+    "status": "FAILED",
+    "error": {
+      "name": "PAYOUT_NOT_AVAILABLE",
+      "message": "You live in a country that is not allowed to send this payout.",
+      "information_link": "https://developer.paypal.com/docs/api/payments.payouts-batch/#errors"
+    },
+    "rootCause": "PayPal Sandbox Business account sb-kmpmt53795647@business.example.com has Country/Region set to India (IN). PayPal Payouts API is geographically restricted by PayPal policy to merchant accounts in supported countries (e.g. US, UK, EU, CA).",
+    "resolutionRequirement": "Create a PayPal Sandbox Business Account with Country set to United States (US), generate app credentials under that US Business account, and retry Payouts dispatch."
+  },
+  "auditIntegrity": {
+    "realProviderApiHandshake": true,
+    "zeroFabricatedIds": true,
+    "simulatedSuccessClaimed": false
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-11-09T12:37:45.804Z",
+  "environment": "https://api-m.sandbox.paypal.com",
+  "oauth2Status": 200,
+  "orderCreationStatus": 201,
+  "orderId": "0HC67112BH930554G",
+  "status": "CREATED",
+  "amount": "1.00 USD",
+  "approvalUrl": "https://www.sandbox.paypal.com/checkoutnow?token=0HC67112BH930554G",
+  "purchaseUnitReference": "PU-TALLY-NEXUS-001",
+  "customId": "cyc_phase5_real_sandbox_001"
+}
