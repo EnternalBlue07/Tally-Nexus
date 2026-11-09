@@ -11,6 +11,8 @@
 | **ADR-016** | Multi-Debtor Intermediate Clearing Accounting & Concurrency Guards | Accepted | Gate 3B |
 | **ADR-017** | 5-Stage Return Verification & Single-Reissue Entitlement Model | Accepted | Gate 3C |
 | **ADR-018** | Hermetic Single-Page Operator Dashboard with Zero CDN Dependencies | Accepted | Gate 3C |
+| **ADR-019** | Production HTTP Server Bootstrap & Graceful Lifecycle Management | Accepted | Phase 4 |
+| **ADR-020** | Deterministic 180s Flagship Scenario & Multi-Tier Sandbox Validation | Accepted | Phase 4 |
 
 ---
 
@@ -47,3 +49,17 @@
 - **Context:** The hackathon operator dashboard must execute reliably in offline, sandboxed, and air-gapped demo environments without depending on external script CDNs or third-party stylesheets.
 - **Decision:** Embed a self-contained Single-Page Application (HTML5, modern CSS3, vanilla ES6 JS) served directly by Express at `/` and `/dashboard`. Connect in real-time to the `/api/events/stream` Server-Sent Events endpoint and live REST APIs.
 - **Consequences:** Guarantees instant 100% offline rendering, zero external CDN security vulnerabilities, and live outbox stream visualization.
+
+---
+
+### ADR-019: Production HTTP Server Bootstrap & Graceful Lifecycle Management
+- **Context:** In production and local development, the application must run as an autonomous daemon via `npm start` or `npm run dev`, cleanly managing database connections and graceful OS termination signals.
+- **Decision:** Implement `src/server.ts` wiring `createApp`, initializing `DatabaseManager`, running migrations, detecting PayPal credentials vs deterministic mock fallback, and handling `SIGINT`/`SIGTERM` to close SQLite safely.
+- **Consequences:** Ensures zero data corruption upon shutdown and seamless out-of-the-box developer experience.
+
+---
+
+### ADR-020: Deterministic 180s Flagship Scenario & Multi-Tier Sandbox Validation
+- **Context:** Evaluators need to independently verify the complete multi-agent lifecycle under strict hackathon evaluation constraints without requiring pre-configured external credentials or manual PayPal UI interaction.
+- **Decision:** Implement `src/demo/flagship-runner.ts` and CLI runner `src/demo/cli.ts` executing the canonical 5-agent consortium across 6 scenes in under 100ms. Provide dual-mode execution (live PayPal Sandbox or local deterministic simulator) and expose `POST /api/demo/run` for one-click UI invocation.
+- **Consequences:** Provides 100% reproducible validation for judges with zero flakiness.

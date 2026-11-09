@@ -10,3 +10,4 @@ export * from './api/index.js';
 export * from './paypal/index.js';
 export * from './recovery/index.js';
 export * from './dashboard/index.js';
+export * from './demo/index.js';

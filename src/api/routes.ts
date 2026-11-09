@@ -24,6 +24,7 @@ import {
 } from '../paypal/index.js';
 import { RecoveryService } from '../recovery/index.js';
 import { getDashboardHtml } from '../dashboard/index.js';
+import { runFlagshipDemo } from '../demo/index.js';
 
 export function createApiRouter(
   db: DatabaseManager,
@@ -119,6 +120,13 @@ export function createApiRouter(
       }
       sendError(res, 500, 'INTERNAL_ERROR', msg);
     }
+  });
+
+  router.get('/cycles', (_req: Request, res: Response) => {
+    const cycles = db
+      .prepare('SELECT cycle_id as cycleId, status, gross_volume_cents as grossVolumeCents, net_volume_cents as netVolumeCents, compression_ratio as compressionRatio, created_at as createdAt FROM settlement_cycles ORDER BY created_at DESC LIMIT 50')
+      .all();
+    res.json({ cycles });
   });
 
   router.get('/cycles/:cycleId', (req: Request, res: Response) => {
@@ -519,6 +527,23 @@ export function createApiRouter(
     res.json({ payout, items });
   });
 
+  router.get('/settlement/orders', (_req: Request, res: Response) => {
+    const orders = db
+      .prepare('SELECT order_id as orderId, paypal_order_id as paypalOrderId, cycle_id as cycleId, debtor_agent_id as debtorAgentId, amount_cents as amountCents, status, approval_url as approvalUrl, paypal_capture_id as paypalCaptureId, created_at as createdAt FROM paypal_orders ORDER BY created_at DESC LIMIT 50')
+      .all();
+    res.json({ orders });
+  });
+
+  router.get('/settlement/payouts', (_req: Request, res: Response) => {
+    const payouts = db
+      .prepare('SELECT payout_id as payoutId, paypal_payout_batch_id as paypalPayoutBatchId, cycle_id as cycleId, sender_batch_id as senderBatchId, batch_status as batchStatus, total_amount_cents as totalAmountCents, created_at as createdAt FROM paypal_payouts ORDER BY created_at DESC LIMIT 50')
+      .all();
+    const items = db
+      .prepare('SELECT item_id as itemId, cycle_id as cycleId, creditor_agent_id as creditorAgentId, amount_cents as amountCents, receiver_email as receiverEmail, status, transaction_id as transactionId, created_at as createdAt FROM paypal_payout_items ORDER BY created_at DESC LIMIT 50')
+      .all();
+    res.json({ payouts, items });
+  });
+
   // =========================================================================
   // 10. PAYPAL WEBHOOK INGESTION (WORKSTREAM L)
   // =========================================================================
@@ -699,6 +724,19 @@ export function createApiRouter(
         return;
       }
       sendError(res, 500, 'INTERNAL_ERROR', msg);
+    }
+  });
+
+  // =========================================================================
+  // 12. FLAGSHIP 180s DEMO ORCHESTRATION
+  // =========================================================================
+  router.post('/demo/run', async (_req: Request, res: Response) => {
+    try {
+      const result = await runFlagshipDemo(db, paypalClient);
+      res.json(result);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      sendError(res, 500, 'DEMO_EXECUTION_ERROR', msg);
     }
   });
 

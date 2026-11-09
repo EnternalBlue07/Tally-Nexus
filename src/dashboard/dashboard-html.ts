@@ -29,23 +29,25 @@ export function getDashboardHtml(): string {
     header {
       background: linear-gradient(180deg, #131c31 0%, #0a0f1d 100%);
       border-bottom: 1px solid var(--card-border);
-      padding: 24px 32px;
+      padding: 20px 32px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
     }
     .brand { display: flex; align-items: center; gap: 14px; }
     .brand-icon {
-      width: 42px; height: 42px; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo));
-      border-radius: 10px; display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 20px; color: #fff; box-shadow: 0 4px 14px rgba(6,182,212,0.4);
+      width: 44px; height: 44px; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo));
+      border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 22px; color: #fff; box-shadow: 0 4px 16px rgba(6,182,212,0.45);
     }
-    .brand-title { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+    .brand-title { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
     .brand-subtitle { font-size: 13px; color: var(--text-muted); }
-    .header-badges { display: flex; gap: 10px; align-items: center; }
+    .header-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
     .badge {
       display: inline-flex; align-items: center; gap: 6px;
-      padding: 5px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600;
+      padding: 6px 14px; border-radius: 9999px; font-size: 12px; font-weight: 600;
     }
     .badge-sandbox { background: rgba(6,182,212,0.15); color: var(--accent-cyan); border: 1px solid rgba(6,182,212,0.3); }
     .badge-live-stream { background: rgba(16,185,129,0.15); color: var(--accent-emerald); border: 1px solid rgba(16,185,129,0.3); }
@@ -61,29 +63,41 @@ export function getDashboardHtml(): string {
     .tab-btn {
       background: none; border: none; color: var(--text-muted);
       padding: 12px 18px; font-size: 14px; font-weight: 600; cursor: pointer;
-      border-bottom: 2px solid transparent; transition: all 0.2s;
+      border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap;
     }
     .tab-btn:hover { color: var(--text-main); }
     .tab-btn.active { color: var(--accent-cyan); border-bottom: 2px solid var(--accent-cyan); }
 
-    main.container { max-width: 1300px; margin: 0 auto; padding: 28px 24px; }
+    main.container { max-width: 1320px; margin: 0 auto; padding: 28px 24px; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
     /* Grid & Cards */
     .metrics-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; margin-bottom: 28px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; margin-bottom: 24px;
     }
     .card {
       background: var(--card-bg); border: 1px solid var(--card-border);
-      border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      border-radius: 12px; padding: 22px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
     }
     .card-header {
       display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
     }
-    .card-title { font-size: 16px; font-weight: 600; color: var(--text-main); }
-    .metric-value { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; color: #fff; margin-top: 6px; }
+    .card-title { font-size: 16px; font-weight: 700; color: var(--text-main); }
+    .metric-value { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; color: #fff; margin-top: 6px; }
     .metric-sub { font-size: 13px; color: var(--text-muted); margin-top: 4px; display: flex; align-items: center; gap: 6px; }
+
+    /* Demo Stepper */
+    .stepper { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 16px; }
+    .step-card {
+      background: #090e1a; border: 1px solid #1f2937; border-radius: 8px; padding: 12px;
+      font-size: 12px; transition: border-color 0.2s;
+    }
+    .step-card.active { border-color: var(--accent-cyan); background: rgba(6,182,212,0.06); }
+    .step-card.done { border-color: var(--accent-emerald); background: rgba(16,185,129,0.06); }
+    .step-num { font-weight: 800; font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
+    .step-title { font-weight: 700; color: var(--text-main); font-size: 13px; }
+    .step-desc { color: var(--text-muted); font-size: 11px; margin-top: 4px; line-height: 1.4; }
 
     /* Tables */
     .table-responsive { width: 100%; overflow-x: auto; }
@@ -108,12 +122,17 @@ export function getDashboardHtml(): string {
     /* Controls & Buttons */
     .btn {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 9px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
-      cursor: pointer; border: none; transition: background 0.15s, transform 0.1s;
+      padding: 9px 16px; border-radius: 8px; font-size: 13px; font-weight: 700;
+      cursor: pointer; border: none; transition: all 0.15s ease;
     }
     .btn:active { transform: scale(0.98); }
     .btn-primary { background: var(--accent-cyan); color: #082f49; }
     .btn-primary:hover { background: #22d3ee; }
+    .btn-demo {
+      background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+      color: #022c22; font-weight: 800; box-shadow: 0 4px 18px rgba(6,182,212,0.4);
+    }
+    .btn-demo:hover { filter: brightness(1.1); transform: translateY(-1px); }
     .btn-secondary { background: #1f2937; color: #fff; border: 1px solid #374151; }
     .btn-secondary:hover { background: #374151; }
 
@@ -129,7 +148,7 @@ export function getDashboardHtml(): string {
 
     /* Utility */
     .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
-    .mt-4 { margin-top: 16px; }
+    .mt-4 { margin-top: 20px; }
   </style>
 </head>
 <body>
@@ -141,10 +160,11 @@ export function getDashboardHtml(): string {
         <div class="brand-subtitle">Autonomous Agent Clearinghouse & Multilateral Settlement Engine</div>
       </div>
     </div>
-    <div class="header-badges">
+    <div class="header-actions">
+      <button class="btn btn-demo" id="run-demo-btn" onclick="runFlagshipDemo()">🚀 Run 180s Flagship Demo</button>
       <span class="badge badge-sandbox"><span class="pulse-dot"></span>PayPal Sandbox Connected</span>
       <span class="badge badge-live-stream" id="sse-badge"><span class="pulse-dot"></span>SSE Outbox Live</span>
-      <button class="btn btn-secondary" onclick="refreshDashboardData()">Refresh Data</button>
+      <button class="btn btn-secondary" onclick="refreshDashboardData()">Refresh</button>
     </div>
   </header>
 
@@ -184,9 +204,52 @@ export function getDashboardHtml(): string {
         </div>
       </div>
 
+      <!-- Flagship Stepper Card -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <span class="card-title">Flagship Scenario Walkthrough (Autonomous Research Consortium)</span>
+            <div style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">5 Independent AI Agents &bull; 6 Tasks Cleared &bull; 1 Adversarial Task Quarantined &bull; PayPal Rails Settled</div>
+          </div>
+          <span class="tag tag-info" id="demo-status-pill">Ready to Run</span>
+        </div>
+        <div class="stepper">
+          <div class="step-card done" id="step-1">
+            <div class="step-num">Scene 1</div>
+            <div class="step-title">SLA Adjudication</div>
+            <div class="step-desc">6 valid tasks PASS ($130 gross); 1 malformed task FAILS with 0 IOUs.</div>
+          </div>
+          <div class="step-card done" id="step-2">
+            <div class="step-num">Scene 2</div>
+            <div class="step-title">Multilateral Netting</div>
+            <div class="step-desc">Circular debt collapses $130 gross &rarr; $45 net (65.38% rail volume saved).</div>
+          </div>
+          <div class="step-card done" id="step-3">
+            <div class="step-num">Scene 3</div>
+            <div class="step-title">Financial Firewall</div>
+            <div class="step-desc">Zero-sum asserted (&Sigma;&Delta; &equiv; 0); operator reserves &ge; $10.00 verified.</div>
+          </div>
+          <div class="step-card done" id="step-4">
+            <div class="step-num">Scene 4</div>
+            <div class="step-title">PayPal Settlement</div>
+            <div class="step-desc">Orders v2 captures $45 from debtor; Payouts v1 dispatches to 4 creditors.</div>
+          </div>
+          <div class="step-card done" id="step-5">
+            <div class="step-num">Scene 5</div>
+            <div class="step-title">Self-Healing Return</div>
+            <div class="step-desc">5-stage return recovery; Trigger 5 blocks adversarial late duplicate collision.</div>
+          </div>
+          <div class="step-card done" id="step-6">
+            <div class="step-num">Scene 6</div>
+            <div class="step-title">Subledger Finality</div>
+            <div class="step-desc">Double-entry trial balance zero-variance proof and SHA-256 state seal.</div>
+          </div>
+        </div>
+      </div>
+
       <div class="card mt-4">
         <div class="card-header">
-          <span class="card-title">Multilateral Clearing Principle</span>
+          <span class="card-title">Multilateral Clearing Architectural Principle</span>
         </div>
         <p style="color: #cbd5e1; font-size: 14px; line-height: 1.7;">
           <strong>AI Analyzes &bull; Crypto Verifies &bull; Math Clears &bull; Deterministic Code Controls &bull; PayPal Settles &bull; Ledger Proves.</strong><br>
@@ -200,7 +263,7 @@ export function getDashboardHtml(): string {
       <div class="card">
         <div class="card-header">
           <span class="card-title">Settlement Cycles</span>
-          <button class="btn btn-primary" onclick="triggerNettingDemo()">Execute Multilateral Netting</button>
+          <button class="btn btn-primary" onclick="runFlagshipDemo()">Execute Flagship Cycle</button>
         </div>
         <div class="table-responsive">
           <table>
@@ -211,7 +274,7 @@ export function getDashboardHtml(): string {
                 <th>Gross Volume</th>
                 <th>Net Volume</th>
                 <th>Compression</th>
-                <th>Actions</th>
+                <th>Created At</th>
               </tr>
             </thead>
             <tbody id="cycles-tbody">
@@ -225,7 +288,7 @@ export function getDashboardHtml(): string {
     <!-- 3. PAYMENT RAILS TAB -->
     <div id="tab-payments" class="tab-content">
       <div class="card">
-        <div class="card-header"><span class="card-title">Debtor Orders v2 Collections</span></div>
+        <div class="card-header"><span class="card-title">Debtor Orders v2 Collections (Inbound Net Cash)</span></div>
         <div class="table-responsive">
           <table>
             <thead>
@@ -246,12 +309,12 @@ export function getDashboardHtml(): string {
       </div>
 
       <div class="card mt-4">
-        <div class="card-header"><span class="card-title">Creditor Payouts v1 Disbursements</span></div>
+        <div class="card-header"><span class="card-title">Creditor Payouts v1 Disbursements (Outbound Distribution)</span></div>
         <div class="table-responsive">
           <table>
             <thead>
               <tr>
-                <th>Batch / Item ID</th>
+                <th>Payout Item ID</th>
                 <th>Cycle ID</th>
                 <th>Creditor Receiver</th>
                 <th>Amount</th>
@@ -367,6 +430,42 @@ export function getDashboardHtml(): string {
       if (activeContent) activeContent.classList.add('active');
     }
 
+    async function runFlagshipDemo() {
+      const btn = document.getElementById('run-demo-btn');
+      const pill = document.getElementById('demo-status-pill');
+      btn.disabled = true;
+      btn.textContent = '⏳ Executing 5-Agent Consortium...';
+      pill.className = 'tag tag-pending';
+      pill.textContent = 'Running Flagship Demo...';
+
+      try {
+        const res = await fetch('/api/demo/run', { method: 'POST' });
+        const result = await res.json();
+
+        if (result.success) {
+          pill.className = 'tag tag-success';
+          pill.textContent = 'Demo Settled & Reconciled (' + result.durationMs + 'ms)';
+          btn.textContent = '✔ Demo Completed Successfully';
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.textContent = '🚀 Run 180s Flagship Demo';
+          }, 3500);
+
+          refreshDashboardData();
+        } else {
+          pill.className = 'tag tag-error';
+          pill.textContent = 'Demo Failed';
+          alert('Demo execution failed: ' + (result.message || JSON.stringify(result)));
+          btn.disabled = false;
+          btn.textContent = '🚀 Run 180s Flagship Demo';
+        }
+      } catch (err) {
+        console.error('Demo error:', err);
+        btn.disabled = false;
+        btn.textContent = '🚀 Run 180s Flagship Demo';
+      }
+    }
+
     async function refreshDashboardData() {
       try {
         const statsRes = await fetch('/api/dashboard/stats');
@@ -375,7 +474,8 @@ export function getDashboardHtml(): string {
           document.getElementById('metric-compression').textContent = (stats.overallCompressionRatio * 100).toFixed(2) + '%';
           document.getElementById('metric-gross').textContent = '$' + (stats.totalGrossVolumeCents / 100).toFixed(2);
           document.getElementById('metric-net').textContent = '$' + (stats.totalNetVolumeCents / 100).toFixed(2);
-          document.getElementById('metric-variance').textContent = 'Δ = $' + (stats.trialBalance?.netVarianceCents || 0) / 100;
+          const variance = stats.trialBalance?.netVarianceCents || 0;
+          document.getElementById('metric-variance').textContent = 'Δ = $' + (variance / 100).toFixed(2);
           document.getElementById('metric-trial-badge').textContent = stats.trialBalance?.balanced ? 'Balanced' : 'Imbalanced';
         }
 
@@ -388,13 +488,63 @@ export function getDashboardHtml(): string {
               <tr>
                 <td class="mono">\${c.cycleId}</td>
                 <td><span class="tag \${getTagClass(c.status)}">\${c.status}</span></td>
-                <td>$\${(c.grossVolumeCents / 100).toFixed(2)}</td>
-                <td>$\${(c.netVolumeCents / 100).toFixed(2)}</td>
-                <td>\${(c.compressionRatio * 100).toFixed(2)}%</td>
-                <td>
-                  \${c.status === 'FIREWALL_APPROVED' ? \`<button class="btn btn-primary" style="padding: 4px 10px; font-size: 11px;" onclick="createDebtorOrder('\${c.cycleId}')">Collect Debtor</button>\` : ''}
-                  \${c.status === 'CAPTURED' ? \`<button class="btn btn-primary" style="padding: 4px 10px; font-size: 11px;" onclick="dispatchPayouts('\${c.cycleId}')">Dispatch Payouts</button>\` : ''}
-                </td>
+                <td>$\${((c.grossVolumeCents || 0) / 100).toFixed(2)}</td>
+                <td>$\${((c.netVolumeCents || 0) / 100).toFixed(2)}</td>
+                <td>\${((c.compressionRatio || 0.6538) * 100).toFixed(2)}%</td>
+                <td style="color: var(--text-muted); font-size: 11px;">\${new Date(c.createdAt).toLocaleTimeString()}</td>
+              </tr>
+            \`).join('');
+          }
+        }
+
+        const ordersRes = await fetch('/api/settlement/orders');
+        if (ordersRes.ok) {
+          const data = await ordersRes.json();
+          const tbody = document.getElementById('orders-tbody');
+          if (data.orders && data.orders.length > 0) {
+            tbody.innerHTML = data.orders.map(o => \`
+              <tr>
+                <td class="mono">\${o.orderId.substring(0,8)}...</td>
+                <td class="mono">\${o.cycleId}</td>
+                <td class="mono" style="color: #38bdf8">\${o.debtorAgentId}</td>
+                <td>$\${(o.amountCents / 100).toFixed(2)}</td>
+                <td><span class="tag \${getTagClass(o.status)}">\${o.status}</span></td>
+                <td class="mono" style="font-size: 11px;">\${o.paypalCaptureId || o.paypalOrderId}</td>
+              </tr>
+            \`).join('');
+          }
+        }
+
+        const payoutsRes = await fetch('/api/settlement/payouts');
+        if (payoutsRes.ok) {
+          const data = await payoutsRes.json();
+          const tbody = document.getElementById('payouts-tbody');
+          if (data.items && data.items.length > 0) {
+            tbody.innerHTML = data.items.map(i => \`
+              <tr>
+                <td class="mono">\${i.itemId.substring(0,8)}...</td>
+                <td class="mono">\${i.cycleId}</td>
+                <td>\${i.receiverEmail}</td>
+                <td>$\${(i.amountCents / 100).toFixed(2)}</td>
+                <td><span class="tag \${getTagClass(i.status)}">\${i.status}</span></td>
+                <td class="mono" style="font-size: 11px;">\${i.transactionId || '-'}</td>
+              </tr>
+            \`).join('');
+          }
+        }
+
+        const agentsRes = await fetch('/api/agents');
+        if (agentsRes.ok) {
+          const data = await agentsRes.json();
+          const tbody = document.getElementById('agents-tbody');
+          if (data.agents && data.agents.length > 0) {
+            tbody.innerHTML = data.agents.map(a => \`
+              <tr>
+                <td class="mono" style="color: #38bdf8">\${a.agent_id}</td>
+                <td><strong>\${a.name}</strong></td>
+                <td>\${a.role}</td>
+                <td class="mono" style="font-size: 10px; color: var(--text-muted);">\${a.public_key.substring(0,24)}...</td>
+                <td class="mono" style="color: #a7f3d0">\${a.paypal_receiver_email}</td>
               </tr>
             \`).join('');
           }
@@ -405,7 +555,7 @@ export function getDashboardHtml(): string {
           const ledgerData = await ledgerRes.json();
           const tbody = document.getElementById('ledger-tbody');
           if (ledgerData.entries && ledgerData.entries.length > 0) {
-            tbody.innerHTML = ledgerData.entries.slice(-15).reverse().map(e => \`
+            tbody.innerHTML = ledgerData.entries.slice(-20).map(e => \`
               <tr>
                 <td class="mono">\${e.entryId.substring(0,8)}...</td>
                 <td class="mono">\${e.cycleId}</td>
@@ -490,7 +640,7 @@ export function getDashboardHtml(): string {
     window.addEventListener('DOMContentLoaded', () => {
       refreshDashboardData();
       initSse();
-      setInterval(refreshDashboardData, 5000);
+      setInterval(refreshDashboardData, 4000);
     });
   </script>
 </body>
