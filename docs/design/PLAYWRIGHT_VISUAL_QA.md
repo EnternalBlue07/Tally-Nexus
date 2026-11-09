@@ -92,10 +92,10 @@ During end-to-end execution across all 40 test suites, the browser console and n
 - **DOM Hydration / Syntax Errors:** `0` (Zero errors logged; previous template literal escaping cleanly resolved)
 - **404 Asset Failures:** `0` (Favicon, font CDNs, and AG Grid stylesheets all returned HTTP 200)
 - **API Response Latencies:**
-  - `GET /api/status`: ~8ms
+  - `GET /api/health`: ~8ms
   - `POST /api/demo/run`: ~185ms (deterministic netting engine + SQLite database transactions)
   - `POST /api/judge/evaluate`: ~1,200ms (real FreeModel Gemini API inference) or ~12ms (instant stored fallback mode)
-  - `GET /api/ious`: ~14ms (1,500 virtualized rows)
+  - `GET /api/demo/scale`: ~25ms (1,500 virtualized rows)
 
 ---
 
