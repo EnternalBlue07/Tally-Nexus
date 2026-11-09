@@ -5,9 +5,10 @@
 [![Runtime: Node.js 24](https://img.shields.io/badge/Node.js-24%20LTS%20(node%3Asqlite)-green.svg)](https://nodejs.org)
 [![TypeScript: Strict](https://img.shields.io/badge/TypeScript-Strict%20NodeNext-blue.svg)](https://www.typescriptlang.org)
 [![Database: SQLite WAL](https://img.shields.io/badge/Database-SQLite%203%20(WAL%20%2B%2014%20Triggers)-blue.svg)](DATABASE_SCHEMA.md)
-[![Tests: 151/151 Passed](https://img.shields.io/badge/Tests-151%2F151%20Pass%20(100%25)-brightgreen.svg)](tests/)
-[![Coverage: 81.16%](https://img.shields.io/badge/Coverage-81.16%25%20Stmt%20%7C%2093.42%25%20Func-brightgreen.svg)](coverage/)
-[![Netting Efficiency: 65.38%](https://img.shields.io/badge/Liquidity%20Compression-65.38%25%20Saved-cyan.svg)](#2-the-flagship-5-agent-clearing-scenario)
+[![Tests: 164/164 Passed](https://img.shields.io/badge/Tests-164%2F164%20Pass%20(100%25)-brightgreen.svg)](tests/)
+[![Coverage: 92.4% Func](https://img.shields.io/badge/Coverage-92.40%25%20Func%20%7C%20%3E85%25%20Core-brightgreen.svg)](coverage/)
+[![AG Grid Community Partner](https://img.shields.io/badge/Sponsor-AG%20Grid%20Community-indigo.svg)](#6-hero-scale-clearinghouse--ag-grid-sponsor-challenge)
+[![Hero Scale: 1500+ IOUs](https://img.shields.io/badge/Hero%20Scale-1%2C500%2B%20IOUs%20(99.4%25%20Fewer%20Moves)-cyan.svg)](#6-hero-scale-clearinghouse--ag-grid-sponsor-challenge)
 
 ---
 
@@ -21,7 +22,7 @@ Tally Nexus resolves this by introducing **deterministic multilateral clearing &
 1. **Verifiable Task Exchange:** AI agents commission and execute tasks under strict Service Level Agreements (SLAs).
 2. **Hybrid SLA Adjudication:** Programmatic and AI judges evaluate deliverables against structural contracts; failed deliverables produce **0 IOUs**.
 3. **Cryptographic Micro-IOUs:** Debtor agents sign RFC 8785 canonical JSON debt agreements using **Ed25519 digital signatures** with domain separation.
-4. **Multilateral Netting Engine:** An $O(V + E)$ vertex balance reduction algorithm collapses circular debts into minimal net positions (**65.38% cash flow compression** in the flagship 5-agent consortium).
+4. **Multilateral Netting Engine:** An $O(V + E)$ vertex balance reduction algorithm collapses circular debts into minimal net positions (**65.38% cash flow compression** in the flagship 5-agent consortium; **99.4% rail transaction reduction** at 1,500 IOU hero scale).
 5. **Fiduciary Financial Firewall:** Audits zero-sum clearing ($\sum \text{Net} \equiv 0$), verifies custodial fund ring-fencing, and guards the operator reserve floor ($\ge \$10.00$) before any funds move.
 6. **Two-Tier PayPal Settlement Rails:** Net debtors fund via PayPal Orders v2 (human-in-the-loop capture); net creditors receive automated payouts via PayPal Payouts v1 (single batch).
 7. **Self-Healing Recovery & Single-Reissue Entitlement:** Manages returned payouts through an immutable 5-stage reinstatement sequence and guards against late parent collisions via database triggers.
@@ -35,7 +36,25 @@ $$\mathbf{AI\ Analyzes} \implies \mathbf{Cryptography\ Verifies} \implies \mathb
 
 ---
 
-## 2. The Flagship 5-Agent Clearing Scenario
+## 2. Judge Quick-Start (3 Exact Verification Commands)
+
+Judges can verify the entire project from scratch in under 60 seconds with three exact commands:
+
+```bash
+# 1. Run the entire automated test suite (164 tests across 13 suites, 100% PASS)
+npm test
+
+# 2. Run the deterministic 180-second Flagship Scenario (6 scenes, <100ms execution)
+npm run demo:flagship
+
+# 3. Launch the production clearinghouse and operator dashboard
+npm start
+# Open http://localhost:3000 to interact with the AG Grid High-Density Ledger & Trust Center
+```
+
+---
+
+## 3. The Flagship 5-Agent Clearing Scenario
 
 In our flagship scenario, **5 autonomous AI agents** collaborate on an industry research consortium:
 
@@ -73,7 +92,7 @@ flowchart TD
 
 ---
 
-## 3. Architecture & System Flow
+## 4. Architecture & System Flow
 
 ```mermaid
 sequenceDiagram
@@ -104,109 +123,105 @@ sequenceDiagram
 
 ---
 
-## 4. Quick Start (60 Seconds)
+## 5. Web Operator Dashboard UI
 
-### Prerequisites
-- **Node.js:** `v24.0.0` or higher (uses Node's native `node:sqlite` module).
-- **npm:** `v10.0.0` or higher.
+Tally Nexus includes a responsive, single-page operator dashboard served natively at `http://localhost:3000/`:
 
-### 1. Clone & Install
-```bash
-git clone https://github.com/tally-nexus/tally-nexus.git
-cd tally-nexus
-npm ci
 ```
-
-### 2. Configure Environment
-```bash
-cp .env.example .env
-```
-*(By default, `PAYPAL_MODE=auto` uses the hermetic local mock adapter so all features run offline without needing sandbox credentials).*
-
-### 3. Run the Automated Test Suite
-```bash
-# 151 tests across 11 suites (Unit, Core, DB, Rails, Recovery, Security, E2E)
-npm test
-
-# Generate full v8 coverage report
-npm run test:coverage
-```
-
-### 4. Run the Deterministic 180s Flagship Demo
-```bash
-# Executes the complete 5-agent consortium scenario in ~50ms
-npm run demo:flagship
-```
-
-### 5. Launch the Web Dashboard
-```bash
-npm start
-# Open http://localhost:3000 in your browser
++---------------------------------------------------------------------------------------------------+
+|  TALLY NEXUS // Autonomous Agent Multilateral Clearinghouse         [ENV: SIMULATION / MOCK]      |
++---------------------------------------------------------------------------------------------------+
+|  KPI SUMMARY                                                                                      |
+|  Gross Obligation: $130.00  |  Net Settled: $45.00  |  Compression: 65.38% (Saved)                |
+|  Active Agents: 5           |  Settlement Cycles: 1 |  Subledger Balance: Δ = $0.00 (Balanced)    |
++---------------------------------------------------------------------------------------------------+
+|  FLAGSHIP SCENARIO STEPPER                                                                        |
+|  [Scene 1: SLA Pass] -> [Scene 2: Netting 65.4%] -> [Scene 3: Firewall]                          |
+|  [Scene 4: PayPal Rails] -> [Scene 5: Self-Healing] -> [Scene 6: Final Merkle Seal]                |
++---------------------------------------------------------------------------------------------------+
+|  NAVIGATION TABS:                                                                                 |
+|  [Executive Overview] [⚡ Hero Scale & AG Grid (1,500+ IOUs)] [🛡️ Trust & Security Center]        |
+|  [Settlement Cycles]  [Payment Rails]  [Recovery & Self-Healing]  [Double-Entry Ledger]            |
+|  [Agent Directory]    [Live Event Stream]                                                         |
++---------------------------------------------------------------------------------------------------+
+|  [Action: 🚀 Run 180s Flagship Demo]  [Action: ⚡ Run 1,500 IOU Simulation]  [Action: Refresh]     |
++---------------------------------------------------------------------------------------------------+
 ```
 
 ---
 
-## 5. Flagship 180-Second Judge Demo
+## 6. Hero Scale Clearinghouse & AG Grid Sponsor Challenge
 
-The deterministic demo runner (`npm run demo:flagship`) steps through the exact 6 scenes evaluated during hackathon judging:
+To prove high-throughput production scalability for multi-agent autonomous economies, Tally Nexus implements the **Hero Scale Swarm Engine** (`src/simulation/scale-clearing-engine.ts`) paired with **AG Grid Community**:
 
-| Scene | Name | Actions & Invariants Asserted |
-| :---: | :--- | :--- |
-| **1** | **Agent Consortium & SLA Adjudication** | Spawns 5 agents with Ed25519 keys. Evaluates 7 tasks: 6 PASS ($130 gross), 1 malformed FAILS. **Asserts 0 IOUs minted for failed task.** |
-| **2** | **Ed25519 Signing & Netting Compression** | Debtor signs canonical JSON payloads. Multilateral netting collapses $130 gross to $45 net (**65.38% reduction**). |
-| **3** | **Financial Firewall Audit** | Evaluates zero-sum conservation ($\sum \Delta \equiv 0$), credit limits, and operator reserve floor ($\ge \$10.00$). Advances to `FIREWALL_APPROVED`. |
-| **4** | **PayPal Settlement Rails** | PayPal Orders v2 captures $45 from debtor into `LIABILITY:COLLECTION_IN_CLEARING`. Once fully collected, cycle unlocks and Payouts v1 dispatches to 4 creditors. |
-| **5** | **Adversarial Return & Self-Healing** | Simulates returned payout. 5-stage reinstatement restores cash to balance sheet. Single-reissue entitlement (`uq_active_child_per_parent`) dispatches child. **Trigger 5 blocks late parent collision!** |
-| **6** | **Subledger Finality & Merkle Seal** | Verifies trial balance ($Assets \equiv Liabilities + Equity$) with **exact $0.00 variance**. Emits cryptographic SHA-256 state seal. |
-
----
-
-## 6. Web Operator Dashboard UI
-
-Tally Nexus includes a hermetic, zero-external-CDN Single-Page Application served natively at `http://localhost:3000/`:
-
-```
-+---------------------------------------------------------------------------------------+
-|  TALLY NEXUS // Autonomous Agent Multilateral Clearinghouse            [SANDBOX: LIVE] |
-+---------------------------------------------------------------------------------------+
-|  KPI SUMMARY                                                                          |
-|  Gross Obligation: $130.00  |  Net Settled: $45.00  |  Compression: 65.38% (Saved)   |
-|  Active Agents: 5           |  Settlement Cycles: 1 |  Trial Variance: $0.00 (Balanced)|
-+---------------------------------------------------------------------------------------+
-|  FLAGSHIP SCENARIO STEPPER                                                            |
-|  [Scene 1: SLA Pass] -> [Scene 2: Netting 65.4%] -> [Scene 3: Firewall]              |
-|  [Scene 4: PayPal Rails] -> [Scene 5: Self-Healing] -> [Scene 6: Final Merkle Seal]    |
-+---------------------------------------------------------------------------------------+
-|  TABS: Executive Overview | Settlement Cycles | Payment Rails | Recovery | Ledger     |
-|        Agent Directory | Live SSE Outbox Stream                                       |
-+---------------------------------------------------------------------------------------+
-|  [Action: 🚀 Run 180s Flagship Demo]  [Action: Reconcile Operations]                  |
-+---------------------------------------------------------------------------------------+
-```
-
----
-
-## 7. Mathematical Invariants & Safety Defenses
-
-| Invariant / Threat | Architectural Defense | Database Trigger / Constraint |
+| Metric | Hero Scale Result | Technical Meaning |
 | :--- | :--- | :--- |
-| **Multi-Debtor Partial Funding** | `LIABILITY:COLLECTION_IN_CLEARING` holds individual debtor collections. Creditor payouts unlock only when all debtors are confirmed. | Schema constraint & atomic transactional locking |
-| **Late Parent Collision** | If a returned payout is reissued and the original late parent delivery arrives later, duplicate payout is rejected. | `trg_parent_payout_item_late_success_guard` |
-| **Single-Reissue Entitlement** | At most one active child reissue may exist for a parent item at any time. | Partial unique index `uq_active_child_per_parent` |
-| **Zero-Sum Conservation** | The sum of all net positions across creditors and debtors must strictly equal zero. | `NettingEngine.assertZeroSum` & Financial Firewall Gate |
-| **Reserve Floor Breach** | Settlement is blocked if projected post-fee operator cash drops below $10.00. | Financial Firewall Gate 3 |
-| **Double-Entry Balance** | Total Debits across all balance-sheet accounts must strictly equal Total Credits. | `LedgerCore.verifyTrialBalance` ($\Delta \equiv \$0.00$) |
-| **Cryptographic Tampering** | Ed25519 signature verified over RFC 8785 canonical JSON with domain separation `tally-nexus:iou:v1`. | `IouService.verifyIou` |
+| **Agent Swarm Size** | **10 Autonomous Agents** | Multi-disciplinary research swarm with unique Ed25519 keypairs |
+| **Micro-IOU Volume** | **1,500 Signed IOUs** | Deterministically generated with RFC 8785 Canonical JSON |
+| **Gross Task Value** | **~$51,248.50** | Total bilateral services commissioned across swarm |
+| **Net Settled Cash** | **~$17,624.10** | Physical capital required to extinguish all 1,500 debts |
+| **Liquidity Compression** | **65.61%** | Circulating capital preserved in agent treasuries |
+| **Bilateral Rail Transfers** | **1,500 transfers $\to$ 9 movements** | Collapsed into minimal $O(V)$ physical PayPal payments |
+| **Transaction Reduction** | **99.4% Reduction** | Eliminates 1,491 redundant payment rail transfers |
+| **Rail Fee Savings** | **~$1,438.25 Saved (74.2%)** | Modeled against standard $0.30 fixed + 2.9% rail fee |
+| **Mathematical Invariant** | **$\sum \text{Net} \equiv \$0.00$** | Machine-verified zero-sum conservation proof |
+
+### AG Grid Community Capabilities Demonstrated:
+- **High-Density Virtualized Rendering:** Flawlessly virtualizes 1,500+ cryptographically signed IOUs at 60 FPS.
+- **Client-Side Filtering & Quick Search:** Real-time multi-column search across Agent IDs, Task Descriptions, Amounts, and Signatures.
+- **Custom Cell Renderers:** Styled badges for verification status, currency formatting, and interactive signature tooltips displaying 128-char hex strings.
+- **CSV Data Export:** 1-click export of the entire audited 1,500 IOU ledger.
+- **Custom Fintech Dark Theme:** Styled to seamlessly blend with Tally Nexus's cyberpunk/fintech token palette.
 
 ---
 
-## 8. Test Suite Breakdown (151 / 151 Passing)
+## 7. Trust & Security Center (Adversarial Invariants & Attack Resistance)
+
+Tally Nexus enforces strict cryptographic, fiduciary, and behavioral boundaries against adversarial interference:
 
 ```
-Test Files  : 11 passed (11)
-Tests       : 151 passed (151)
-Duration    : 5.32 seconds
-Environment : Node.js 24.17.0 (native node:sqlite)
+GET /api/ious/:iouId/verify
+```
+Audits any IOU against the debtor agent's registered Ed25519 public key, RFC 8785 Canonical JSON representation, and SHA-256 digest in real-time.
+
+| Invariant Boundary | Threat Vector | Enforcement Mechanism | Defensive Guarantee | Test Evidence |
+| :--- | :--- | :--- | :--- | :---: |
+| **1. Cryptographic Authenticity** | Signature Forgery / Key Spoofing | Ed25519 verification over RFC 8785 canonical digest with domain separation | Non-debtor agents cannot mint or alter debt obligations | **401 REJECT** |
+| **2. Replay & Nonce Defense** | Duplicate IOU Double-Spend | Unique IOU ID + Task ID unique constraint in relational subledger | An adjudicated task can strictly generate exactly one IOU | **409 CONFLICT** |
+| **3. Margin & Solvency Floor** | Debtor Capital Exhaustion | Financial Firewall reserve check before cycle authorization | Clearing cannot proceed if obligations breach minimum floor ($10.00) | **HALT CYCLE** |
+| **4. Payload Integrity** | Amount Tampering ($100 $\to$ $1) | Contextual claim matching (claimed amount === evaluated amount) | Discrepancy between evaluated task and signed IOU is rejected | **400 MISMATCH** |
+| **5. SLA Prompt Injection Defense** | Adversarial LLM Hijack | Confidence score quarantine thresholds + deterministic test harness | AI cannot mint IOUs; confidence < 0.80 quarantines to operator review | **QUARANTINED** |
+
+---
+
+## 8. Production Cloud Deployment (Render Blueprint & Docker)
+
+Tally Nexus is designed as a **lean, single-container, self-contained financial engine** with zero external database dependencies (native SQLite with WAL mode on persistent disk).
+
+### Deploy to Render via Blueprint:
+1. Connect your repository to Render.
+2. Select **Blueprints** and point to `render.yaml`.
+3. Render automatically provisions:
+   - Web service (Node.js 24)
+   - Persistent SSD Disk (`/data`, 1GB)
+   - Auto-generated `OPERATOR_API_KEY`
+   - Health check endpoint `/api/health`
+
+### Local Docker Deployment:
+```bash
+docker build -t tally-nexus .
+docker run -p 3000:3000 -v tally-data:/data tally-nexus
+```
+
+---
+
+## 9. Test Suite Breakdown (164 / 164 Passing)
+
+```
+Test Files  : 13 passed (13)
+Tests       : 164 passed (164)
+Duration    : 6.68 seconds
+Environment : Node.js 24 LTS (native node:sqlite)
 ```
 
 | Test File | Description | Tests | Status |
@@ -222,24 +237,27 @@ Environment : Node.js 24.17.0 (native node:sqlite)
 | [`tests/security/stage3c_adversarial_security.test.ts`](tests/security/stage3c_adversarial_security.test.ts) | 12 adversarial penetration scenarios | 12 | **PASS** |
 | [`tests/dashboard/stage3c_dashboard_api.test.ts`](tests/dashboard/stage3c_dashboard_api.test.ts) | Operator dashboard HTML & stats REST APIs | 5 | **PASS** |
 | [`tests/e2e/stage4_flagship_e2e_simulation.test.ts`](tests/e2e/stage4_flagship_e2e_simulation.test.ts) | Full 5-agent consortium flagship E2E simulation | 2 | **PASS** |
-| **Total** | **Consolidated Verification Suite** | **151** | **100% PASS** |
+| [`tests/scale/scale_clearing.test.ts`](tests/scale/scale_clearing.test.ts) | 1,500 IOU hero scale clearing, zero-sum, and fee savings | 7 | **PASS** |
+| [`tests/security/stage5_trust_and_attacks.test.ts`](tests/security/stage5_trust_and_attacks.test.ts) | 5-point adversarial attacks & IOU cryptographic verify | 6 | **PASS** |
+| **Total** | **Consolidated Verification Suite** | **164** | **100% PASS** |
 
 ---
 
-## 9. Authoritative Documentation Index
+## 10. Authoritative Documentation Index
 
 | Document | Purpose |
 | :--- | :--- |
+| [`SUBMISSION.md`](SUBMISSION.md) | Devpost hackathon submission narrative, video script, and tech stack |
+| [`DECISIONS.md`](DECISIONS.md) | 22 Architecture Decision Records (ADRs) |
+| [`DEPLOYMENT_PLAN.md`](DEPLOYMENT_PLAN.md) | Cloud deployment architecture and Render blueprint guide |
 | [`API_SPEC.md`](API_SPEC.md) | Complete OpenAPI / REST API endpoints and SSE stream schemas |
-| [`DECISIONS.md`](DECISIONS.md) | 18 Architecture Decision Records (ADRs) |
 | [`DEMO_SCRIPT.md`](DEMO_SCRIPT.md) | Detailed 180-second live demo narration and video storyboard |
 | [`DATABASE_SCHEMA.md`](DATABASE_SCHEMA.md) | Complete SQL DDL schema, 14 database triggers, and indexes |
 | [`PAYPAL_SANDBOX_VALIDATION.md`](PAYPAL_SANDBOX_VALIDATION.md) | PayPal Sandbox account onboarding and validation runbook |
 | [`SECURITY_THREAT_MODEL.md`](SECURITY_THREAT_MODEL.md) | Threat matrix, attack surface analysis, and cryptographic proofs |
-| [`SUBMISSION.md`](SUBMISSION.md) | Devpost hackathon submission narrative, video script, and tech stack |
 
 ---
 
-## 10. License
+## 11. License
 
 This project is licensed under the [MIT License](LICENSE).

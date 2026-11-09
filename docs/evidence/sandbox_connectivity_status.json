@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-11-09T09:57:27.346Z",
+  "targetEndpoint": "https://api-m.sandbox.paypal.com",
+  "networkReachable": true,
+  "httpStatusWithoutAuth": 401,
+  "environmentSafetyGuard": {
+    "paypalEnv": "sandbox",
+    "isProductionBlocked": true,
+    "allowedHosts": [
+      "api-m.sandbox.paypal.com",
+      "api.sandbox.paypal.com"
+    ]
+  },
+  "credentialsStatus": "UNCONFIGURED",
+  "authenticatedOperations": {
+    "oauthTokenAcquired": false,
+    "orderCreationTested": false,
+    "payoutBatchTested": false,
+    "webhookSignatureTested": false,
+    "notes": "PayPal Sandbox credentials not configured in local .env. Running on verified deterministic simulator. Real Sandbox endpoint network reachability confirmed."
+  },
+  "classification": "SIMULATION_MOCK_FALLBACK"
+}

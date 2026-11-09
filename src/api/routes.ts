@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { Router, Request, Response } from 'express';
 import { DatabaseManager } from '../db/index.js';
 import { IouService, SignedIou } from '../ious/iou-service.js';
@@ -6,6 +7,8 @@ import { NettingEngine } from '../netting/netting-engine.js';
 import { FinancialFirewall } from '../firewall/financial-firewall.js';
 import { LedgerCore } from '../ledger/ledger-core.js';
 import { EventBus } from '../events/event-bus.js';
+import { verifySignature, canonicalizeJson } from '../crypto/index.js';
+import { runScaleClearingSimulation } from '../simulation/index.js';
 import {
   RegisterAgentSchema,
   CreateCycleSchema,
@@ -305,6 +308,82 @@ export function createApiRouter(
       return;
     }
     res.json(iou);
+  });
+
+  router.get('/ious/:iouId/verify', (req: Request, res: Response) => {
+    const iouId = String(req.params.iouId);
+    const iou = db
+      .prepare('SELECT iou_id, task_id, cycle_id, debtor_agent_id, creditor_agent_id, amount_cents, signature, signed_payload, created_at FROM ious WHERE iou_id = ?')
+      .get(iouId) as {
+        iou_id: string;
+        task_id: string;
+        cycle_id: string;
+        debtor_agent_id: string;
+        creditor_agent_id: string;
+        amount_cents: number;
+        signature: string;
+        signed_payload: string;
+        created_at: string;
+      } | undefined;
+
+    if (!iou) {
+      sendError(res, 404, 'NOT_FOUND', `IOU '${iouId}' was not found.`);
+      return;
+    }
+
+    const debtor = db
+      .prepare('SELECT agent_id, name, public_key FROM agents WHERE agent_id = ?')
+      .get(iou.debtor_agent_id) as { agent_id: string; name: string; public_key: string } | undefined;
+
+    if (!debtor) {
+      sendError(res, 404, 'DEBTOR_NOT_FOUND', `Debtor agent '${iou.debtor_agent_id}' was not found in registry.`);
+      return;
+    }
+
+    let parsedPayload: unknown;
+    try {
+      parsedPayload = JSON.parse(iou.signed_payload);
+    } catch {
+      res.status(200).json({
+        iouId,
+        verified: false,
+        status: 'CORRUPTED_PAYLOAD',
+        error: 'signed_payload is not valid JSON',
+      });
+      return;
+    }
+
+    const isValid = verifySignature(parsedPayload, iou.signature, debtor.public_key);
+    let canonicalString = '';
+    let canonicalDigestSha256 = '';
+    try {
+      canonicalString = canonicalizeJson(parsedPayload);
+      canonicalDigestSha256 = createHash('sha256').update(canonicalString).digest('hex');
+    } catch (e: unknown) {
+      canonicalDigestSha256 = 'UNABLE_TO_CANONICALIZE';
+    }
+
+    res.json({
+      iouId,
+      verified: isValid,
+      status: isValid ? 'VALID' : 'INVALID_SIGNATURE',
+      debtor: {
+        agentId: debtor.agent_id,
+        name: debtor.name,
+        publicKeyHex: debtor.public_key,
+      },
+      creditor: {
+        agentId: iou.creditor_agent_id,
+      },
+      amountCents: iou.amount_cents,
+      amountFormatted: `$${(iou.amount_cents / 100).toFixed(2)}`,
+      algorithm: 'Ed25519',
+      domain: (parsedPayload as { domain?: string })?.domain || 'tally-nexus:iou:v1',
+      canonicalDigestSha256,
+      signatureHex: iou.signature,
+      signedPayload: parsedPayload,
+      timestamp: new Date().toISOString(),
+    });
   });
 
   router.get('/cycles/:cycleId/ious', (req: Request, res: Response) => {
@@ -737,6 +816,35 @@ export function createApiRouter(
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       sendError(res, 500, 'DEMO_EXECUTION_ERROR', msg);
+    }
+  });
+
+  // =========================================================================
+  // 13. HERO SCALE CLEARINGHOUSE (1,500+ IOUs)
+  // =========================================================================
+  router.post('/demo/scale', (req: Request, res: Response) => {
+    try {
+      const count = Number(req.query.count || req.body?.count || 1500);
+      const seed = Number(req.query.seed || req.body?.seed || 0x7a11);
+      const clampedCount = Math.min(Math.max(count, 10), 10000);
+      const result = runScaleClearingSimulation(clampedCount, seed);
+      res.json(result);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      sendError(res, 500, 'SCALE_SIMULATION_ERROR', msg);
+    }
+  });
+
+  router.get('/demo/scale', (req: Request, res: Response) => {
+    try {
+      const count = Number(req.query.count || 1500);
+      const seed = Number(req.query.seed || 0x7a11);
+      const clampedCount = Math.min(Math.max(count, 10), 10000);
+      const result = runScaleClearingSimulation(clampedCount, seed);
+      res.json(result);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      sendError(res, 500, 'SCALE_SIMULATION_ERROR', msg);
     }
   });
 
