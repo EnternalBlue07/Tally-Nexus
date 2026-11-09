@@ -4,7 +4,7 @@ import { existsSync } from 'node:fs';
 import { DatabaseManager } from '../db/index.js';
 import { createApiRouter } from './routes.js';
 import { sendError } from './auth.js';
-import { IPayPalClient } from '../paypal/index.js';
+import { IPayPalClient, MockPayPalClient } from '../paypal/index.js';
 import { getDashboardHtml } from '../dashboard/index.js';
 
 export interface AppOptions {
@@ -43,6 +43,29 @@ export function createApp(optionsOrDb: AppOptions | DatabaseManager, maybeClient
   // Root dashboard routes
   app.get(['/', '/dashboard'], (_req: Request, res: Response) => {
     res.setHeader('Content-Type', 'text/html; charset=utf-8').send(getDashboardHtml());
+  });
+
+  // Root health check endpoint (essential for Render / load-balancer probes)
+  app.get('/health', (_req: Request, res: Response) => {
+    const hasLiveCreds = Boolean(
+      process.env.PAYPAL_CLIENT_ID &&
+      process.env.PAYPAL_CLIENT_SECRET &&
+      !process.env.PAYPAL_CLIENT_ID.includes('placeholder') &&
+      !process.env.PAYPAL_CLIENT_SECRET.includes('placeholder')
+    );
+
+    res.json({
+      status: 'OK',
+      system: 'TALLY NEXUS Clearinghouse',
+      version: '0.1.0',
+      publicDemoMode: process.env.PUBLIC_DEMO_MODE === 'true',
+      environment: hasLiveCreds && !(options.paypalClient instanceof MockPayPalClient) ? 'LIVE_SANDBOX' : 'SIMULATION_MOCK',
+      targetEndpoint: process.env.PAYPAL_API_BASE || 'https://api-m.sandbox.paypal.com',
+      aiAvailable: Boolean(process.env.FREEMODEL_API_KEY || process.env.GEMINI_API_KEY || process.env.ANTHROPIC_API_KEY || process.env.OPENAI_API_KEY),
+      aiProvider: process.env.FREEMODEL_API_KEY ? 'FREEMODEL' : (process.env.GEMINI_API_KEY ? 'GEMINI' : 'OFFLINE_DETERMINISTIC_FALLBACK'),
+      timestamp: new Date().toISOString(),
+      uptimeSeconds: Math.floor(process.uptime()),
+    });
   });
 
   // Mount API router under /api

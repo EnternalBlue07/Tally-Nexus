@@ -20,6 +20,8 @@ import {
   FirewallApproveSchema,
 } from './schemas.js';
 import { requireOperatorAuth, requireAgentOrOperatorAuth, sendError } from './auth.js';
+import { requireMoneyMovingAuth, isPublicDemoMode, AiJudgeQuotaManager } from './security.js';
+import { LlmJudgeService, TaskEvaluationContext } from '../judge/index.js';
 import {
   IPayPalClient,
   MockPayPalClient,
@@ -53,11 +55,80 @@ export function createApiRouter(
       status: 'OK',
       system: 'TALLY NEXUS Clearinghouse',
       version: '0.1.0',
+      publicDemoMode: isPublicDemoMode(),
       environment: hasLiveCreds && !(paypalClient instanceof MockPayPalClient) ? 'LIVE_SANDBOX' : 'SIMULATION_MOCK',
       targetEndpoint: process.env.PAYPAL_API_BASE || 'https://api-m.sandbox.paypal.com',
+      aiAvailable: Boolean(process.env.FREEMODEL_API_KEY || process.env.GEMINI_API_KEY || process.env.ANTHROPIC_API_KEY || process.env.OPENAI_API_KEY),
+      aiProvider: process.env.FREEMODEL_API_KEY ? 'FREEMODEL' : (process.env.GEMINI_API_KEY ? 'GEMINI' : 'OFFLINE_DETERMINISTIC_FALLBACK'),
       timestamp: new Date().toISOString(),
       uptimeSeconds: Math.floor(process.uptime()),
     });
+  });
+
+  // =========================================================================
+  // 1.1 AI SLA JUDGE (PUBLIC GUARDED WITH AUTOMATIC STORED EVIDENCE FALLBACK)
+  // =========================================================================
+  router.post('/judge/evaluate', async (req: Request, res: Response) => {
+    const clientIp = req.ip || req.socket.remoteAddress || 'unknown';
+    const quota = AiJudgeQuotaManager.checkQuota(clientIp);
+
+    if (!quota.allowed) {
+      const stored = AiJudgeQuotaManager.getCanonicalStoredEvidence();
+      if (stored) {
+        res.status(200).json({
+          classification: 'STORED_RUN',
+          rateLimited: true,
+          reason: quota.reason,
+          notice: 'Live AI request quota or rate limit reached. Displaying verified stored canonical evaluation run.',
+          timestamp: new Date().toISOString(),
+          data: stored,
+        });
+        return;
+      }
+      sendError(res, 429, 'AI_QUOTA_EXCEEDED', `AI evaluation quota exceeded (${quota.reason}).`);
+      return;
+    }
+
+    try {
+      AiJudgeQuotaManager.incrementActive();
+
+      const body = req.body || {};
+      const context: TaskEvaluationContext = {
+        taskId: body.taskId || `task_ai_${Date.now()}`,
+        cycleId: body.cycleId || 'cyc_ai_live',
+        debtorAgentId: body.debtorAgentId || 'agent_demo_debtor',
+        creditorAgentId: body.creditorAgentId || 'agent_demo_creditor',
+        title: body.title || 'High-Throughput Sentiment Adjudication Batch',
+        amountCents: Number(body.amountCents) || 5000,
+        deliverableEvidence: body.deliverableEvidence || {
+          recordsProcessed: 5000,
+          benchmarkScore: 0.978,
+          latencyAverageMs: 114,
+          schemaValidationPassed: true,
+          batchDigest: 'sha256:7f4a2b9c1d8e0f3a5b7c9e1d3f5a7b9c1d3e5f7a9b1c3d5e7f9a1b3c5d7e9f1a',
+        },
+        contractTerms: body.contractTerms || {
+          contractRef: 'sla_contract_sentiment_v2',
+          expectedDeliverableType: 'STRUCTURED_FINANCIAL_SENTIMENT',
+          maxCreditBps: 10000,
+        },
+      };
+
+      const start = Date.now();
+      const result = await LlmJudgeService.evaluateTask(context, db);
+      const latencyMs = Date.now() - start;
+
+      res.json({
+        classification: result.aiAvailable ? 'LIVE_EVALUATION' : 'STORED_RUN',
+        ...result,
+        latencyMs,
+      });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      sendError(res, 500, 'AI_JUDGE_ERROR', msg);
+    } finally {
+      AiJudgeQuotaManager.decrementActive();
+    }
   });
 
   // =========================================================================
@@ -529,7 +600,7 @@ export function createApiRouter(
   // =========================================================================
   // 9. PAYPAL DEBTOR COLLECTION & CREDITOR DISBURSEMENT (OPERATOR ONLY)
   // =========================================================================
-  router.post('/settlement/:cycleId/orders', requireOperatorAuth, async (req: Request, res: Response) => {
+  router.post('/settlement/:cycleId/orders', requireMoneyMovingAuth, async (req: Request, res: Response) => {
     const cycleId = String(req.params.cycleId);
     const debtorAgentId = String(req.body.debtorAgentId || '');
 
@@ -558,7 +629,7 @@ export function createApiRouter(
     }
   });
 
-  router.post('/settlement/:cycleId/capture', requireOperatorAuth, async (req: Request, res: Response) => {
+  router.post('/settlement/:cycleId/capture', requireMoneyMovingAuth, async (req: Request, res: Response) => {
     const cycleId = String(req.params.cycleId);
     const paypalOrderId = String(req.body.paypalOrderId || req.query.paypalOrderId || '');
 
@@ -580,7 +651,7 @@ export function createApiRouter(
     }
   });
 
-  router.post('/settlement/:cycleId/payouts', requireOperatorAuth, async (req: Request, res: Response) => {
+  router.post('/settlement/:cycleId/payouts', requireMoneyMovingAuth, async (req: Request, res: Response) => {
     const cycleId = String(req.params.cycleId);
 
     try {
@@ -810,7 +881,7 @@ export function createApiRouter(
     }
   });
 
-  router.post('/recovery/items/:itemId/reissue', requireOperatorAuth, async (req: Request, res: Response) => {
+  router.post('/recovery/items/:itemId/reissue', requireMoneyMovingAuth, async (req: Request, res: Response) => {
     const itemId = String(req.params.itemId);
     const receiverEmail = String(req.body.receiverEmail || '');
 
@@ -845,7 +916,7 @@ export function createApiRouter(
     }
   });
 
-  router.post('/recovery/cure', requireOperatorAuth, (req: Request, res: Response) => {
+  router.post('/recovery/cure', requireMoneyMovingAuth, (req: Request, res: Response) => {
     const { cycleId, amountCents, fundingRoute, fundingSource, fundingSubrogationBasis, evidenceReference } = req.body;
     try {
       const result = RecoveryService.applyCapitalCure(

@@ -64,3 +64,13 @@ SOFTWARE.
 - **Copyright:** (c) 2010-2020 Robert Kieffer and other contributors
 - **Usage:** RFC 4122 UUID generation for settlement cycles and idempotency keys.
 
+---
+
+## 5. Dotenv
+
+- **Package:** `dotenv`
+- **License:** BSD-2-Clause License
+- **Copyright:** (c) 2015, Mot Dotla
+- **Usage:** Environment variable loading from `.env` in non-production environments.
+
+

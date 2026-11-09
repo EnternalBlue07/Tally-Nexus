@@ -12,7 +12,7 @@ Prior to initiating Phase 7 live Sandbox testing, the following developer accoun
 
 ### 1.1 Account Setup Requirements
 1. **Sandbox Business Account (Clearinghouse Operator):**
-   - **Account Type:** Business Account (US location).
+   - **Account Type:** Business Account (Configured as India sandbox business account `sb-kmpmt53795647@business.example.com`, receiving USD collections; with US Personal creditor accounts `sb-qvovc...` and `sb-dlouv...` receiving payouts).
    - **Mandatory Feature Entitlement:** **PayPal Payouts Enabled**. (Under App Settings > Live/Sandbox Features > Check "Payouts"). If unapproved, Payouts API calls return `INSUFFICIENT_FUNDS` or `PERMISSION_DENIED`.
    - **Starting Balance:** Funded with at least **$200.00 USD** in sandbox balance (to cover operator capital and initial payouts).
 2. **Sandbox Personal Account (Net Debtor / Research Agent):**

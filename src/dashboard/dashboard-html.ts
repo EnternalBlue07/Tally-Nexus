@@ -219,6 +219,23 @@ export function getDashboardHtml(): string {
       border-radius: 6px; font-size: 13px; min-width: 260px;
     }
     .search-input:focus { outline: none; border-color: var(--accent-cyan); }
+
+    /* Mobile & Responsive Layout Enhancements */
+    @media (max-width: 900px) {
+      .judge-panel-grid { grid-template-columns: 1fr !important; }
+      .judge-tour-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    }
+    @media (max-width: 768px) {
+      header { padding: 12px 16px; flex-direction: column; align-items: flex-start; }
+      .header-actions { width: 100%; justify-content: flex-start; }
+      nav.nav-tabs { padding: 8px 16px 0 16px; }
+      .tab-btn { padding: 8px 12px; font-size: 13px; }
+      main.container { padding: 16px 12px; }
+      .metrics-grid { grid-template-columns: 1fr; }
+      .stepper { grid-template-columns: 1fr; }
+      .search-input { min-width: 100%; }
+      .judge-tour-grid { grid-template-columns: 1fr !important; }
+    }
   </style>
 </head>
 <body>
@@ -252,6 +269,78 @@ export function getDashboardHtml(): string {
   </nav>
 
   <main class="container">
+    <!-- HACKATHON JUDGE BRIEFING PANEL -->
+    <div class="card" id="judge-briefing-panel" style="margin-bottom: 24px; border: 1px solid rgba(6,182,212,0.45); background: linear-gradient(135deg, rgba(19, 28, 49, 0.95), rgba(10, 15, 29, 0.95)); box-shadow: 0 8px 24px -4px rgba(6,182,212,0.25);">
+      <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 14px; margin-bottom: 16px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 20px;">⚖️</span>
+          <div>
+            <span class="card-title" style="color: #38bdf8; font-size: 17px; letter-spacing: -0.3px;">HACKATHON JUDGE BRIEFING PANEL</span>
+            <div class="card-desc">Three Core Technical Innovations &bull; Verified Evidence Links &bull; 30-Second Guided Tour</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <a href="https://github.com/tally-nexus/tally-nexus" target="_blank" class="tag tag-info" style="text-decoration: none; font-weight: 600;">📂 Public GitHub Repo</a>
+          <a href="https://youtu.be/tally-nexus-demo" target="_blank" class="tag tag-success" style="text-decoration: none; font-weight: 600;">🎥 3-Min Demo Video</a>
+          <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="toggleJudgePanel()">Collapse / Expand</button>
+        </div>
+      </div>
+
+      <div id="judge-panel-body">
+        <!-- 3 Headline Claims Grid -->
+        <div class="judge-panel-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px;">
+          <div style="background: rgba(15,23,42,0.6); border: 1px solid rgba(6,182,212,0.2); border-radius: 8px; padding: 14px;">
+            <div style="color: var(--accent-cyan); font-weight: 700; font-size: 13px; margin-bottom: 6px;">1. AI-Assisted SLA Evaluation</div>
+            <p style="font-size: 12px; color: #cbd5e1; line-height: 1.5; margin-bottom: 10px;">
+              Autonomous task deliverables adjudicated via <strong>FreeModel (Gemini 3.7 Flash)</strong> with automatic <strong>DeepSeek v4.1 Flash</strong> failover. Purely advisory: zero access to money movement, enforced by deterministic credit clamps.
+            </p>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <button class="status-chip-proof" onclick="testLiveAiJudge()">⚡ Run Live AI Evaluation</button>
+              <a href="/api/judge/evaluate" target="_blank" class="tag tag-info" style="font-size: 10px; text-decoration: none;">Live Route</a>
+            </div>
+          </div>
+
+          <div style="background: rgba(15,23,42,0.6); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; padding: 14px;">
+            <div style="color: var(--accent-emerald); font-weight: 700; font-size: 13px; margin-bottom: 6px;">2. Deterministic Netting & PayPal Rails</div>
+            <p style="font-size: 12px; color: #cbd5e1; line-height: 1.5; margin-bottom: 10px;">
+              Compresses circular bilateral agent debt by <strong>65.38% to 99.4%</strong>. Settles conserved net debtor balances via <strong>PayPal Orders v2</strong> capture ($1.00) and creditor disbursements via <strong>PayPal Payouts v1</strong> ($0.50 + $0.50).
+            </p>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <button class="status-chip-proof" onclick="verifyPayPalCapture('7PV82720RX415822V')">🔍 Verify Live Capture</button>
+              <button class="status-chip-proof" onclick="verifyPayPalPayout('N4M49PUHNCNQ4')">🔍 Verify Live Payout</button>
+            </div>
+          </div>
+
+          <div style="background: rgba(15,23,42,0.6); border: 1px solid rgba(99,102,241,0.25); border-radius: 8px; padding: 14px;">
+            <div style="color: #a5b4fc; font-weight: 700; font-size: 13px; margin-bottom: 6px;">3. Verifiable Subledger & Cryptography</div>
+            <p style="font-size: 12px; color: #cbd5e1; line-height: 1.5; margin-bottom: 10px;">
+              Double-entry subledger asserted by <strong>14 SQLite database triggers</strong>, Ed25519 RFC 8785 signatures, cryptographic SHA-256 Merkle tree anchors, and mathematical zero-variance (<span class="mono">Δ = $0.00</span>).
+            </p>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <button class="status-chip-proof" onclick="switchTab('ledger')">📊 View Trial Balance</button>
+              <button class="status-chip-proof" onclick="switchTab('security')">🛡️ Invariant Center</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 30-Second Guided Tour -->
+        <div style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
+            <span style="font-size: 12px; font-weight: 700; color: #f1f5f9; text-transform: uppercase; letter-spacing: 0.5px;">⏱️ 30-Second Tour for Judges (6 Guided Clicks)</span>
+            <span style="font-size: 11px; color: var(--text-muted);">Follow steps 1 &rarr; 6 to independently inspect end-to-end clearing</span>
+          </div>
+          <div class="judge-tour-grid" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;">
+            <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 8px; text-align: left;" onclick="tourStep(1)"><strong>1. Clearing Room</strong><br><span style="color: var(--text-muted); font-size: 10px;">Open Overview</span></button>
+            <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 8px; text-align: left;" onclick="tourStep(2)"><strong>2. Run Flagship</strong><br><span style="color: var(--text-muted); font-size: 10px;">Execute 5-agent sim</span></button>
+            <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 8px; text-align: left;" onclick="tourStep(3)"><strong>3. AI SLA Verdict</strong><br><span style="color: var(--text-muted); font-size: 10px;">Inspect clamp</span></button>
+            <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 8px; text-align: left;" onclick="tourStep(4)"><strong>4. Net Positions</strong><br><span style="color: var(--text-muted); font-size: 10px;">$130 &rarr; $45 net</span></button>
+            <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 8px; text-align: left;" onclick="tourStep(5)"><strong>5. PayPal Proof</strong><br><span style="color: var(--text-muted); font-size: 10px;">Live Debug-ID</span></button>
+            <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 8px; text-align: left;" onclick="tourStep(6)"><strong>6. Merkle Ledger</strong><br><span style="color: var(--text-muted); font-size: 10px;">Δ = $0.00 proof</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- 1. OVERVIEW TAB -->
     <div id="tab-overview" class="tab-content active">
       <div class="metrics-grid">
@@ -1259,6 +1348,64 @@ export function getDashboardHtml(): string {
 
     function clearStreamLog() {
       document.getElementById('stream-box').innerHTML = '<div class="stream-line"><span class="stream-time">[LOG]</span> Stream cleared.</div>';
+    }
+
+    function toggleJudgePanel() {
+      const body = document.getElementById('judge-panel-body');
+      if (body) {
+        body.style.display = body.style.display === 'none' ? 'none' : 'block';
+      }
+    }
+
+    function tourStep(step) {
+      if (step === 1) {
+        switchTab('overview');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (step === 2) {
+        switchTab('overview');
+        runFlagshipDemo();
+      } else if (step === 3) {
+        switchTab('overview');
+        const s1 = document.getElementById('step-1');
+        if (s1) s1.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else if (step === 4) {
+        switchTab('scale');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (step === 5) {
+        verifyPayPalCapture('7PV82720RX415822V');
+      } else if (step === 6) {
+        switchTab('ledger');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    async function testLiveAiJudge() {
+      openVerifyModal();
+      document.getElementById('modal-id').textContent = 'Live SLA AI Adjudication';
+      document.getElementById('modal-provider-status').textContent = 'EVALUATING...';
+      try {
+        const res = await fetch('/api/judge/evaluate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({}),
+        });
+        const data = await res.json();
+        document.getElementById('verify-modal-loading').style.display = 'none';
+        document.getElementById('verify-modal-content').style.display = 'block';
+
+        const badge = document.getElementById('modal-status-badge');
+        const isLive = data.classification === 'LIVE_EVALUATION';
+        badge.className = 'tag ' + (isLive ? 'tag-success' : 'tag-warning');
+        badge.textContent = isLive ? 'LIVE AI VERDICT (' + (data.modelUsed || data.model) + ')' : 'STORED RUN EVIDENCE';
+
+        document.getElementById('modal-provider-status').textContent = data.validatedVerdict || 'COMPLETED';
+        document.getElementById('modal-amount').textContent = '$50.00 USD (Obligation Stands)';
+        document.getElementById('modal-anchor').textContent = data.promptHash ? data.promptHash.substring(0, 32) + '...' : 'SHA-256 Prompt Hash';
+        document.getElementById('modal-debug-id').textContent = data.tokenUsage ? ('Tokens: ' + data.tokenUsage.totalTokens + ' (Latency: ' + data.latencyMs + 'ms)') : 'Latency: ' + (data.latencyMs || 0) + 'ms';
+        document.getElementById('modal-raw-json').textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        renderVerifyError(err);
+      }
     }
 
     function openVerifyModal() {

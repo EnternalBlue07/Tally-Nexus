@@ -1,10 +1,10 @@
 {
-  "evaluationId": "a665461e-8416-46de-abaf-d6f5d27736a8",
-  "taskId": "cyc_flagship_1794241518045_tsk1",
+  "evaluationId": "74f45965-b531-4690-8fea-b00b0114b4bb",
+  "taskId": "cyc_flagship_1794242691693_tsk1",
   "provider": "OFFLINE_DETERMINISTIC_FALLBACK",
   "model": "deterministic-rules-engine-v1",
   "aiAvailable": false,
-  "promptHash": "920a3c21dbdf6ac50c8c0767d12649981a22d764fe1164e1246a73d3deb72e7d",
+  "promptHash": "c02209929593e6a5a265105fbcb9cd045f10d28957d0d50ff23996a4524eb6fb",
   "rawResponseText": "",
   "rawJson": null,
   "validatedVerdict": "PASS",
@@ -20,5 +20,5 @@
     "SLA deliverable verified: Original contractual obligation stands in full (0 bps credit relief)."
   ],
   "injectionAttemptDetected": false,
-  "evaluatedAt": "2026-11-09T16:25:18.058Z"
+  "evaluatedAt": "2026-11-09T16:44:51.702Z"
 }

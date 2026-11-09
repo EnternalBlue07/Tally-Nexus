@@ -6,7 +6,7 @@ services:
     region: oregon
     buildCommand: npm ci && npm run build
     startCommand: npm start
-    healthCheckPath: /api/health
+    healthCheckPath: /health
     disk:
       name: tally-nexus-data
       mountPath: /data
@@ -18,6 +18,10 @@ services:
         value: 3000
       - key: DATABASE_PATH
         value: /data/tally_nexus.db
+      - key: PUBLIC_DEMO_MODE
+        value: "true"
+      - key: APP_BASE_URL
+        sync: false
       - key: PAYPAL_ENV
         value: sandbox
       - key: OPERATOR_API_KEY
@@ -30,4 +34,13 @@ services:
         sync: false
       - key: PAYPAL_WEBHOOK_ID
         sync: false
+      - key: FREEMODEL_API_KEY
+        sync: false
+      - key: FREEMODEL_BASE_URL
+        value: https://freemodel.in/v1
+      - key: FREEMODEL_PRIMARY_MODEL
+        value: gemini-3.7-flash
+      - key: FREEMODEL_FALLBACK_MODEL
+        value: deepseek-v4.1-flash
+
 
