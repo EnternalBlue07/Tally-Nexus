@@ -115,11 +115,12 @@ Debtor Collected ($1.00 USD) ≡ Creditor Disbursed ($0.50 + $0.50 = $1.00 USD) 
 | **Payout Item 1** | `DEHM6QLT7JXYQ` ($0.50) | **SUCCESS** (Tx: `9BF59053HK726794K`) | Fee: $0.25 USD | `cyc_conserved_1794232162341_item_agent_live_creditor_1` |
 | **Payout Item 2** | `HF2K84VFKRL9Q` ($0.50) | **SUCCESS** (Tx: `8LG11853XS495845K`) | Fee: $0.25 USD | `cyc_conserved_1794232162341_item_agent_live_creditor_2` |
 
-### Modeled PayPal Rail Fees & 95.0% Netting Savings:
-- **Orders v2 Capture Fee (observed sandbox sample):** **$0.54 USD** on $1.00. Standard domestic rate is 3.49% + $0.49 fixed ($0.52); our sandbox test observed $0.54 due to PayPal's +1.50% cross-border fee ($0.49 + 4.99% * $1.00 = $0.5399 ≈ $0.54) on an IN merchant receiving USD.
-- **Payouts v1 Item Fee (observed sandbox sample):** **$0.25 USD** fixed per disbursement.
-- **Configurable Fee Model:** All fee calculations in the simulation and API are fully configurable (`captureFixedCents`, `captureVariableRate`, `payoutFixedCents`).
-- **Bilateral Baseline vs Netting:** On 1,500 bilateral task settlements ($15,000 volume), traditional bilateral transfers incur **$1,633.50 USD in fees** (at default configured rates). Tally Nexus collapses this to 9 net movements incurring only **$81.45 USD** in total rail fees (**$1,552.05 USD / 95.0% fee elimination**)!
+### Authoritative Payee & Account Reconciliation:
+- **Captured Payee Account:** **India (IN) Sandbox Business Account** (`sb-kmpmt53795647@business.example.com`).
+- **Disbursed Receiver Accounts:** **US Sandbox Personal Accounts** (`sb-qvovc53813251@personal.example.com` and `sb-dlouv53813236@personal.example.com`).
+- **Fee Derivation ($0.54 on $1.00):** Standard PayPal US domestic fee is 3.49% + $0.49 fixed ($0.52). Because the receiving merchant sandbox account is registered in India receiving USD, PayPal assessed its published **+1.50% cross-border fee** ($0.49 + 4.99% * $1.00 = $0.5399 ≈ **$0.54 USD**).
+- **Payout Item Fee:** **$0.25 USD** fixed per disbursement item charged by PayPal Payouts v1.
+- **Configurable Fee Model:** All fee savings models in the clearinghouse engine and dashboard UI are configurable (`captureFixedCents`, `captureVariableRate`, `payoutFixedCents`), rather than relying on hardcoded percentages.
 - **Raw Evidence Archive:** Full raw API request/response payloads with unredacted Debug-IDs are preserved in [`docs/evidence/sandbox-run-verified-success.json`](docs/evidence/sandbox-run-verified-success.json).
 
 ### Read-Only Allowlisted Verification Endpoints:

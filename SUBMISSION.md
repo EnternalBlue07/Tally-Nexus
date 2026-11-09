@@ -42,7 +42,7 @@ Tally Nexus operates as a fiduciary financial clearinghouse:
 5. **Two-Tier Authoritative PayPal Settlement:**
    - **Debtor Ingestion:** PayPal Orders v2 captures funds from net debtors into an intermediate balance sheet account (`LIABILITY:COLLECTION_IN_CLEARING`).
    - **Creditor Distribution:** Once all debtors are collected, PayPal Payouts v1 dispatches a single batch payout to net creditors.
-   - **Empirical Sandbox Verification:** Single conserved cycle executed on PayPal Sandbox: Orders v2 Capture `7PV82720RX415822V` ($1.00 USD) ≡ Payouts v1 Batch `N4M49PUHNCNQ4` ($0.50 + $0.50 = $1.00 USD) with Merkle anchor in `custom_id`. Modeled 95.0% fee elimination!
+   - **Empirical Sandbox Verification:** Single conserved cycle executed on PayPal Sandbox: Orders v2 Capture `7PV82720RX415822V` ($1.00 USD into India Sandbox Business Account `sb-kmpmt53795647@business.example.com`) ≡ Payouts v1 Batch `N4M49PUHNCNQ4` ($0.50 + $0.50 = $1.00 USD disbursed to US Sandbox Personal Accounts `sb-qvovc...` and `sb-dlouv...`) with Merkle anchor in `custom_id`. Modeled 95.0% fee elimination with configurable rate parameters!
    - **Read-Only Allowlisted Verify Endpoints:** Rate-limited lookup endpoints (`GET /api/verify/*`) prevent open proxy abuse by rejecting unknown IDs with 404 without querying PayPal.
 6. **Self-Healing Recovery & Single-Reissue Entitlement:** If a creditor payout returns, a 5-stage reinstatement sequence restores cash to the balance sheet. Database constraints (`uq_active_child_per_parent`) enforce single-reissue entitlement, and database trigger `trg_parent_payout_item_late_success_guard` blocks adversarial late webhook collisions from double-paying.
 7. **Immutable Double-Entry Ledger:** Every cent is tracked under $Assets \equiv Liabilities + Equity$ with exact **$0.00 net variance**.
@@ -131,3 +131,13 @@ npm run demo:flagship
 npm start
 # Visit: http://localhost:3000
 ```
+
+---
+
+## 9. Still Unproven & Submission Prerequisites (Human Action Items)
+
+The following items require manual human action before the hackathon deadline:
+1. **Public GitHub Repository:** Push the local repository (`master` branch) to a public GitHub remote.
+2. **3-Minute Video Recording:** Record and publish a public YouTube demo walking through the dashboard, deterministic runner, and PayPal Sandbox dashboard activity (following `DEMO_SCRIPT.md`).
+3. **Devpost Project Form:** Copy the final submission text, video URL, repository link, and architecture diagrams into the Devpost submission portal before November 13, 1:30 AM IST.
+4. **Live Commercial LLM Evaluation:** To generate live LLM evidence rather than offline fallback, add a valid commercial API key (`GEMINI_API_KEY`, `ANTHROPIC_API_KEY`, or `OPENAI_API_KEY`) to `.env` and run `npm run judge:evaluate`.
