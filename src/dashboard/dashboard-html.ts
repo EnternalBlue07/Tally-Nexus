@@ -280,7 +280,7 @@ export function getDashboardHtml(): string {
           </div>
         </div>
         <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-          <a href="https://github.com/tally-nexus/tally-nexus" target="_blank" class="tag tag-info" style="text-decoration: none; font-weight: 600;">📂 Public GitHub Repo</a>
+          <a href="https://github.com/EnternalBlue07/Tally-Nexus" target="_blank" class="tag tag-info" style="text-decoration: none; font-weight: 600;">📂 Public GitHub Repo</a>
           <a href="https://youtu.be/tally-nexus-demo" target="_blank" class="tag tag-success" style="text-decoration: none; font-weight: 600;">🎥 3-Min Demo Video</a>
           <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="toggleJudgePanel()">Collapse / Expand</button>
         </div>

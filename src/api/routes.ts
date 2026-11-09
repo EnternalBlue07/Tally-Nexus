@@ -68,6 +68,19 @@ export function createApiRouter(
   // =========================================================================
   // 1.1 AI SLA JUDGE (PUBLIC GUARDED WITH AUTOMATIC STORED EVIDENCE FALLBACK)
   // =========================================================================
+  router.get('/judge/evaluate', (req: Request, res: Response) => {
+    const clientIp = req.ip || req.socket.remoteAddress || 'unknown';
+    const quota = AiJudgeQuotaManager.checkQuota(clientIp);
+    const stored = AiJudgeQuotaManager.getCanonicalStoredEvidence();
+    res.status(200).json({
+      endpoint: 'POST /api/judge/evaluate',
+      description: 'AI SLA Judge evaluation endpoint. Accepts task evidence and returns structured evaluation verdict.',
+      quotaAllowed: quota.allowed,
+      quotaReason: quota.reason,
+      canonicalStoredEvidence: stored,
+    });
+  });
+
   router.post('/judge/evaluate', async (req: Request, res: Response) => {
     const clientIp = req.ip || req.socket.remoteAddress || 'unknown';
     const quota = AiJudgeQuotaManager.checkQuota(clientIp);
