@@ -1,9 +1,0 @@
-[allowlist]
-description = "Ignore development environment files and build outputs"
-paths = [
-  '''^\.env.*$''',
-  '''^node_modules/''',
-  '''^dist/''',
-  '''^coverage/'''
-]
-

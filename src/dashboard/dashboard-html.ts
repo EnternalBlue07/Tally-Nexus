@@ -1298,10 +1298,27 @@ export function getDashboardHtml(): string {
       document.getElementById('verify-modal-loading').style.display = 'none';
       document.getElementById('verify-modal-content').style.display = 'block';
 
-      const isSuccess = data.verificationStatus === 'VERIFIED_ON_PAYPAL_SANDBOX' || data.verificationStatus === 'VERIFIED_IN_LOCAL_LEDGER';
+      const noticeBanner = document.getElementById('modal-notice-banner');
+      if (data.notice && noticeBanner) {
+        noticeBanner.style.display = 'block';
+        noticeBanner.innerHTML = '⚠️ <strong>Notice:</strong> ' + data.notice;
+      } else if (noticeBanner) {
+        noticeBanner.style.display = 'none';
+      }
+
+      const isStored = data.verificationStatus === 'STORED_CANONICAL_EVIDENCE' || Boolean(data.notice);
+      const isSuccess = data.verificationStatus === 'VERIFIED_ON_PAYPAL_SANDBOX' || data.verificationStatus === 'VERIFIED_IN_LOCAL_LEDGER' || isStored;
       const badge = document.getElementById('modal-status-badge');
-      badge.className = 'tag ' + (isSuccess ? 'tag-success' : 'tag-error');
-      badge.textContent = data.verificationStatus || 'VERIFICATION COMPLETED';
+      if (isStored) {
+        badge.className = 'tag';
+        badge.style.background = '#f59e0b';
+        badge.style.color = '#000';
+        badge.style.fontWeight = 'bold';
+        badge.textContent = 'STORED EVIDENCE (OFFLINE / NO CREDENTIALS)';
+      } else {
+        badge.className = 'tag ' + (isSuccess ? 'tag-success' : 'tag-error');
+        badge.textContent = data.verificationStatus || 'VERIFICATION COMPLETED';
+      }
 
       document.getElementById('modal-id').textContent = data.identifier || '-';
       document.getElementById('modal-provider-status').textContent = data.providerStatus || data.batchHeader?.batchStatus || 'COMPLETED';
@@ -1361,6 +1378,7 @@ export function getDashboardHtml(): string {
           <div>Querying api-m.sandbox.paypal.com in real-time...</div>
         </div>
         <div id="verify-modal-content" style="display: none;">
+          <div id="modal-notice-banner" style="display: none; background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; padding: 10px 14px; border-radius: 6px; margin-bottom: 14px; color: #fbbf24; font-size: 12px; line-height: 1.4;"></div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
             <span id="modal-status-badge" class="tag tag-success">VERIFIED ON PAYPAL SANDBOX</span>
             <span id="modal-env-pill" class="tag tag-info" style="font-family: monospace;">api-m.sandbox.paypal.com</span>

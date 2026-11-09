@@ -155,8 +155,8 @@ async function runConservedLiveCycle() {
       paypalClient,
       {
         customId,
-        returnUrl: 'http://localhost:3000/api/settlement/return',
-        cancelUrl: 'http://localhost:3000/api/settlement/cancel',
+        returnUrl: `${(process.env.APP_BASE_URL || 'http://localhost:3000').replace(/\/$/, '')}/api/settlement/return`,
+        cancelUrl: `${(process.env.APP_BASE_URL || 'http://localhost:3000').replace(/\/$/, '')}/api/settlement/cancel`,
       }
     );
   }
@@ -370,7 +370,7 @@ async function runConservedLiveCycle() {
       amount: rawCaptureData.amount || { currency_code: 'USD', value: '1.00' },
       customId: rawCaptureData.custom_id || customId,
       sellerProtection: rawCaptureData.seller_protection || { status: 'ELIGIBLE' },
-      payee: rawCaptureData.seller_receivable_breakdown ? 'US Sandbox Business Account' : undefined,
+      payee: rawCaptureData.seller_receivable_breakdown ? 'India (IN) Sandbox Business Account (sb-kmpmt53795647@business.example.com)' : undefined,
       paypalDebugId: captureDebugId || orderCreationDebugId
     },
     payoutsV1Batch: {

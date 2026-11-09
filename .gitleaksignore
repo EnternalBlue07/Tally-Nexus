@@ -1,5 +1,3 @@
-# Gitleaks ignore list
-# False-positive: PayPal standard checkout URL order ID token parameter (?token=0HC67112BH930554G)
+# Gitleaks fingerprint-level ignore
+# False positive: public ephemeral PayPal Orders v2 checkout URL approval token parameter
 5f9cbd60f63461c86217ff3e4ca264944bc0a6b1:docs/evidence/sandbox_order_pending.json:generic-api-key:9
-docs/evidence/sandbox_order_pending.json:generic-api-key:9
-

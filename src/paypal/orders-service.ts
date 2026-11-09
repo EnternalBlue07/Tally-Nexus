@@ -88,14 +88,18 @@ export class PayPalOrdersService {
     }
 
     // 4. Call PayPal Orders v2 API outside of any database transaction
+    const appBase = (process.env.APP_BASE_URL || 'http://localhost:3000').replace(/\/$/, '');
+    const returnUrl = options?.returnUrl || `${appBase}/api/settlement/return`;
+    const cancelUrl = options?.cancelUrl || `${appBase}/api/settlement/cancel`;
+
     const response = await client.createOrder({
       idempotencyKey,
       amountCents: collectionAmountCents,
       currency: 'USD',
       customId: options?.customId || cycleId,
       description: `Tally Nexus Settlement Collection for Cycle ${cycleId}`,
-      returnUrl: options?.returnUrl,
-      cancelUrl: options?.cancelUrl,
+      returnUrl,
+      cancelUrl,
     });
 
     const internalOrderId = uuidv4();
