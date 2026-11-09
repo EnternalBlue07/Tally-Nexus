@@ -959,7 +959,10 @@ export function createApiRouter(
   // =========================================================================
   router.post('/demo/run', async (_req: Request, res: Response) => {
     try {
-      const result = await runFlagshipDemo(db, paypalClient);
+      // Deterministic flagship simulation uses MockPayPalClient to simulate the 6-stage lifecycle
+      // hermetically without requiring interactive human payer approval on real rails.
+      const demoClient = new MockPayPalClient();
+      const result = await runFlagshipDemo(db, demoClient);
       res.json(result);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
