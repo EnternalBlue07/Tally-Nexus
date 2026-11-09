@@ -298,12 +298,12 @@ docker run -p 3000:3000 -v tally-data:/data tally-nexus
 
 ---
 
-## 9. Test Suite Breakdown (174 / 174 Passing)
+## 9. Test Suite Breakdown (201 / 201 Passing)
 
 ```
-Test Files  : 15 passed (15)
-Tests       : 174 passed (174)
-Duration    : ~6.9 seconds
+Test Files  : 16 passed (16)
+Tests       : 201 passed (201)
+Duration    : ~8.5 seconds
 Environment : Node.js 24 LTS (native node:sqlite) — 100% Hermetic, Zero Network Needed
 ```
 
@@ -323,8 +323,9 @@ Environment : Node.js 24 LTS (native node:sqlite) — 100% Hermetic, Zero Networ
 | [`tests/scale/scale_clearing.test.ts`](tests/scale/scale_clearing.test.ts) | 1,500 IOU hero scale clearing, zero-sum, and fee savings | 7 | **PASS** |
 | [`tests/security/stage5_trust_and_attacks.test.ts`](tests/security/stage5_trust_and_attacks.test.ts) | 5-point adversarial attacks & IOU cryptographic verify | 6 | **PASS** |
 | [`tests/api/verify_endpoints.test.ts`](tests/api/verify_endpoints.test.ts) | Read-only PayPal verify endpoints & proxy allowlist | 7 | **PASS** |
-| [`tests/judge/llm_judge.test.ts`](tests/judge/llm_judge.test.ts) | AI SLA Judge multi-provider, credit clamp & injection defense | 3 | **PASS** |
-| **Total** | **Consolidated Verification Suite** | **174** | **100% PASS** |
+| [`tests/judge/llm_judge.test.ts`](tests/judge/llm_judge.test.ts) | AI SLA Judge multi-provider, credit clamp & injection defense | 15 | **PASS** |
+| [`tests/security/stage6_public_demo_security.test.ts`](tests/security/stage6_public_demo_security.test.ts) | Public Demo Mode authentication, AI quota limits & path traversal guard | 15 | **PASS** |
+| **Total** | **Consolidated Verification Suite** | **201** | **100% PASS** |
 
 ---
 
