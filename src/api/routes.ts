@@ -891,7 +891,14 @@ export function createApiRouter(
       const count = Number(req.query.count || req.body?.count || 1500);
       const seed = Number(req.query.seed || req.body?.seed || 0x7a11);
       const clampedCount = Math.min(Math.max(count, 10), 10000);
-      const result = runScaleClearingSimulation(clampedCount, seed);
+
+      const feeConfig = {
+        captureFixedCents: req.body?.captureFixedCents !== undefined ? Number(req.body.captureFixedCents) : undefined,
+        captureVariableRate: req.body?.captureVariableRate !== undefined ? Number(req.body.captureVariableRate) : undefined,
+        payoutFixedCents: req.body?.payoutFixedCents !== undefined ? Number(req.body.payoutFixedCents) : undefined,
+      };
+
+      const result = runScaleClearingSimulation(clampedCount, seed, feeConfig);
       res.json(result);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -904,7 +911,14 @@ export function createApiRouter(
       const count = Number(req.query.count || 1500);
       const seed = Number(req.query.seed || 0x7a11);
       const clampedCount = Math.min(Math.max(count, 10), 10000);
-      const result = runScaleClearingSimulation(clampedCount, seed);
+
+      const feeConfig = {
+        captureFixedCents: req.query.captureFixedCents !== undefined ? Number(req.query.captureFixedCents) : undefined,
+        captureVariableRate: req.query.captureVariableRate !== undefined ? Number(req.query.captureVariableRate) : undefined,
+        payoutFixedCents: req.query.payoutFixedCents !== undefined ? Number(req.query.payoutFixedCents) : undefined,
+      };
+
+      const result = runScaleClearingSimulation(clampedCount, seed, feeConfig);
       res.json(result);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);

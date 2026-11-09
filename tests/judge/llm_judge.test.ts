@@ -52,8 +52,10 @@ describe('AI in the Loop: SLA Judge LLM Integration & Zero-Trust Safety Harness'
     expect(result.provider).toBe('OFFLINE_DETERMINISTIC_FALLBACK');
     expect(result.promptHash).toHaveLength(64);
     expect(result.validatedVerdict).toBe('PASS');
-    expect(result.clampedCreditBps).toBe(10000);
-    expect(result.authorizedCreditCents).toBe(2500);
+    expect(result.obligationDisposition).toBe('OBLIGATION_STANDS');
+    expect(result.finalObligationCents).toBe(2500); // Obligation stands in full
+    expect(result.contractualCreditCents).toBe(0); // 0 credit relief awarded
+    expect(result.clampedCreditBps).toBe(0);
     expect(result.reasons[0]).toContain('AI: OFFLINE');
 
     // Verify system event logged in outbox
@@ -86,8 +88,10 @@ describe('AI in the Loop: SLA Judge LLM Integration & Zero-Trust Safety Harness'
 
     expect(result.injectionAttemptDetected).toBe(true);
     expect(result.validatedVerdict).toBe('FAIL');
-    expect(result.clampedCreditBps).toBe(0);
-    expect(result.authorizedCreditCents).toBe(0);
+    expect(result.obligationDisposition).toBe('CONTRACTUAL_CREDIT_APPLIED');
+    expect(result.finalObligationCents).toBe(0); // Malicious task rejected; debtor owes $0.00
+    expect(result.contractualCreditCents).toBe(2500); // 100% relief applied
+    expect(result.clampedCreditBps).toBe(10000);
     expect(result.reasons.some((r) => r.includes('prompt injection'))).toBe(true);
   });
 
@@ -117,3 +121,4 @@ describe('AI in the Loop: SLA Judge LLM Integration & Zero-Trust Safety Harness'
     expect(result.authorizedCreditCents).toBeLessThanOrEqual(1000); // 50% of 2000 = 1000 cents
   });
 });
+

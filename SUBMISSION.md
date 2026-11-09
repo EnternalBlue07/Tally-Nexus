@@ -42,25 +42,31 @@ Tally Nexus operates as a fiduciary financial clearinghouse:
 5. **Two-Tier Authoritative PayPal Settlement:**
    - **Debtor Ingestion:** PayPal Orders v2 captures funds from net debtors into an intermediate balance sheet account (`LIABILITY:COLLECTION_IN_CLEARING`).
    - **Creditor Distribution:** Once all debtors are collected, PayPal Payouts v1 dispatches a single batch payout to net creditors.
-   - **Empirical Sandbox Verification:** Single conserved cycle executed on PayPal Sandbox: Orders v2 Capture `7PV82720RX415822V` ($1.00 USD) ≡ Payouts v1 Batch `N4M49PUHNCNQ4` ($0.50 + $0.50 = $1.00 USD) with Merkle anchor in `custom_id`. Measured 95.0% fee elimination!
+   - **Empirical Sandbox Verification:** Single conserved cycle executed on PayPal Sandbox: Orders v2 Capture `7PV82720RX415822V` ($1.00 USD) ≡ Payouts v1 Batch `N4M49PUHNCNQ4` ($0.50 + $0.50 = $1.00 USD) with Merkle anchor in `custom_id`. Modeled 95.0% fee elimination!
    - **Read-Only Allowlisted Verify Endpoints:** Rate-limited lookup endpoints (`GET /api/verify/*`) prevent open proxy abuse by rejecting unknown IDs with 404 without querying PayPal.
 6. **Self-Healing Recovery & Single-Reissue Entitlement:** If a creditor payout returns, a 5-stage reinstatement sequence restores cash to the balance sheet. Database constraints (`uq_active_child_per_parent`) enforce single-reissue entitlement, and database trigger `trg_parent_payout_item_late_success_guard` blocks adversarial late webhook collisions from double-paying.
 7. **Immutable Double-Entry Ledger:** Every cent is tracked under $Assets \equiv Liabilities + Equity$ with exact **$0.00 net variance**.
-8. **AG Grid High-Density Virtualization:** Renders 1,500+ cryptographically verified IOUs at 60 FPS with client-side sorting, filtering, and custom Ed25519 badge renderers.
+8. **AG Grid High-Density Virtualization & Offline Support:** Renders 1,500+ cryptographically verified IOUs at 60 FPS with client-side sorting, filtering, vendored offline assets, custom cyberpunk dark theme, interactive Merkle proof popover, and zero-sum conservation status bar.
 
 ---
 
-## 4. How We Built It
+## 4. How We Built It & AI Tools Used
 
+### Core Architecture:
 - **Runtime:** Node.js 24 LTS native `node:sqlite` (zero native C++ build tool dependencies like node-gyp or python-make; 100% native).
 - **Language:** TypeScript 5.7 (strict configuration, NodeNext module resolution).
 - **Database Architecture:** SQLite in WAL mode with 14 declarative database triggers, foreign keys, and optimistic concurrency locks.
 - **Payment Rails:** PayPal REST APIs (Orders v2 for capture, Payouts v1 for disbursement, Webhooks for async confirmation) with strict sandbox hostname allowlisting (`api-m.sandbox.paypal.com`).
 - **Cryptographic Security:** Node.js native `crypto` implementing Ed25519 digital signatures, RFC 8785 canonical JSON serialization, and constant-time operator authentication (`crypto.timingSafeEqual`).
-- **Data Grid:** AG Grid Community (`ag-grid-community`) with customized dark fintech theme and row virtualization.
+- **Data Grid:** AG Grid Community (`ag-grid-community`) vendored locally via Express with CDN fallback, custom dark fintech theme (`ag-theme-nexus-dark`), Merkle popover, and conservation status bar.
 - **API & UI:** Express 5 REST API router, Server-Sent Events (SSE) outbox stream, and a self-contained Single-Page Application (HTML5/CSS3/ES6).
 - **Cloud Deployment:** Render Blueprint (`render.yaml`) with 1GB persistent disk volume mount (`/data`), health checks, and Docker container support.
 - **Testing & Verification:** Vitest test runner with v8 coverage: **174 / 174 tests passed (100%)** across 15 test suites (100% hermetic, zero network needed).
+
+### AI Models & Development Tools:
+- **AI SLA Judge Service:** Multi-provider architecture supporting Google Gemini (`gemini-1.5-flash`), Anthropic Claude (`claude-3-5-haiku-latest`), and OpenAI (`gpt-4o-mini`). Provides an honest deterministic rules engine fallback (`OFFLINE_DETERMINISTIC_FALLBACK`) when LLM credentials are not configured.
+- **AI Guardrails:** Zero-trust deterministic credit clamping strictly caps proposed relief ($clampedCreditBps = \min(\lfloor proposedCreditBps \rfloor, maxCreditBps)$). The model never touches funds or modifies ledgers.
+- **AI Development Tools:** Antigravity, Gemini 1.5 Pro, and Claude 3.7 Sonnet were utilized as autonomous pair-programming tools for code generation, rigorous test suite construction, and security auditing.
 
 ---
 
@@ -70,8 +76,8 @@ To prove enterprise clearinghouse throughput, Tally Nexus implements the **Hero 
 - **1,500 Signed Micro-IOUs:** Generated across 10 autonomous swarm agents with seeded PRNG (`0x7A11`).
 - **Gross Volume:** ~$51,248.50 collapsed into ~$17,624.10 net settlement cash (**65.61% Liquidity Compression**).
 - **Rail Transfers:** 1,500 bilateral transfers collapsed into **9 physical PayPal settlement movements** (**99.4% Transaction Reduction**).
-- **Measured Fee Savings:** ~$1,552.05 saved (95.0% payment rail cost elimination, calibrated to PayPal Sandbox Run `7PV82720RX415822V` / `N4M49PUHNCNQ4`).
-- **AG Grid Virtualization:** Seamless 60 FPS virtualization, multi-column search, CSV export, and Ed25519 signature tooltips.
+- **Modeled Fee Savings:** ~$1,552.05 saved (95.0% payment rail cost elimination, calibrated using PayPal rates and observed sandbox run `7PV82720RX415822V` / `N4M49PUHNCNQ4`).
+- **AG Grid Virtualization:** Seamless 60 FPS virtualization, multi-column search, CSV export, interactive Merkle proof popovers, and real-time conservation status bar widget.
 
 ---
 
@@ -112,7 +118,7 @@ npm ci
 # 2. Typecheck verification (0 errors)
 npm run typecheck
 
-# 3. Full regression test suite (164 tests, 100% PASS)
+# 3. Full regression test suite (174 tests, 100% PASS)
 npm test
 
 # 4. Coverage audit (v8 coverage)

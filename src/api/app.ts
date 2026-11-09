@@ -1,4 +1,6 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
+import { join } from 'node:path';
+import { existsSync } from 'node:fs';
 import { DatabaseManager } from '../db/index.js';
 import { createApiRouter } from './routes.js';
 import { sendError } from './auth.js';
@@ -10,7 +12,12 @@ export interface AppOptions {
   paypalClient?: IPayPalClient;
 }
 
-export function createApp(options: AppOptions): Express {
+export function createApp(optionsOrDb: AppOptions | DatabaseManager, maybeClient?: IPayPalClient): Express {
+  const options: AppOptions =
+    'runMigrations' in optionsOrDb
+      ? { db: optionsOrDb, paypalClient: maybeClient }
+      : optionsOrDb;
+
   const app = express();
 
   // Basic security and parsing middleware
@@ -22,6 +29,16 @@ export function createApp(options: AppOptions): Express {
     res.setHeader('X-XSS-Protection', '1; mode=block');
     next();
   });
+
+  // Serve vendored AG Grid Community assets locally for 100% offline self-contained operation
+  const agGridDistPath = join(process.cwd(), 'node_modules', 'ag-grid-community', 'dist');
+  const agGridStylesPath = join(process.cwd(), 'node_modules', 'ag-grid-community', 'styles');
+  if (existsSync(agGridDistPath)) {
+    app.use('/vendor/ag-grid/dist', express.static(agGridDistPath));
+  }
+  if (existsSync(agGridStylesPath)) {
+    app.use('/vendor/ag-grid/styles', express.static(agGridStylesPath));
+  }
 
   // Root dashboard routes
   app.get(['/', '/dashboard'], (_req: Request, res: Response) => {

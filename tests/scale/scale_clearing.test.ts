@@ -77,7 +77,7 @@ describe('Workstream 2: Hero Scale Multilateral Clearinghouse (1,500+ IOUs)', ()
     expect(run1.ious[1499].amountCents).toBe(run2.ious[1499].amountCents);
   });
 
-  it('accurately models fee savings versus traditional bilateral payment rails', () => {
+  it('accurately models fee savings versus traditional bilateral payment rails with configurable rates', () => {
     const result = runScaleClearingSimulation(1500, 0x7a11);
 
     const { feeComparison } = result;
@@ -86,6 +86,18 @@ describe('Workstream 2: Hero Scale Multilateral Clearinghouse (1,500+ IOUs)', ()
       feeComparison.traditionalRailFeeCents - feeComparison.tallyNexusRailFeeCents
     );
     expect(feeComparison.feeSavingsPercent).toBeGreaterThan(70);
+    expect(feeComparison.observedSandboxSample).toBeDefined();
+    expect(feeComparison.observedSandboxSample.explanation).toContain('cross-border');
+
+    // Test with custom configurable fee rates (e.g. standard card rail $0.30 fixed + 2.9%)
+    const customResult = runScaleClearingSimulation(1500, 0x7a11, {
+      captureFixedCents: 30,
+      captureVariableRate: 0.029,
+      payoutFixedCents: 25,
+    });
+    expect(customResult.feeComparison.configuredRates.captureFixedCents).toBe(30);
+    expect(customResult.feeComparison.configuredRates.captureVariableRate).toBe(0.029);
+    expect(customResult.feeComparison.feeSavingsPercent).toBeGreaterThan(70);
   });
 
   it('serves scale simulation results via HTTP endpoints (GET & POST /api/demo/scale)', async () => {

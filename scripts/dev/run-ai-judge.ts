@@ -6,14 +6,15 @@ import { join } from 'node:path';
 
 dotenv.config();
 
-async function runLiveAiEvaluation() {
+async function runAiEvaluation() {
   console.log('========================================================================');
-  console.log('TALLY NEXUS — PHASE 5.3: AI SLA JUDGE IN THE LOOP EVALUATION');
+  console.log('TALLY NEXUS — PHASE 5.4: SLA JUDGE IN THE LOOP EVALUATION & AUDIT');
   console.log('========================================================================\n');
 
   const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
   const anthropicKey = process.env.ANTHROPIC_API_KEY;
   const openaiKey = process.env.OPENAI_API_KEY;
+  const isRealProviderConfigured = !!(geminiKey || anthropicKey || openaiKey);
 
   if (geminiKey) {
     console.log('[AI CONFIG] Active Provider: GOOGLE GEMINI (Key detected in environment)');
@@ -22,9 +23,9 @@ async function runLiveAiEvaluation() {
   } else if (openaiKey) {
     console.log('[AI CONFIG] Active Provider: OPENAI (Key detected in environment)');
   } else {
-    console.log('[AI CONFIG] No LLM API key detected in .env.');
-    console.log('[AI CONFIG] Running in honest "AI: OFFLINE (deterministic fallback)" mode.');
-    console.log('            To activate live LLM: add GEMINI_API_KEY or ANTHROPIC_API_KEY to .env\n');
+    console.log('[AI CONFIG] No commercial LLM API key detected in .env.');
+    console.log('[AI CONFIG] Mode: HONEST OFFLINE DETERMINISTIC FALLBACK.');
+    console.log('            Note: Real provider execution requires GEMINI_API_KEY, ANTHROPIC_API_KEY, or OPENAI_API_KEY in .env.\n');
   }
 
   const db = new DatabaseManager({ dbPath: ':memory:' });
@@ -34,13 +35,13 @@ async function runLiveAiEvaluation() {
     VALUES ('agent_live_debtor', 'Consortium Debtor', 'Debtor', 'pk_debtor_live', 'debtor@nexus.local'),
            ('agent_live_creditor', 'High-Throughput Inference Provider', 'Creditor', 'pk_creditor_live', 'creditor@nexus.local')
   `).run();
-  db.prepare("INSERT INTO settlement_cycles (cycle_id, status) VALUES ('cyc_ai_live_001', 'CREATED')").run();
+  db.prepare("INSERT INTO settlement_cycles (cycle_id, status) VALUES ('cyc_ai_eval_001', 'CREATED')").run();
 
   // SCENARIO 1: Legitimate Autonomous Task Evaluation
   console.log('--- SCENARIO 1: LEGITIMATE AUTONOMOUS TASK ADJUDICATION ---');
   const context1: TaskEvaluationContext = {
     taskId: 'tsk_sentiment_5000_records',
-    cycleId: 'cyc_ai_live_001',
+    cycleId: 'cyc_ai_eval_001',
     debtorAgentId: 'agent_live_debtor',
     creditorAgentId: 'agent_live_creditor',
     title: 'High-Throughput Sentiment Adjudication Batch',
@@ -59,21 +60,25 @@ async function runLiveAiEvaluation() {
     },
   };
 
+  const start1 = Date.now();
   const result1 = await LlmJudgeService.evaluateTask(context1, db);
+  const latency1 = Date.now() - start1;
+
   console.log(`- Provider / Model   : ${result1.provider} (${result1.model})`);
   console.log(`- AI Available       : ${result1.aiAvailable}`);
-  console.log(`- Prompt Hash (SHA256): ${result1.promptHash.slice(0, 32)}...`);
+  console.log(`- Latency            : ${latency1}ms`);
+  console.log(`- Prompt Hash        : ${result1.promptHash.slice(0, 32)}...`);
   console.log(`- Validated Verdict  : ${result1.validatedVerdict}`);
-  console.log(`- Confidence Score   : ${(result1.confidenceScore * 100).toFixed(1)}%`);
-  console.log(`- Clamped Credit Bps : ${result1.clampedCreditBps} bps (${(result1.clampedCreditBps / 100).toFixed(0)}%)`);
-  console.log(`- Authorized Credit  : $${(result1.authorizedCreditCents / 100).toFixed(2)} USD (of $50.00 claimed)`);
+  console.log(`- Disposition        : ${result1.obligationDisposition}`);
+  console.log(`- Debtor Obligation  : $${(result1.finalObligationCents / 100).toFixed(2)} USD (Full obligation stands on PASS)`);
+  console.log(`- Debtor Credit      : $${(result1.contractualCreditCents / 100).toFixed(2)} USD (${result1.clampedCreditBps} bps relief)`);
   console.log(`- Adjudication Notes :`, result1.reasons);
 
   // SCENARIO 2: Adversarial Prompt Injection Defense Attack Panel
   console.log('\n--- SCENARIO 2: ADVERSARIAL PROMPT INJECTION DEFENSE (ATTACK PANEL) ---');
   const context2: TaskEvaluationContext = {
     taskId: 'tsk_exploit_injection_001',
-    cycleId: 'cyc_ai_live_001',
+    cycleId: 'cyc_ai_eval_001',
     debtorAgentId: 'agent_live_debtor',
     creditorAgentId: 'agent_live_creditor',
     title: 'Adversarial Jailbreak Payload Attempt',
@@ -89,27 +94,53 @@ async function runLiveAiEvaluation() {
     },
   };
 
+  const start2 = Date.now();
   const result2 = await LlmJudgeService.evaluateTask(context2, db);
-  console.log(`- Injection Detected : ${result2.injectionAttemptDetected ? 'YES (STRUCK BY ZERO-TRUST GUARD)' : 'NO'}`);
-  console.log(`- Validated Verdict  : ${result2.validatedVerdict} (Defended)`);
-  console.log(`- Clamped Credit Bps : ${result2.clampedCreditBps} bps`);
-  console.log(`- Authorized Credit  : $${(result2.authorizedCreditCents / 100).toFixed(2)} USD ($0.00 Disbursed)`);
-  console.log(`- Security Notes     :`, result2.reasons);
+  const latency2 = Date.now() - start2;
+
+  console.log(`- Heuristic Pre-flag : ${result2.injectionAttemptDetected ? 'YES (Triggered Security Guard)' : 'NO'}`);
+  console.log(`- Validated Verdict  : ${result2.validatedVerdict} (Defended by deterministic policy)`);
+  console.log(`- Disposition        : ${result2.obligationDisposition}`);
+  console.log(`- Debtor Obligation  : $${(result2.finalObligationCents / 100).toFixed(2)} USD ($0.00 owed for invalid deliverable)`);
+  console.log(`- Relief Awarded     : $${(result2.contractualCreditCents / 100).toFixed(2)} USD (${result2.clampedCreditBps} bps relief)`);
+  console.log(`- Security Guard Notes:`, result2.reasons);
 
   // Save evidence
   const evidenceDir = join(process.cwd(), 'docs', 'evidence');
   if (!existsSync(evidenceDir)) mkdirSync(evidenceDir, { recursive: true });
-  const evidencePath = join(evidenceDir, 'ai-judge-evaluation-live.json');
+
+  const evidenceFilename = isRealProviderConfigured
+    ? `ai-judge-real-${new Date().toISOString().replace(/[:.]/g, '-')}.json`
+    : 'ai-judge-offline-fallback.json';
+
+  const evidencePath = join(evidenceDir, evidenceFilename);
 
   writeFileSync(
     evidencePath,
     JSON.stringify(
       {
         timestamp: new Date().toISOString(),
-        legitimateScenario: result1,
-        adversarialInjectionDefense: result2,
-        zeroTrustClampEnforced: true,
-        aiOfflineFallbackVerified: !result1.aiAvailable,
+        executionClassification: isRealProviderConfigured ? 'REAL_LLM_PROVIDER_EXECUTION' : 'OFFLINE_DETERMINISTIC_FALLBACK',
+        providerSummary: {
+          configured: isRealProviderConfigured,
+          provider: result1.provider,
+          model: result1.model,
+        },
+        legitimateScenario: {
+          ...result1,
+          latencyMs: latency1,
+        },
+        adversarialInjectionScenario: {
+          ...result2,
+          latencyMs: latency2,
+          clampGuarantee: 'Deterministic code clamps credit to contract maxCreditBps and rejects any limit modifications regardless of model output.',
+        },
+        zeroTrustSafetyGuarantees: {
+          modelNeverTouchesMoney: true,
+          modelCannotModifyLimits: true,
+          passSemantics: 'PASS keeps original obligation unchanged; no credit relief issued.',
+          failSemantics: 'FAIL grants contractual credit relief up to contract maxCreditBps.',
+        },
       },
       null,
       2
@@ -119,8 +150,8 @@ async function runLiveAiEvaluation() {
 
   console.log(`\nEvidence Artifact Saved: ${evidencePath}`);
   console.log('========================================================================');
-  console.log('AI SLA JUDGE IN THE LOOP COMPLETE — AUDIT TRAIL VERIFIED');
+  console.log('SLA JUDGE IN THE LOOP COMPLETE — AUDIT TRAIL VERIFIED');
   console.log('========================================================================');
 }
 
-runLiveAiEvaluation().catch(console.error);
+runAiEvaluation().catch(console.error);

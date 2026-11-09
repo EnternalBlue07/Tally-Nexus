@@ -26,7 +26,7 @@ export interface StrictLlmJudgeResponse {
   verdict: 'PASS' | 'FAIL' | 'INCONCLUSIVE';
   confidence: number;
   reasons: string[];
-  proposedCreditBps: number;
+  proposedCreditBps?: number; // Credit relief basis points awarded to debtor if SLA fails
 }
 
 export interface LlmJudgeEvaluationResult {
@@ -40,11 +40,15 @@ export interface LlmJudgeEvaluationResult {
   rawJson: StrictLlmJudgeResponse | null;
   validatedVerdict: 'PASS' | 'FAIL' | 'REVIEW_REQUIRED';
   confidenceScore: number;
+  obligationDisposition: 'OBLIGATION_STANDS' | 'CONTRACTUAL_CREDIT_APPLIED' | 'DISPUTED_QUARANTINED';
+  finalObligationCents: number; // Amount debtor owes after adjudication (full amount on PASS, reduced on FAIL)
+  contractualCreditCents: number; // Credit relief granted to debtor (0 on PASS, up to contract max on FAIL)
   clampedCreditBps: number;
-  authorizedCreditCents: number;
+  authorizedCreditCents: number; // Legacy alias for contractualCreditCents
   reasons: string[];
   injectionAttemptDetected: boolean;
   evaluatedAt: string;
+  latencyMs?: number;
 }
 
 export class LlmJudgeService {
@@ -149,36 +153,31 @@ EVALUATION RULES:
       }
     }
 
-    // 4. Deterministic Clamping & Zero-Trust Safety Guard
+    // 4. Deterministic Clamping & Financial Semantics Guard
     let validatedVerdict: 'PASS' | 'FAIL' | 'REVIEW_REQUIRED' = 'REVIEW_REQUIRED';
     let confidenceScore = 0.5;
     let clampedCreditBps = 0;
+    let obligationDisposition: 'OBLIGATION_STANDS' | 'CONTRACTUAL_CREDIT_APPLIED' | 'DISPUTED_QUARANTINED' = 'DISPUTED_QUARANTINED';
+    let finalObligationCents = 0;
+    let contractualCreditCents = 0;
     const reasons: string[] = [];
 
     if (aiAvailable && rawJson) {
       confidenceScore = Math.max(0.0, Math.min(1.0, Number(rawJson.confidence) || 0.0));
 
-      // Rule: Prompt injection attempts automatically fail or force review
       if (injectionAttemptDetected) {
+        // Pre-flight heuristic or model defense caught adversarial injection
         validatedVerdict = 'FAIL';
         confidenceScore = 1.0;
-        clampedCreditBps = 0;
-        reasons.push('SECURITY ALERT: Adversarial prompt injection detected in deliverable evidence. Automatic FAIL.');
+        reasons.push('SECURITY ALERT: Adversarial prompt injection detected in deliverable payload. Automatic FAIL.');
       } else if (rawJson.verdict === 'PASS' && confidenceScore >= 0.85) {
         validatedVerdict = 'PASS';
-        // STRICT CLAMP: Credit cannot exceed signed contract maximum bps
-        clampedCreditBps = Math.min(
-          Math.max(0, Math.floor(rawJson.proposedCreditBps || 0)),
-          context.contractTerms.maxCreditBps
-        );
         reasons.push(...rawJson.reasons);
       } else if (rawJson.verdict === 'FAIL') {
         validatedVerdict = 'FAIL';
-        clampedCreditBps = 0;
         reasons.push(...rawJson.reasons);
       } else {
         validatedVerdict = 'REVIEW_REQUIRED';
-        clampedCreditBps = 0;
         reasons.push('AI verdict was INCONCLUSIVE or confidence score fell below the 0.85 clearing threshold.');
       }
     } else {
@@ -186,7 +185,7 @@ EVALUATION RULES:
       reasons.push(
         aiAvailable
           ? 'AI provider returned invalid JSON or timed out. Defaulted to deterministic fallback.'
-          : 'AI: OFFLINE (deterministic fallback) — No external LLM API key detected.'
+          : 'AI: OFFLINE (deterministic fallback) — No external LLM API key detected in .env.'
       );
 
       // Check evidence structure deterministically
@@ -196,12 +195,10 @@ EVALUATION RULES:
       if (hasContent && isClean) {
         validatedVerdict = 'PASS';
         confidenceScore = 0.90;
-        clampedCreditBps = context.contractTerms.maxCreditBps;
         reasons.push('Deterministic validation: Required payload structure and schema assertions satisfied.');
       } else {
         validatedVerdict = 'FAIL';
         confidenceScore = 1.0;
-        clampedCreditBps = 0;
         reasons.push(
           injectionAttemptDetected
             ? 'Adversarial prompt injection pattern detected in payload.'
@@ -210,9 +207,40 @@ EVALUATION RULES:
       }
     }
 
-    const authorizedCreditCents = Math.floor((context.amountCents * clampedCreditBps) / 10000);
+    // 5. Enforce Financial Invariant Semantics:
+    // PASS: Deliverable verified. Full original debtor obligation stands (0 bps credit relief).
+    // FAIL: Deliverable rejected. Contractual credit relief awarded to debtor up to signed maxCreditBps.
+    // REVIEW_REQUIRED: Quarantined in dispute. No automated fund movement or credit release.
+    if (validatedVerdict === 'PASS') {
+      obligationDisposition = 'OBLIGATION_STANDS';
+      finalObligationCents = context.amountCents;
+      contractualCreditCents = 0;
+      clampedCreditBps = 0;
+      reasons.push('SLA deliverable verified: Original contractual obligation stands in full (0 bps credit relief).');
+    } else if (validatedVerdict === 'FAIL') {
+      obligationDisposition = 'CONTRACTUAL_CREDIT_APPLIED';
+      // Deterministic clamp: debtor credit relief cannot exceed contract terms
+      const requestedCreditBps = rawJson?.proposedCreditBps ?? context.contractTerms.maxCreditBps;
+      clampedCreditBps = Math.min(
+        Math.max(0, Math.floor(requestedCreditBps)),
+        context.contractTerms.maxCreditBps
+      );
+      contractualCreditCents = Math.floor((context.amountCents * clampedCreditBps) / 10000);
+      finalObligationCents = Math.max(0, context.amountCents - contractualCreditCents);
+      reasons.push(
+        `SLA deliverable rejected: Contractual credit relief of ${clampedCreditBps} bps ($${(contractualCreditCents / 100).toFixed(2)}) applied against debtor obligation.`
+      );
+    } else {
+      obligationDisposition = 'DISPUTED_QUARANTINED';
+      finalObligationCents = 0;
+      contractualCreditCents = 0;
+      clampedCreditBps = 0;
+      reasons.push('SLA evaluation inconclusive: Task quarantined for manual operator dispute adjudication.');
+    }
 
-    // 5. Persist Cryptographic Event in Ledger Outbox
+    const authorizedCreditCents = contractualCreditCents; // Legacy alias for backward compatibility
+
+    // 6. Persist Cryptographic Event in Ledger Outbox
     db.prepare(`
       INSERT INTO system_events (event_id, event_type, cycle_id, payload_json)
       VALUES (?, 'AI_SLA_EVALUATED', ?, ?)
@@ -228,6 +256,9 @@ EVALUATION RULES:
         promptHash,
         validatedVerdict,
         confidenceScore,
+        obligationDisposition,
+        finalObligationCents,
+        contractualCreditCents,
         clampedCreditBps,
         authorizedCreditCents,
         injectionAttemptDetected,
@@ -246,6 +277,9 @@ EVALUATION RULES:
       rawJson,
       validatedVerdict,
       confidenceScore,
+      obligationDisposition,
+      finalObligationCents,
+      contractualCreditCents,
       clampedCreditBps,
       authorizedCreditCents,
       reasons,
@@ -379,3 +413,4 @@ EVALUATION RULES:
     }
   }
 }
+

@@ -53,6 +53,12 @@ export interface ScaleNetPosition {
   positionType: 'NET_DEBTOR' | 'NET_CREDITOR' | 'NET_ZERO';
 }
 
+export interface FeeModelConfig {
+  captureFixedCents?: number;
+  captureVariableRate?: number;
+  payoutFixedCents?: number;
+}
+
 export interface ScaleSimulationResult {
   simulationId: string;
   seed: number;
@@ -70,6 +76,20 @@ export interface ScaleSimulationResult {
   };
   feeComparison: {
     assumptions: string;
+    configuredRates: {
+      captureFixedCents: number;
+      captureVariableRate: number;
+      payoutFixedCents: number;
+      bilateralFixedFeeCents: number;
+    };
+    observedSandboxSample: {
+      captureId: string;
+      observedAmount: string;
+      observedFee: string;
+      payoutBatchId: string;
+      observedPayoutFeePerItem: string;
+      explanation: string;
+    };
     traditionalRailFeeCents: number;
     tallyNexusRailFeeCents: number;
     feeSavingsCents: number;
@@ -95,7 +115,8 @@ function createPrng(seed: number) {
 
 export function runScaleClearingSimulation(
   iouCount: number = 1500,
-  seed: number = 0x7a11
+  seed: number = 0x7a11,
+  feeConfig?: FeeModelConfig
 ): ScaleSimulationResult {
   const rand = createPrng(seed);
   const simulationId = `sim_scale_${Date.now()}`;
@@ -288,21 +309,21 @@ export function runScaleClearingSimulation(
   const transactionReductionRatio =
     Math.round((1 - settlementMovements.length / ious.length) * 10000) / 10000;
 
-  // 5. Financial Fee Savings Model (Empirically Calibrated to PayPal Sandbox)
-  // Measured in PayPal Sandbox Run:
-  // - Orders v2 Capture (7PV82720RX415822V): $0.49 fixed + 3.49% variable (standard merchant fee)
-  // - Payouts v1 Disbursement (N4M49PUHNCNQ4): $0.25 fixed per recipient item
-  // Traditional bilateral baseline: 74¢ fixed ($0.49 + $0.25) + 3.49% volume fee per transfer
-  const MEASURED_CAPTURE_FIXED_CENTS = 49;
-  const MEASURED_PAYOUT_FIXED_CENTS = 25;
-  const MEASURED_VARIABLE_RATE = 0.0349;
-  const BILATERAL_FIXED_FEE_CENTS = MEASURED_CAPTURE_FIXED_CENTS + MEASURED_PAYOUT_FIXED_CENTS; // 74c
+  // 5. Configurable Financial Fee Savings Model
+  // Default published PayPal commercial rates:
+  // - Orders v2 Capture: 49¢ fixed ($0.49) + 3.49% variable rate
+  // - Payouts v1 Disbursement: 25¢ fixed ($0.25) per recipient item
+  // - Bilateral baseline: 74¢ fixed (49¢ + 25¢) + 3.49% volume fee per transfer
+  const captureFixedCents = feeConfig?.captureFixedCents ?? 49;
+  const captureVariableRate = feeConfig?.captureVariableRate ?? 0.0349;
+  const payoutFixedCents = feeConfig?.payoutFixedCents ?? 25;
+  const bilateralFixedFeeCents = captureFixedCents + payoutFixedCents;
 
   const traditionalRailFeeCents = Math.round(
-    ious.length * BILATERAL_FIXED_FEE_CENTS + grossVolumeCents * MEASURED_VARIABLE_RATE
+    ious.length * bilateralFixedFeeCents + grossVolumeCents * captureVariableRate
   );
   const tallyNexusRailFeeCents = Math.round(
-    settlementMovements.length * BILATERAL_FIXED_FEE_CENTS + netVolumeCents * MEASURED_VARIABLE_RATE
+    settlementMovements.length * bilateralFixedFeeCents + netVolumeCents * captureVariableRate
   );
   const feeSavingsCents = traditionalRailFeeCents - tallyNexusRailFeeCents;
   const feeSavingsPercent =
@@ -324,8 +345,21 @@ export function runScaleClearingSimulation(
       isZeroSum: sumNetCents === 0,
     },
     feeComparison: {
-      assumptions:
-        'Measured in PayPal Sandbox run 7PV82720RX415822V / N4M49PUHNCNQ4: $0.49 capture + $0.25 payout fee (74¢ fixed) + 3.49% volume fee per bilateral transfer vs net cleared movements.',
+      assumptions: `Modeled using published PayPal rates: ${captureFixedCents}¢ capture + ${payoutFixedCents}¢ payout (${bilateralFixedFeeCents}¢ fixed) + ${(captureVariableRate * 100).toFixed(2)}% variable per bilateral transfer. Observed sandbox sample: $0.54 on $1.00 (reflects 1.5% international cross-border fee).`,
+      configuredRates: {
+        captureFixedCents,
+        captureVariableRate,
+        payoutFixedCents,
+        bilateralFixedFeeCents,
+      },
+      observedSandboxSample: {
+        captureId: '7PV82720RX415822V',
+        observedAmount: '$1.00 USD',
+        observedFee: '$0.54 USD',
+        payoutBatchId: 'N4M49PUHNCNQ4',
+        observedPayoutFeePerItem: '$0.25 USD',
+        explanation: 'Base PayPal Checkout rate is 3.49% + $0.49 (= $0.52); international cross-border merchant accounts incur +1.50% fee (4.99% + $0.49 = $0.54).'
+      },
       traditionalRailFeeCents,
       tallyNexusRailFeeCents,
       feeSavingsCents,

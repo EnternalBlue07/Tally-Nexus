@@ -62,6 +62,9 @@ export interface FlagshipDemoResult {
     promptHash: string;
     verdict: string;
     confidence: number;
+    obligationDisposition?: string;
+    finalObligationCents?: number;
+    contractualCreditCents?: number;
     clampedCreditBps: number;
     reasons: string[];
   };
@@ -206,7 +209,7 @@ export async function runFlagshipDemo(
   recordStep(
     1,
     'SLA AI Adjudication Complete',
-    `Evaluated 7 tasks. Flagship task adjudicated via ${aiResult.provider} (${aiResult.model}): ${aiResult.validatedVerdict} (Conf: ${(aiResult.confidenceScore * 100).toFixed(1)}%, Clamp: ${aiResult.clampedCreditBps} bps). 6 PASS ($130.00 gross debt), 1 FAIL ($20.00 rejected). 0 IOUs minted for failed task.`
+    `Evaluated 7 tasks. Flagship task adjudicated via ${aiResult.provider} (${aiResult.model}): ${aiResult.validatedVerdict} (Conf: ${(aiResult.confidenceScore * 100).toFixed(1)}%, Obligation Stands: $${(aiResult.finalObligationCents / 100).toFixed(2)}, Relief: ${aiResult.clampedCreditBps} bps). 6 PASS ($130.00 gross debt), 1 FAIL ($20.00 rejected). 0 IOUs minted for failed task.`
   );
 
   // =========================================================================
@@ -466,6 +469,9 @@ export async function runFlagshipDemo(
       promptHash: aiResult.promptHash,
       verdict: aiResult.validatedVerdict,
       confidence: aiResult.confidenceScore,
+      obligationDisposition: aiResult.obligationDisposition,
+      finalObligationCents: aiResult.finalObligationCents,
+      contractualCreditCents: aiResult.contractualCreditCents,
       clampedCreditBps: aiResult.clampedCreditBps,
       reasons: aiResult.reasons,
     },

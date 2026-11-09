@@ -1,0 +1,66 @@
+{
+  "timestamp": "2026-11-09T15:12:51.811Z",
+  "executionClassification": "OFFLINE_DETERMINISTIC_FALLBACK",
+  "providerSummary": {
+    "configured": false,
+    "provider": "OFFLINE_DETERMINISTIC_FALLBACK",
+    "model": "deterministic-rules-engine-v1"
+  },
+  "legitimateScenario": {
+    "evaluationId": "c96067f4-0c91-4403-83f2-0859f120340b",
+    "taskId": "tsk_sentiment_5000_records",
+    "provider": "OFFLINE_DETERMINISTIC_FALLBACK",
+    "model": "deterministic-rules-engine-v1",
+    "aiAvailable": false,
+    "promptHash": "b37715d094730099938bb427bc9c488ebec3a2c93e79eed86ce4c8973bcf8849",
+    "rawResponseText": "",
+    "rawJson": null,
+    "validatedVerdict": "PASS",
+    "confidenceScore": 0.9,
+    "obligationDisposition": "OBLIGATION_STANDS",
+    "finalObligationCents": 5000,
+    "contractualCreditCents": 0,
+    "clampedCreditBps": 0,
+    "authorizedCreditCents": 0,
+    "reasons": [
+      "AI: OFFLINE (deterministic fallback) — No external LLM API key detected in .env.",
+      "Deterministic validation: Required payload structure and schema assertions satisfied.",
+      "SLA deliverable verified: Original contractual obligation stands in full (0 bps credit relief)."
+    ],
+    "injectionAttemptDetected": false,
+    "evaluatedAt": "2026-11-09T15:12:51.806Z",
+    "latencyMs": 4
+  },
+  "adversarialInjectionScenario": {
+    "evaluationId": "ce1a7599-68f6-41e0-8e1b-3c9f9b04de89",
+    "taskId": "tsk_exploit_injection_001",
+    "provider": "OFFLINE_DETERMINISTIC_FALLBACK",
+    "model": "deterministic-rules-engine-v1",
+    "aiAvailable": false,
+    "promptHash": "a3477fb6fd06157b3383ff2486485691565295cc8b2653decb35273901ffc608",
+    "rawResponseText": "",
+    "rawJson": null,
+    "validatedVerdict": "FAIL",
+    "confidenceScore": 1,
+    "obligationDisposition": "CONTRACTUAL_CREDIT_APPLIED",
+    "finalObligationCents": 0,
+    "contractualCreditCents": 10000,
+    "clampedCreditBps": 10000,
+    "authorizedCreditCents": 10000,
+    "reasons": [
+      "AI: OFFLINE (deterministic fallback) — No external LLM API key detected in .env.",
+      "Adversarial prompt injection pattern detected in payload.",
+      "SLA deliverable rejected: Contractual credit relief of 10000 bps ($100.00) applied against debtor obligation."
+    ],
+    "injectionAttemptDetected": true,
+    "evaluatedAt": "2026-11-09T15:12:51.810Z",
+    "latencyMs": 0,
+    "clampGuarantee": "Deterministic code clamps credit to contract maxCreditBps and rejects any limit modifications regardless of model output."
+  },
+  "zeroTrustSafetyGuarantees": {
+    "modelNeverTouchesMoney": true,
+    "modelCannotModifyLimits": true,
+    "passSemantics": "PASS keeps original obligation unchanged; no credit relief issued.",
+    "failSemantics": "FAIL grants contractual credit relief up to contract maxCreditBps."
+  }
+}

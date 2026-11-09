@@ -1,20 +1,24 @@
 {
-  "evaluationId": "244c9a11-f111-4519-80a2-48cd7ab3f515",
-  "taskId": "cyc_flagship_1794234473004_tsk1",
+  "evaluationId": "81c5eb55-6040-4210-9e63-8385d0e9c73d",
+  "taskId": "cyc_flagship_1794237162546_tsk1",
   "provider": "OFFLINE_DETERMINISTIC_FALLBACK",
   "model": "deterministic-rules-engine-v1",
   "aiAvailable": false,
-  "promptHash": "86581a558245fd346ed4998b10708fc78065bd735302ecb311bf09c944745f36",
+  "promptHash": "4cd3a87055a5f65eaf013a2c5c7a3c9cd5123378d69a88fe2144fc2abb9ba0d7",
   "rawResponseText": "",
   "rawJson": null,
   "validatedVerdict": "PASS",
   "confidenceScore": 0.9,
-  "clampedCreditBps": 10000,
-  "authorizedCreditCents": 4000,
+  "obligationDisposition": "OBLIGATION_STANDS",
+  "finalObligationCents": 4000,
+  "contractualCreditCents": 0,
+  "clampedCreditBps": 0,
+  "authorizedCreditCents": 0,
   "reasons": [
-    "AI: OFFLINE (deterministic fallback) — No external LLM API key detected.",
-    "Deterministic validation: Required payload structure and schema assertions satisfied."
+    "AI: OFFLINE (deterministic fallback) — No external LLM API key detected in .env.",
+    "Deterministic validation: Required payload structure and schema assertions satisfied.",
+    "SLA deliverable verified: Original contractual obligation stands in full (0 bps credit relief)."
   ],
   "injectionAttemptDetected": false,
-  "evaluatedAt": "2026-11-09T14:27:53.013Z"
+  "evaluatedAt": "2026-11-09T15:12:42.556Z"
 }

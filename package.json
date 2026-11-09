@@ -11,7 +11,7 @@
     "test": "vitest run",
     "test:live": "tsx scripts/dev/test-live-verify.ts",
     "cycle:live": "tsx scripts/dev/run-conserved-live-cycle.ts",
-    "judge:live": "tsx scripts/dev/run-ai-judge-live.ts",
+    "judge:evaluate": "tsx scripts/dev/run-ai-judge.ts",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "demo:flagship": "tsx src/demo/cli.ts",
