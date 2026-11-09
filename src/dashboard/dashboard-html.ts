@@ -867,10 +867,14 @@ export function getDashboardHtml(): string {
       toast.innerHTML = 
         '<div class="toast-header">' +
           '<div class="toast-title"><span>' + icon + '</span> <span>' + escapeHtml(title) + '</span></div>' +
-          '<button class="toast-close" onclick="this.closest(\'.toast\').remove()">×</button>' +
+          '<button class="toast-close" type="button">×</button>' +
         '</div>' +
         '<div class="toast-body">' + escapeHtml(message) + '</div>' +
         detailsHtml;
+      const closeBtn = toast.querySelector('.toast-close');
+      if (closeBtn) {
+        closeBtn.onclick = function() { toast.remove(); };
+      }
       container.appendChild(toast);
       if (type !== 'error') {
         setTimeout(() => { if (toast.parentNode) toast.remove(); }, 6500);

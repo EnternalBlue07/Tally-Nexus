@@ -1,24 +1,41 @@
 {
-  "evaluationId": "74f45965-b531-4690-8fea-b00b0114b4bb",
-  "taskId": "cyc_flagship_1794242691693_tsk1",
-  "provider": "OFFLINE_DETERMINISTIC_FALLBACK",
-  "model": "deterministic-rules-engine-v1",
-  "aiAvailable": false,
-  "promptHash": "c02209929593e6a5a265105fbcb9cd045f10d28957d0d50ff23996a4524eb6fb",
-  "rawResponseText": "",
-  "rawJson": null,
-  "validatedVerdict": "PASS",
-  "confidenceScore": 0.9,
-  "obligationDisposition": "OBLIGATION_STANDS",
-  "finalObligationCents": 4000,
-  "contractualCreditCents": 0,
-  "clampedCreditBps": 0,
-  "authorizedCreditCents": 0,
+  "evaluationId": "2d213b46-c4ce-4023-a3d0-4305b28e1ace",
+  "taskId": "cyc_flagship_1794249891110_tsk1",
+  "provider": "FREEMODEL",
+  "model": "gemini-3.7-flash",
+  "modelUsed": "gemini-3.7-flash",
+  "fallbackTriggered": false,
+  "aiAvailable": true,
+  "promptHash": "efa014789367b4cafd4e159112998b8bd4106e0a78571ac02df5363b429a1665",
+  "rawResponseText": "{\"verdict\":\"FAIL\",\"confidence\":0.99,\"reasons\":[\"The submitted sha256PayloadDigest e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 is the SHA-256 hash of an empty payload, so no STRUCTURED_FINANCIAL_SENTIMENT deliverable was actually submitted.\",\"The claim of recordsAggregated=5000 is unsupported because the payload digest corresponds to zero content and cannot contain 5000 records.\",\"The evidence only contains metadata fields; it does not provide the required Market Metrics Dataset (JSON) content for SLA verification.\"],\"proposedCreditBps\":10000}",
+  "rawJson": {
+    "verdict": "FAIL",
+    "confidence": 0.99,
+    "reasons": [
+      "The submitted sha256PayloadDigest e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 is the SHA-256 hash of an empty payload, so no STRUCTURED_FINANCIAL_SENTIMENT deliverable was actually submitted.",
+      "The claim of recordsAggregated=5000 is unsupported because the payload digest corresponds to zero content and cannot contain 5000 records.",
+      "The evidence only contains metadata fields; it does not provide the required Market Metrics Dataset (JSON) content for SLA verification."
+    ],
+    "proposedCreditBps": 10000
+  },
+  "validatedVerdict": "FAIL",
+  "confidenceScore": 0.99,
+  "obligationDisposition": "CONTRACTUAL_CREDIT_APPLIED",
+  "finalObligationCents": 0,
+  "contractualCreditCents": 4000,
+  "clampedCreditBps": 10000,
+  "authorizedCreditCents": 4000,
   "reasons": [
-    "AI: OFFLINE (deterministic fallback) — No external LLM API key detected in .env.",
-    "Deterministic validation: Required payload structure and schema assertions satisfied.",
-    "SLA deliverable verified: Original contractual obligation stands in full (0 bps credit relief)."
+    "The submitted sha256PayloadDigest e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 is the SHA-256 hash of an empty payload, so no STRUCTURED_FINANCIAL_SENTIMENT deliverable was actually submitted.",
+    "The claim of recordsAggregated=5000 is unsupported because the payload digest corresponds to zero content and cannot contain 5000 records.",
+    "The evidence only contains metadata fields; it does not provide the required Market Metrics Dataset (JSON) content for SLA verification.",
+    "SLA deliverable rejected: Contractual credit relief of 10000 bps ($40.00) applied against debtor obligation."
   ],
   "injectionAttemptDetected": false,
-  "evaluatedAt": "2026-11-09T16:44:51.702Z"
+  "evaluatedAt": "2026-11-09T18:44:51.133Z",
+  "tokenUsage": {
+    "promptTokens": 467,
+    "completionTokens": 920,
+    "totalTokens": 1387
+  }
 }
