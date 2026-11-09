@@ -166,14 +166,16 @@ export async function runFlagshipDemo(
     db
   );
 
-  // Save authentic AI Judge evidence artifact
-  try {
-    const evidenceDir = join(process.cwd(), 'docs', 'evidence');
-    if (!existsSync(evidenceDir)) mkdirSync(evidenceDir, { recursive: true });
-    const aiEvidencePath = join(evidenceDir, 'ai-judge-flagship-evaluation.json');
-    writeFileSync(aiEvidencePath, JSON.stringify(aiResult, null, 2), 'utf-8');
-  } catch {
-    // Non-fatal if filesystem is restricted
+  // Save authentic AI Judge evidence artifact (skipped during test runs to avoid dirtying git)
+  if (process.env.NODE_ENV !== 'test') {
+    try {
+      const evidenceDir = join(process.cwd(), 'docs', 'evidence');
+      if (!existsSync(evidenceDir)) mkdirSync(evidenceDir, { recursive: true });
+      const aiEvidencePath = join(evidenceDir, 'ai-judge-flagship-evaluation.json');
+      writeFileSync(aiEvidencePath, JSON.stringify(aiResult, null, 2), 'utf-8');
+    } catch {
+      // Non-fatal if filesystem is restricted
+    }
   }
 
   for (const t of taskDefinitions) {
