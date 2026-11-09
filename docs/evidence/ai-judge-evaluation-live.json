@@ -1,0 +1,45 @@
+{
+  "timestamp": "2026-11-09T14:27:54.722Z",
+  "legitimateScenario": {
+    "evaluationId": "ec698245-1b52-47a4-bafd-afeb5065daa6",
+    "taskId": "tsk_sentiment_5000_records",
+    "provider": "OFFLINE_DETERMINISTIC_FALLBACK",
+    "model": "deterministic-rules-engine-v1",
+    "aiAvailable": false,
+    "promptHash": "b37715d094730099938bb427bc9c488ebec3a2c93e79eed86ce4c8973bcf8849",
+    "rawResponseText": "",
+    "rawJson": null,
+    "validatedVerdict": "PASS",
+    "confidenceScore": 0.9,
+    "clampedCreditBps": 10000,
+    "authorizedCreditCents": 5000,
+    "reasons": [
+      "AI: OFFLINE (deterministic fallback) — No external LLM API key detected.",
+      "Deterministic validation: Required payload structure and schema assertions satisfied."
+    ],
+    "injectionAttemptDetected": false,
+    "evaluatedAt": "2026-11-09T14:27:54.717Z"
+  },
+  "adversarialInjectionDefense": {
+    "evaluationId": "af57078a-38d3-4ee4-9bbf-aa6ecdc81d73",
+    "taskId": "tsk_exploit_injection_001",
+    "provider": "OFFLINE_DETERMINISTIC_FALLBACK",
+    "model": "deterministic-rules-engine-v1",
+    "aiAvailable": false,
+    "promptHash": "a3477fb6fd06157b3383ff2486485691565295cc8b2653decb35273901ffc608",
+    "rawResponseText": "",
+    "rawJson": null,
+    "validatedVerdict": "FAIL",
+    "confidenceScore": 1,
+    "clampedCreditBps": 0,
+    "authorizedCreditCents": 0,
+    "reasons": [
+      "AI: OFFLINE (deterministic fallback) — No external LLM API key detected.",
+      "Adversarial prompt injection pattern detected in payload."
+    ],
+    "injectionAttemptDetected": true,
+    "evaluatedAt": "2026-11-09T14:27:54.721Z"
+  },
+  "zeroTrustClampEnforced": true,
+  "aiOfflineFallbackVerified": true
+}

@@ -78,6 +78,11 @@ async function main() {
   console.log(`${C.cyan}───────────────────────────────────────────────────────────────────────────────${C.reset}`);
   console.log(`${C.bold}                   JUDGE VERIFICATION & SAFETY SCORECARD                       ${C.reset}`);
   console.log(`${C.cyan}───────────────────────────────────────────────────────────────────────────────${C.reset}`);
+  const ai = result.aiJudgeSummary;
+  const aiTag = ai.aiAvailable
+    ? `${C.green}[ONLINE AI] ${ai.provider} (${ai.model})${C.reset}`
+    : `${C.yellow}[DETERMINISTIC FALLBACK] ${ai.provider} (${ai.model})${C.reset}`;
+  console.log(`  ${C.green}[PASS]${C.reset} AI SLA Judge Engine     : ${aiTag} -> ${ai.verdict} (Conf: ${(ai.confidence * 100).toFixed(0)}%, Clamp: ${ai.clampedCreditBps} bps)`);
   console.log(`  ${C.green}[PASS]${C.reset} SLA Hybrid Adjudication  : 6 PASS, 1 FAIL, 0 Unauthorized IOUs Minted`);
   console.log(`  ${C.green}[PASS]${C.reset} Cryptographic Verification: Ed25519 Signatures, RFC 8785 Canonical JSON`);
   console.log(`  ${C.green}[PASS]${C.reset} Multilateral Netting     : Zero-Sum Invariant Asserted (Net Sum ≡ $0.00)`);

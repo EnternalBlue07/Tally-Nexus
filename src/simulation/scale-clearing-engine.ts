@@ -74,6 +74,7 @@ export interface ScaleSimulationResult {
     tallyNexusRailFeeCents: number;
     feeSavingsCents: number;
     feeSavingsPercent: number;
+    measuredSandboxRunRef?: string;
   };
   agents: ScaleAgent[];
   netPositions: ScaleNetPosition[];
@@ -287,16 +288,21 @@ export function runScaleClearingSimulation(
   const transactionReductionRatio =
     Math.round((1 - settlementMovements.length / ious.length) * 10000) / 10000;
 
-  // 5. Configurable Financial Fee Savings Model
-  // Traditional assumption: $0.30 fixed + 2.9% variable per bilateral payment transfer
-  const FIXED_FEE_CENTS = 30;
-  const VARIABLE_FEE_RATE = 0.029;
+  // 5. Financial Fee Savings Model (Empirically Calibrated to PayPal Sandbox)
+  // Measured in PayPal Sandbox Run:
+  // - Orders v2 Capture (7PV82720RX415822V): $0.49 fixed + 3.49% variable (standard merchant fee)
+  // - Payouts v1 Disbursement (N4M49PUHNCNQ4): $0.25 fixed per recipient item
+  // Traditional bilateral baseline: 74¢ fixed ($0.49 + $0.25) + 3.49% volume fee per transfer
+  const MEASURED_CAPTURE_FIXED_CENTS = 49;
+  const MEASURED_PAYOUT_FIXED_CENTS = 25;
+  const MEASURED_VARIABLE_RATE = 0.0349;
+  const BILATERAL_FIXED_FEE_CENTS = MEASURED_CAPTURE_FIXED_CENTS + MEASURED_PAYOUT_FIXED_CENTS; // 74c
 
   const traditionalRailFeeCents = Math.round(
-    ious.length * FIXED_FEE_CENTS + grossVolumeCents * VARIABLE_FEE_RATE
+    ious.length * BILATERAL_FIXED_FEE_CENTS + grossVolumeCents * MEASURED_VARIABLE_RATE
   );
   const tallyNexusRailFeeCents = Math.round(
-    settlementMovements.length * FIXED_FEE_CENTS + netVolumeCents * VARIABLE_FEE_RATE
+    settlementMovements.length * BILATERAL_FIXED_FEE_CENTS + netVolumeCents * MEASURED_VARIABLE_RATE
   );
   const feeSavingsCents = traditionalRailFeeCents - tallyNexusRailFeeCents;
   const feeSavingsPercent =
@@ -319,11 +325,12 @@ export function runScaleClearingSimulation(
     },
     feeComparison: {
       assumptions:
-        'Standard payment rail baseline: $0.30 fixed fee + 2.9% volume fee per bilateral transfer vs net settled movements.',
+        'Measured in PayPal Sandbox run 7PV82720RX415822V / N4M49PUHNCNQ4: $0.49 capture + $0.25 payout fee (74¢ fixed) + 3.49% volume fee per bilateral transfer vs net cleared movements.',
       traditionalRailFeeCents,
       tallyNexusRailFeeCents,
       feeSavingsCents,
       feeSavingsPercent,
+      measuredSandboxRunRef: 'Capture 7PV82720RX415822V (Orders v2) & Batch N4M49PUHNCNQ4 (Payouts v1)',
     },
     agents,
     netPositions,

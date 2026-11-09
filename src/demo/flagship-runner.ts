@@ -1,10 +1,12 @@
 import { DatabaseManager } from '../db/index.js';
 import { generateAgentKeyPair, signPayload } from '../crypto/index.js';
 import { IouService } from '../ious/iou-service.js';
-import { SlaJudge } from '../judge/sla-judge.js';
+import { SlaJudge, LlmJudgeService } from '../judge/index.js';
 import { NettingEngine } from '../netting/netting-engine.js';
 import { FinancialFirewall } from '../firewall/financial-firewall.js';
 import { LedgerCore } from '../ledger/ledger-core.js';
+import { existsSync, writeFileSync, mkdirSync } from 'node:fs';
+import { join } from 'node:path';
 import {
   IPayPalClient,
   MockPayPalClient,
@@ -53,6 +55,16 @@ export interface FlagshipDemoResult {
     settlementCashCents: number;
   };
   merkleSeal: string;
+  aiJudgeSummary: {
+    provider: string;
+    model: string;
+    aiAvailable: boolean;
+    promptHash: string;
+    verdict: string;
+    confidence: number;
+    clampedCreditBps: number;
+    reasons: string[];
+  };
   timeline: Array<{ scene: number; name: string; timestamp: string; detail: string }>;
 }
 
@@ -122,9 +134,44 @@ export async function runFlagshipDemo(
     `).run(t.id, cycleId, t.debtor, t.creditor, t.title, t.sla, t.amount);
   }
 
-  // SLA Judging
+  // SLA Judging with AI In The Loop
   let slaPassed = 0;
   let slaFailed = 0;
+
+  // Real AI evaluation for the flagship autonomous task
+  const flagshipTask = taskDefinitions[0];
+  const aiResult = await LlmJudgeService.evaluateTask(
+    {
+      taskId: flagshipTask.id,
+      cycleId,
+      debtorAgentId: flagshipTask.debtor,
+      creditorAgentId: flagshipTask.creditor,
+      title: flagshipTask.title,
+      amountCents: flagshipTask.amount,
+      deliverableEvidence: {
+        recordsAggregated: 5000,
+        sentimentSchemaVersion: '1.2.0',
+        sha256PayloadDigest: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+        inferenceLatencyMs: 142,
+      },
+      contractTerms: {
+        contractRef: flagshipTask.sla,
+        expectedDeliverableType: 'STRUCTURED_FINANCIAL_SENTIMENT',
+        maxCreditBps: 10000,
+      },
+    },
+    db
+  );
+
+  // Save authentic AI Judge evidence artifact
+  try {
+    const evidenceDir = join(process.cwd(), 'docs', 'evidence');
+    if (!existsSync(evidenceDir)) mkdirSync(evidenceDir, { recursive: true });
+    const aiEvidencePath = join(evidenceDir, 'ai-judge-flagship-evaluation.json');
+    writeFileSync(aiEvidencePath, JSON.stringify(aiResult, null, 2), 'utf-8');
+  } catch {
+    // Non-fatal if filesystem is restricted
+  }
 
   for (const t of taskDefinitions) {
     if (t.valid) {
@@ -133,8 +180,10 @@ export async function runFlagshipDemo(
           taskId: t.id,
           evaluatorType: 'HYBRID',
           criteriaCheckPassed: true,
-          confidenceScore: 0.98,
-          evaluatorNotes: 'Deliverable adheres strictly to contract SLA specifications.',
+          confidenceScore: t.id === flagshipTask.id ? aiResult.confidenceScore : 0.98,
+          evaluatorNotes: t.id === flagshipTask.id
+            ? `AI Adjudicator: ${aiResult.provider} (${aiResult.model}) -> ${aiResult.validatedVerdict}. Clamped: ${aiResult.clampedCreditBps} bps.`
+            : 'Deliverable adheres strictly to contract SLA specifications.',
         },
         db
       );
@@ -156,8 +205,8 @@ export async function runFlagshipDemo(
 
   recordStep(
     1,
-    'SLA Adjudication Complete',
-    `Evaluated 7 tasks: 6 PASS ($130.00 gross debt), 1 FAIL ($20.00 rejected). 0 IOUs minted for failed task.`
+    'SLA AI Adjudication Complete',
+    `Evaluated 7 tasks. Flagship task adjudicated via ${aiResult.provider} (${aiResult.model}): ${aiResult.validatedVerdict} (Conf: ${(aiResult.confidenceScore * 100).toFixed(1)}%, Clamp: ${aiResult.clampedCreditBps} bps). 6 PASS ($130.00 gross debt), 1 FAIL ($20.00 rejected). 0 IOUs minted for failed task.`
   );
 
   // =========================================================================
@@ -410,6 +459,16 @@ export async function runFlagshipDemo(
       settlementCashCents: settlementCash.netDebitBalance,
     },
     merkleSeal,
+    aiJudgeSummary: {
+      provider: aiResult.provider,
+      model: aiResult.model,
+      aiAvailable: aiResult.aiAvailable,
+      promptHash: aiResult.promptHash,
+      verdict: aiResult.validatedVerdict,
+      confidence: aiResult.confidenceScore,
+      clampedCreditBps: aiResult.clampedCreditBps,
+      reasons: aiResult.reasons,
+    },
     timeline,
   };
 }

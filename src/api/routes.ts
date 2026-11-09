@@ -971,6 +971,17 @@ export function createApiRouter(
 
       const storedEvidenceMatched = checkStoredEvidence(captureId);
 
+      // SECURITY ALLOWLIST GUARD: Only verify IDs present in the ledger or canonical evidence
+      if (!dbOrder && !storedEvidenceMatched) {
+        sendError(
+          res,
+          404,
+          'NOT_FOUND',
+          `Identifier '${captureId}' is not authorized. Only records recorded in the settlement ledger or canonical evidence are permitted.`
+        );
+        return;
+      }
+
       if (paypalClient && typeof paypalClient.getCapture === 'function') {
         let result = await paypalClient.getCapture(captureId);
         if (result.httpStatus === 404 && typeof paypalClient.getOrder === 'function') {
@@ -1038,6 +1049,17 @@ export function createApiRouter(
       `).get(batchId, batchId, batchId) as any;
 
       const storedEvidenceMatched = checkStoredEvidence(batchId);
+
+      // SECURITY ALLOWLIST GUARD: Only verify IDs present in the ledger or canonical evidence
+      if (!dbPayout && !storedEvidenceMatched) {
+        sendError(
+          res,
+          404,
+          'NOT_FOUND',
+          `Payout Batch '${batchId}' is not authorized. Only records recorded in the settlement ledger or canonical evidence are permitted.`
+        );
+        return;
+      }
 
       if (paypalClient && typeof paypalClient.getPayoutBatchRaw === 'function') {
         const result = await paypalClient.getPayoutBatchRaw(batchId);

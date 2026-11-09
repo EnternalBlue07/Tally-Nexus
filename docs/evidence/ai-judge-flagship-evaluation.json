@@ -1,0 +1,20 @@
+{
+  "evaluationId": "244c9a11-f111-4519-80a2-48cd7ab3f515",
+  "taskId": "cyc_flagship_1794234473004_tsk1",
+  "provider": "OFFLINE_DETERMINISTIC_FALLBACK",
+  "model": "deterministic-rules-engine-v1",
+  "aiAvailable": false,
+  "promptHash": "86581a558245fd346ed4998b10708fc78065bd735302ecb311bf09c944745f36",
+  "rawResponseText": "",
+  "rawJson": null,
+  "validatedVerdict": "PASS",
+  "confidenceScore": 0.9,
+  "clampedCreditBps": 10000,
+  "authorizedCreditCents": 4000,
+  "reasons": [
+    "AI: OFFLINE (deterministic fallback) — No external LLM API key detected.",
+    "Deterministic validation: Required payload structure and schema assertions satisfied."
+  ],
+  "injectionAttemptDetected": false,
+  "evaluatedAt": "2026-11-09T14:27:53.013Z"
+}

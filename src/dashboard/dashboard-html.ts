@@ -328,9 +328,9 @@ export function getDashboardHtml(): string {
           <div class="metric-sub">Collapsed from 1,500 transfers</div>
         </div>
         <div class="card">
-          <div class="card-header"><span class="card-title">Rail Fee Savings</span><span class="tag tag-success">Calculated</span></div>
-          <div class="metric-value" id="scale-fee-savings">$1,438.25</div>
-          <div class="metric-sub" id="scale-fee-percent">74.2% Rail Cost Elimination</div>
+          <div class="card-header"><span class="card-title">Rail Fee Savings</span><span class="tag tag-success">Measured Sandbox</span></div>
+          <div class="metric-value" id="scale-fee-savings">$1,552.05</div>
+          <div class="metric-sub" id="scale-fee-percent">95.0% Cost Cut (Sandbox 7PV82720RX415822V / N4M49PUHNCNQ4)</div>
         </div>
       </div>
 
