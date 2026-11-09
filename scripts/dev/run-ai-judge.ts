@@ -67,11 +67,15 @@ async function runAiEvaluation() {
   console.log(`- Provider / Model   : ${result1.provider} (${result1.model})`);
   console.log(`- AI Available       : ${result1.aiAvailable}`);
   console.log(`- Latency            : ${latency1}ms`);
+  if (result1.tokenUsage) {
+    console.log(`- Token Usage        : Prompt: ${result1.tokenUsage.promptTokens}, Completion: ${result1.tokenUsage.completionTokens}, Total: ${result1.tokenUsage.totalTokens}`);
+  }
   console.log(`- Prompt Hash        : ${result1.promptHash.slice(0, 32)}...`);
   console.log(`- Validated Verdict  : ${result1.validatedVerdict}`);
   console.log(`- Disposition        : ${result1.obligationDisposition}`);
   console.log(`- Debtor Obligation  : $${(result1.finalObligationCents / 100).toFixed(2)} USD (Full obligation stands on PASS)`);
   console.log(`- Debtor Credit      : $${(result1.contractualCreditCents / 100).toFixed(2)} USD (${result1.clampedCreditBps} bps relief)`);
+  console.log(`- Raw Model Response : ${result1.rawResponseText}`);
   console.log(`- Adjudication Notes :`, result1.reasons);
 
   // SCENARIO 2: Adversarial Prompt Injection Defense Attack Panel
@@ -98,11 +102,16 @@ async function runAiEvaluation() {
   const result2 = await LlmJudgeService.evaluateTask(context2, db);
   const latency2 = Date.now() - start2;
 
+  console.log(`- Latency            : ${latency2}ms`);
+  if (result2.tokenUsage) {
+    console.log(`- Token Usage        : Prompt: ${result2.tokenUsage.promptTokens}, Completion: ${result2.tokenUsage.completionTokens}, Total: ${result2.tokenUsage.totalTokens}`);
+  }
   console.log(`- Heuristic Pre-flag : ${result2.injectionAttemptDetected ? 'YES (Triggered Security Guard)' : 'NO'}`);
   console.log(`- Validated Verdict  : ${result2.validatedVerdict} (Defended by deterministic policy)`);
   console.log(`- Disposition        : ${result2.obligationDisposition}`);
   console.log(`- Debtor Obligation  : $${(result2.finalObligationCents / 100).toFixed(2)} USD ($0.00 owed for invalid deliverable)`);
   console.log(`- Relief Awarded     : $${(result2.contractualCreditCents / 100).toFixed(2)} USD (${result2.clampedCreditBps} bps relief)`);
+  console.log(`- Raw Model Response : ${result2.rawResponseText}`);
   console.log(`- Security Guard Notes:`, result2.reasons);
 
   // Save evidence

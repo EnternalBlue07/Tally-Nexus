@@ -63,3 +63,4 @@ SOFTWARE.
 - **License:** MIT License
 - **Copyright:** (c) 2010-2020 Robert Kieffer and other contributors
 - **Usage:** RFC 4122 UUID generation for settlement cycles and idempotency keys.
+
