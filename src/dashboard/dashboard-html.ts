@@ -13,28 +13,43 @@ export function getDashboardHtml(): string {
 
   <style>
     :root {
-      --bg-dark: #0a0f1d;
-      --card-bg: #111827;
-      --card-border: #1f2937;
-      --text-main: #f9fafb;
-      --text-muted: #9ca3af;
-      --accent-cyan: #06b6d4;
-      --accent-emerald: #10b981;
-      --accent-amber: #f59e0b;
-      --accent-rose: #ef4444;
-      --accent-indigo: #6366f1;
+      /* Institutional Command Centre Palette */
+      --bg-dark: #080D16;
+      --card-bg: #101827;
+      --surface-secondary: #141F30;
+      --surface-elevated: #19263A;
+      --surface-hover: rgba(255, 255, 255, 0.04);
+      --card-border: rgba(148, 163, 184, 0.13);
+      --card-border-active: rgba(67, 214, 207, 0.35);
+
+      --text-main: #F4F7FB;
+      --text-muted: #A3B0C2;
+      --text-subtle: #738197;
+
+      --accent-turquoise: #43D6CF;
+      --accent-cyan: #38BDF8;
+      --accent-emerald: #32C48D;
+      --accent-amber: #F3B65B;
+      --accent-rose: #F16B78;
+      --accent-indigo: #818CF8;
+
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+      --shadow-card: 0 4px 18px rgba(0, 0, 0, 0.35);
+      --shadow-modal: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 25px rgba(67, 214, 207, 0.1);
+      --shadow-glow: 0 0 16px rgba(67, 214, 207, 0.25);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background-color: var(--bg-dark);
       color: var(--text-main);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       line-height: 1.5;
       padding-bottom: 60px;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
     header {
-      background: linear-gradient(180deg, #131c31 0%, #0a0f1d 100%);
+      background: linear-gradient(180deg, #101827 0%, #080D16 100%);
       border-bottom: 1px solid var(--card-border);
       padding: 14px 28px;
       display: flex;
@@ -45,134 +60,158 @@ export function getDashboardHtml(): string {
     }
     .brand { display: flex; align-items: center; gap: 14px; }
     .brand-icon {
-      width: 44px; height: 44px; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo));
-      border-radius: 12px; display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 22px; color: #fff; box-shadow: 0 4px 16px rgba(6,182,212,0.45);
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, var(--accent-turquoise) 0%, var(--accent-cyan) 50%, var(--accent-indigo) 100%);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 20px; color: #041315;
+      box-shadow: 0 4px 18px rgba(67, 214, 207, 0.35);
     }
-    .brand-title { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
-    .brand-subtitle { font-size: 13px; color: var(--text-muted); }
+    .brand-title { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; color: var(--text-main); }
+    .brand-subtitle { font-size: 12.5px; color: var(--text-muted); }
     .header-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
     .badge {
       display: inline-flex; align-items: center; gap: 6px;
-      padding: 6px 14px; border-radius: 9999px; font-size: 12px; font-weight: 600;
+      padding: 6px 14px; border-radius: 9999px; font-size: 11.5px; font-weight: 600;
+      letter-spacing: 0.2px;
     }
-    .badge-sandbox { background: rgba(6,182,212,0.15); color: var(--accent-cyan); border: 1px solid rgba(6,182,212,0.3); }
-    .badge-live-stream { background: rgba(16,185,129,0.15); color: var(--accent-emerald); border: 1px solid rgba(16,185,129,0.3); }
-    .badge-sponsor { background: rgba(99,102,241,0.18); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.35); }
-    .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.85); } }
+    .badge-sandbox { background: rgba(56,189,248,0.12); color: var(--accent-cyan); border: 1px solid rgba(56,189,248,0.3); }
+    .badge-live-stream { background: rgba(50,196,141,0.12); color: var(--accent-emerald); border: 1px solid rgba(50,196,141,0.3); }
+    .badge-sponsor { background: rgba(129,140,248,0.14); color: #c7d2fe; border: 1px solid rgba(129,140,248,0.3); }
+    .pulse-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.35; transform: scale(0.8); } }
 
     /* Navigation Tabs (Fintech High-Density Terminal) */
     nav.nav-tabs {
       display: flex; gap: 4px; padding: 8px 24px 0 24px;
-      border-bottom: 1px solid rgba(255,255,255,0.08); background: #090e1a;
+      border-bottom: 1px solid var(--card-border); background: #080D16;
       overflow-x: auto; overflow-y: hidden; white-space: nowrap;
-      scrollbar-width: thin; scrollbar-color: rgba(6,182,212,0.3) transparent;
+      scrollbar-width: thin; scrollbar-color: rgba(67,214,207,0.35) transparent;
       -webkit-overflow-scrolling: touch;
     }
-    nav.nav-tabs::-webkit-scrollbar { height: 4px; }
-    nav.nav-tabs::-webkit-scrollbar-thumb { background: rgba(6,182,212,0.3); border-radius: 4px; }
+    nav.nav-tabs::-webkit-scrollbar { height: 3px; }
+    nav.nav-tabs::-webkit-scrollbar-thumb { background: rgba(67,214,207,0.35); border-radius: 4px; }
     .tab-btn {
       background: none; border: none; color: var(--text-muted);
-      padding: 9px 14px; font-size: 13px; font-weight: 600; cursor: pointer;
+      padding: 9px 14px; font-size: 12.5px; font-weight: 600; cursor: pointer;
       border-bottom: 2px solid transparent; border-radius: 6px 6px 0 0;
       transition: all 0.15s ease; white-space: nowrap; letter-spacing: -0.01em;
     }
-    .tab-btn:hover { color: #f1f5f9; background: rgba(255,255,255,0.03); }
-    .tab-btn.active { color: var(--accent-cyan); border-bottom: 2px solid var(--accent-cyan); background: rgba(6,182,212,0.08); }
+    .tab-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.03); }
+    .tab-btn.active {
+      color: var(--accent-turquoise);
+      border-bottom: 2px solid var(--accent-turquoise);
+      background: rgba(67,214,207,0.08);
+    }
 
-    main.container { max-width: 1400px; margin: 0 auto; padding: 24px 20px; }
+    main.container { max-width: 1400px; margin: 0 auto; padding: 22px 20px; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
     /* Grid & Cards */
     .metrics-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; margin-bottom: 24px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin-bottom: 22px;
     }
     .card {
       background: var(--card-bg); border: 1px solid var(--card-border);
-      border-radius: 12px; padding: 22px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      border-radius: 10px; padding: 20px; box-shadow: var(--shadow-card);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      border-color: rgba(148, 163, 184, 0.22);
     }
     .card-header {
-      display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;
     }
-    .card-title { font-size: 16px; font-weight: 700; color: var(--text-main); }
-    .card-desc { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
-    .metric-value { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; color: #fff; margin-top: 6px; }
-    .metric-sub { font-size: 13px; color: var(--text-muted); margin-top: 4px; display: flex; align-items: center; gap: 6px; }
+    .card-title { font-size: 15px; font-weight: 700; color: var(--text-main); letter-spacing: -0.2px; }
+    .card-desc { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+    .metric-value {
+      font-size: 28px; font-weight: 800; letter-spacing: -0.5px; color: #fff; margin-top: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+    .metric-sub { font-size: 12.5px; color: var(--text-muted); margin-top: 4px; display: flex; align-items: center; gap: 6px; }
 
     /* Stepper */
-    .stepper { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 16px; }
+    .stepper { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-top: 14px; }
     .step-card {
-      background: #090e1a; border: 1px solid #1f2937; border-radius: 8px; padding: 12px;
-      font-size: 12px; transition: border-color 0.2s;
+      background: var(--surface-secondary); border: 1px solid var(--card-border); border-radius: 8px; padding: 12px;
+      font-size: 12px; transition: all 0.2s ease;
     }
-    .step-card.active { border-color: var(--accent-cyan); background: rgba(6,182,212,0.06); }
-    .step-card.done { border-color: var(--accent-emerald); background: rgba(16,185,129,0.06); }
-    .step-num { font-weight: 800; font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
-    .step-title { font-weight: 700; color: var(--text-main); font-size: 13px; }
-    .step-desc { color: var(--text-muted); font-size: 11px; margin-top: 4px; line-height: 1.4; }
+    .step-card.active { border-color: var(--accent-turquoise); background: rgba(67,214,207,0.06); box-shadow: 0 0 12px rgba(67,214,207,0.12); }
+    .step-card.done { border-color: rgba(50,196,141,0.4); background: rgba(50,196,141,0.06); }
+    .step-num { font-weight: 800; font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px; }
+    .step-title { font-weight: 700; color: var(--text-main); font-size: 12.5px; }
+    .step-desc { color: var(--text-muted); font-size: 11px; margin-top: 4px; line-height: 1.45; }
 
     /* Tables */
     .table-responsive { width: 100%; overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; text-align: left; }
     th {
-      padding: 12px 14px; background: #131c31; color: var(--text-muted);
+      padding: 11px 14px; background: var(--surface-secondary); color: var(--text-muted);
       font-weight: 600; border-bottom: 1px solid var(--card-border);
+      text-transform: uppercase; font-size: 11px; letter-spacing: 0.4px;
     }
-    td { padding: 14px; border-bottom: 1px solid var(--card-border); color: #e5e7eb; }
-    tr:hover td { background: rgba(255,255,255,0.02); }
+    td {
+      padding: 12px 14px; border-bottom: 1px solid var(--card-border); color: #e2e8f0;
+      font-variant-numeric: tabular-nums;
+    }
+    tr:hover td { background: var(--surface-hover); }
 
     /* Badges & Pills */
     .tag {
-      display: inline-block; padding: 3px 8px; border-radius: 6px;
-      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      display: inline-block; padding: 3px 8px; border-radius: 5px;
+      font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.3px; font-variant-numeric: tabular-nums;
     }
-    .tag-success { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
-    .tag-pending { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
-    .tag-info { background: rgba(6,182,212,0.15); color: #22d3ee; border: 1px solid rgba(6,182,212,0.3); }
-    .tag-error { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+    .tag-success { background: rgba(50,196,141,0.14); color: var(--accent-emerald); border: 1px solid rgba(50,196,141,0.3); }
+    .tag-pending { background: rgba(243,182,91,0.14); color: var(--accent-amber); border: 1px solid rgba(243,182,91,0.3); }
+    .tag-info { background: rgba(56,189,248,0.14); color: var(--accent-cyan); border: 1px solid rgba(56,189,248,0.3); }
+    .tag-error { background: rgba(241,107,120,0.14); color: var(--accent-rose); border: 1px solid rgba(241,107,120,0.3); }
 
     /* Controls & Buttons */
     .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 9px 16px; border-radius: 8px; font-size: 13px; font-weight: 700;
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 8px 15px; border-radius: 7px; font-size: 12.5px; font-weight: 700;
       cursor: pointer; border: none; transition: all 0.15s ease;
     }
     .btn:active { transform: scale(0.98); }
-    .btn-primary { background: var(--accent-cyan); color: #082f49; }
-    .btn-primary:hover { background: #22d3ee; }
-    .btn-demo {
-      background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-      color: #022c22; font-weight: 800; box-shadow: 0 4px 18px rgba(6,182,212,0.4);
+    .btn-primary {
+      background: var(--accent-turquoise); color: #042123;
     }
-    .btn-demo:hover { filter: brightness(1.1); transform: translateY(-1px); }
-    .btn-secondary { background: #1f2937; color: #fff; border: 1px solid #374151; }
-    .btn-secondary:hover { background: #374151; }
+    .btn-primary:hover { filter: brightness(1.1); box-shadow: var(--shadow-glow); }
+    .btn-demo {
+      background: linear-gradient(135deg, #22B8B1 0%, #43D6CF 50%, #38BDF8 100%);
+      color: #041d20; font-weight: 800; box-shadow: 0 4px 18px rgba(67,214,207,0.35);
+    }
+    .btn-demo:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 6px 22px rgba(67,214,207,0.45); }
+    .btn-secondary {
+      background: var(--surface-secondary); color: var(--text-main);
+      border: 1px solid var(--card-border);
+    }
+    .btn-secondary:hover { background: var(--surface-elevated); border-color: rgba(148,163,184,0.25); }
 
     /* Live Stream Log */
     .stream-box {
-      background: #070b14; border: 1px solid #1e293b; border-radius: 8px;
-      padding: 16px; font-family: monospace; font-size: 12px; height: 380px;
+      background: #05080f; border: 1px solid var(--card-border); border-radius: 8px;
+      padding: 16px; font-family: var(--font-mono); font-size: 12px; height: 380px;
       overflow-y: auto; color: #a5f3fc; line-height: 1.7;
     }
-    .stream-line { border-bottom: 1px solid rgba(255,255,255,0.05); padding: 4px 0; }
-    .stream-time { color: #64748b; margin-right: 8px; }
-    .stream-type { color: #38bdf8; font-weight: bold; margin-right: 8px; }
+    .stream-line { border-bottom: 1px solid rgba(255,255,255,0.04); padding: 4px 0; }
+    .stream-time { color: #64748b; margin-right: 8px; font-variant-numeric: tabular-nums; }
+    .stream-type { color: var(--accent-cyan); font-weight: bold; margin-right: 8px; }
 
     /* Custom AG Grid Cyberpunk Fintech Dark Theme (Sponsor Challenge) */
     .ag-theme-nexus-dark,
     .ag-theme-alpine-dark {
-      --ag-background-color: #0b1120;
-      --ag-header-background-color: #111827;
-      --ag-odd-row-background-color: #080d1a;
-      --ag-border-color: #1e293b;
-      --ag-header-foreground-color: #94a3b8;
-      --ag-foreground-color: #f1f5f9;
+      --ag-background-color: #080D16;
+      --ag-header-background-color: #101827;
+      --ag-odd-row-background-color: #0c1322;
+      --ag-border-color: rgba(148, 163, 184, 0.12);
+      --ag-header-foreground-color: #A3B0C2;
+      --ag-foreground-color: #F4F7FB;
       --ag-data-color: #e2e8f0;
-      --ag-selected-row-background-color: rgba(6, 182, 212, 0.2);
-      --ag-row-hover-color: rgba(255, 255, 255, 0.05);
-      --ag-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+      --ag-selected-row-background-color: rgba(67, 214, 207, 0.18);
+      --ag-row-hover-color: rgba(255, 255, 255, 0.04);
+      --ag-font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, monospace;
       --ag-font-size: 12px;
       --ag-grid-size: 6px;
       --ag-row-height: 38px;
@@ -187,44 +226,48 @@ export function getDashboardHtml(): string {
       text-transform: uppercase;
       font-size: 11px;
       letter-spacing: 0.5px;
-      color: #94a3b8;
+      color: #A3B0C2;
+    }
+    .ag-theme-nexus-dark .ag-cell,
+    .ag-theme-alpine-dark .ag-cell {
+      font-variant-numeric: tabular-nums;
     }
     .grid-status-bar {
       display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
-      background: #080d1a; border: 1px solid var(--card-border); border-top: none;
-      padding: 8px 16px; font-size: 12px; border-radius: 0 0 8px 8px; color: var(--text-muted);
+      background: #080D16; border: 1px solid var(--card-border); border-top: none;
+      padding: 9px 16px; font-size: 12px; border-radius: 0 0 8px 8px; color: var(--text-muted);
     }
-    .grid-status-item strong { color: var(--text-main); margin-left: 4px; }
+    .grid-status-item strong { color: var(--text-main); margin-left: 4px; font-variant-numeric: tabular-nums; }
     .status-chip-proof {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4);
-      color: #34d399; padding: 2px 8px; border-radius: 12px; font-size: 11px; cursor: pointer;
-      transition: all 0.15s ease;
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(50, 196, 141, 0.12); border: 1px solid rgba(50, 196, 141, 0.35);
+      color: var(--accent-emerald); padding: 2px 8px; border-radius: 12px; font-size: 11px; cursor: pointer;
+      transition: all 0.15s ease; font-variant-numeric: tabular-nums;
     }
     .status-chip-proof:hover {
-      background: rgba(16, 185, 129, 0.3); border-color: #34d399; transform: translateY(-1px);
+      background: rgba(50, 196, 141, 0.25); border-color: var(--accent-emerald); transform: translateY(-1px);
     }
 
     /* Verification Box */
     .verify-result-box {
-      background: #080d1a;
-      border: 1px solid #1f2937;
+      background: #060910;
+      border: 1px solid var(--card-border);
       border-radius: 8px;
       padding: 16px;
       margin-top: 14px;
-      font-family: monospace;
+      font-family: var(--font-mono);
       font-size: 12px;
       line-height: 1.6;
     }
 
-    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "JetBrains Mono", monospace; font-variant-numeric: tabular-nums; }
     .mt-4 { margin-top: 20px; }
     .grid-controls { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
     .search-input {
-      background: #080d1a; border: 1px solid #1f2937; color: #fff; padding: 8px 12px;
-      border-radius: 6px; font-size: 13px; min-width: 260px;
+      background: var(--surface-secondary); border: 1px solid var(--card-border); color: #fff; padding: 8px 12px;
+      border-radius: 6px; font-size: 12.5px; min-width: 260px;
     }
-    .search-input:focus { outline: none; border-color: var(--accent-cyan); }
+    .search-input:focus { outline: none; border-color: var(--accent-turquoise); }
 
     /* Toast Notifications System */
     #toast-container {
@@ -241,12 +284,12 @@ export function getDashboardHtml(): string {
     }
     .toast {
       pointer-events: auto;
-      background: rgba(15, 23, 42, 0.96);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(12px);
+      background: rgba(16, 24, 39, 0.96);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(14px);
       border-radius: 10px;
       padding: 14px 18px;
-      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6), 0 0 15px rgba(6, 182, 212, 0.15);
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6), 0 0 15px rgba(67, 214, 207, 0.12);
       color: #f1f5f9;
       animation: toastSlideIn 0.25s ease-out;
       transition: all 0.2s ease;
@@ -260,7 +303,7 @@ export function getDashboardHtml(): string {
       align-items: center;
       justify-content: space-between;
       font-weight: 700;
-      font-size: 13.5px;
+      font-size: 13px;
       margin-bottom: 4px;
     }
     .toast-title { display: flex; align-items: center; gap: 8px; }
@@ -273,7 +316,7 @@ export function getDashboardHtml(): string {
       background: rgba(0, 0, 0, 0.45);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 6px;
-      font-family: monospace;
+      font-family: var(--font-mono);
       font-size: 11px;
       max-height: 160px;
       overflow-y: auto;
@@ -281,12 +324,22 @@ export function getDashboardHtml(): string {
       word-break: break-all;
       color: #94a3b8;
     }
-    .toast-success { border-color: rgba(16, 185, 129, 0.45); box-shadow: 0 0 15px rgba(16, 185, 129, 0.2); }
+    .toast-success { border-color: rgba(50, 196, 141, 0.45); box-shadow: 0 0 15px rgba(50, 196, 141, 0.18); }
     .toast-success .toast-title { color: var(--accent-emerald); }
-    .toast-error { border-color: rgba(239, 68, 68, 0.45); box-shadow: 0 0 15px rgba(239, 68, 68, 0.2); }
+    .toast-error { border-color: rgba(241, 107, 120, 0.45); box-shadow: 0 0 15px rgba(241, 107, 120, 0.18); }
     .toast-error .toast-title { color: var(--accent-rose); }
-    .toast-info { border-color: rgba(6, 182, 212, 0.45); box-shadow: 0 0 15px rgba(6, 182, 212, 0.2); }
-    .toast-info .toast-title { color: var(--accent-cyan); }
+    .toast-info { border-color: rgba(67, 214, 207, 0.45); box-shadow: 0 0 15px rgba(67, 214, 207, 0.18); }
+    .toast-info .toast-title { color: var(--accent-turquoise); }
+
+    /* Accessibility: Respect Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
 
     /* Mobile & Responsive Layout Enhancements */
     @media (max-width: 1200px) {
@@ -300,7 +353,7 @@ export function getDashboardHtml(): string {
       header { padding: 12px 16px; flex-direction: column; align-items: flex-start; }
       .header-actions { width: 100%; justify-content: flex-start; }
       nav.nav-tabs { padding: 6px 12px 0 12px; gap: 3px; }
-      .tab-btn { padding: 7px 10px; font-size: 12px; }
+      .tab-btn { padding: 7px 10px; font-size: 11.5px; }
       main.container { padding: 16px 12px; }
       .metrics-grid { grid-template-columns: 1fr; }
       .stepper { grid-template-columns: 1fr; }
@@ -341,12 +394,12 @@ export function getDashboardHtml(): string {
 
   <main class="container">
     <!-- HACKATHON JUDGE BRIEFING PANEL -->
-    <div class="card" id="judge-briefing-panel" style="margin-bottom: 24px; border: 1px solid rgba(6,182,212,0.45); background: linear-gradient(135deg, rgba(19, 28, 49, 0.95), rgba(10, 15, 29, 0.95)); box-shadow: 0 8px 24px -4px rgba(6,182,212,0.25);">
-      <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 14px; margin-bottom: 16px;">
+    <div class="card" id="judge-briefing-panel" style="margin-bottom: 22px; border: 1px solid rgba(67, 214, 207, 0.28); background: linear-gradient(135deg, rgba(16, 24, 39, 0.98) 0%, rgba(8, 13, 22, 0.98) 100%); box-shadow: 0 8px 30px -4px rgba(67, 214, 207, 0.15);">
+      <div class="card-header" style="border-bottom: 1px solid var(--card-border); padding-bottom: 12px; margin-bottom: 14px;">
         <div style="display: flex; align-items: center; gap: 10px;">
           <span style="font-size: 20px;">⚖️</span>
           <div>
-            <span class="card-title" style="color: #38bdf8; font-size: 17px; letter-spacing: -0.3px;">HACKATHON JUDGE BRIEFING PANEL</span>
+            <span class="card-title" style="color: var(--accent-turquoise); font-size: 16px; letter-spacing: -0.3px;">HACKATHON JUDGE BRIEFING PANEL</span>
             <div class="card-desc">Three Core Technical Innovations &bull; Verified Evidence Links &bull; 30-Second Guided Tour</div>
           </div>
         </div>
@@ -359,9 +412,9 @@ export function getDashboardHtml(): string {
 
       <div id="judge-panel-body">
         <!-- 3 Headline Claims Grid -->
-        <div class="judge-panel-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px;">
-          <div style="background: rgba(15,23,42,0.6); border: 1px solid rgba(6,182,212,0.2); border-radius: 8px; padding: 14px;">
-            <div style="color: var(--accent-cyan); font-weight: 700; font-size: 13px; margin-bottom: 6px;">1. AI-Assisted SLA Evaluation</div>
+        <div class="judge-panel-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 18px;">
+          <div style="background: rgba(20, 31, 48, 0.65); border: 1px solid rgba(67, 214, 207, 0.22); border-radius: 8px; padding: 14px;">
+            <div style="color: var(--accent-turquoise); font-weight: 700; font-size: 13px; margin-bottom: 6px;">1. AI-Assisted SLA Evaluation</div>
             <p style="font-size: 12px; color: #cbd5e1; line-height: 1.5; margin-bottom: 10px;">
               Autonomous task deliverables adjudicated via <strong>FreeModel (Gemini 3.7 Flash)</strong> with automatic <strong>DeepSeek v4.1 Flash</strong> failover. Purely advisory: zero access to money movement, enforced by deterministic credit clamps.
             </p>
@@ -371,7 +424,7 @@ export function getDashboardHtml(): string {
             </div>
           </div>
 
-          <div style="background: rgba(15,23,42,0.6); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; padding: 14px;">
+          <div style="background: rgba(20, 31, 48, 0.65); border: 1px solid rgba(50, 196, 141, 0.22); border-radius: 8px; padding: 14px;">
             <div style="color: var(--accent-emerald); font-weight: 700; font-size: 13px; margin-bottom: 6px;">2. Deterministic Netting & PayPal Rails</div>
             <p style="font-size: 12px; color: #cbd5e1; line-height: 1.5; margin-bottom: 10px;">
               Compresses circular bilateral agent debt by <strong>65.38% to 99.4%</strong>. Settles conserved net debtor balances via <strong>PayPal Orders v2</strong> capture ($1.00) and creditor disbursements via <strong>PayPal Payouts v1</strong> ($0.50 + $0.50).
@@ -382,7 +435,7 @@ export function getDashboardHtml(): string {
             </div>
           </div>
 
-          <div style="background: rgba(15,23,42,0.6); border: 1px solid rgba(99,102,241,0.25); border-radius: 8px; padding: 14px;">
+          <div style="background: rgba(20, 31, 48, 0.65); border: 1px solid rgba(129, 140, 248, 0.25); border-radius: 8px; padding: 14px;">
             <div style="color: #a5b4fc; font-weight: 700; font-size: 13px; margin-bottom: 6px;">3. Verifiable Subledger & Cryptography</div>
             <p style="font-size: 12px; color: #cbd5e1; line-height: 1.5; margin-bottom: 10px;">
               Double-entry subledger asserted by <strong>14 SQLite database triggers</strong>, Ed25519 RFC 8785 signatures, cryptographic SHA-256 Merkle tree anchors, and mathematical zero-variance (<span class="mono">Δ = $0.00</span>).
@@ -395,18 +448,18 @@ export function getDashboardHtml(): string {
         </div>
 
         <!-- 30-Second Guided Tour -->
-        <div style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 14px;">
+        <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); border-radius: 8px; padding: 12px 14px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
-            <span style="font-size: 12px; font-weight: 700; color: #f1f5f9; text-transform: uppercase; letter-spacing: 0.5px;">⏱️ 30-Second Tour for Judges (6 Guided Clicks)</span>
+            <span style="font-size: 11.5px; font-weight: 700; color: #f1f5f9; text-transform: uppercase; letter-spacing: 0.5px;">⏱️ 30-Second Tour for Judges (6 Guided Clicks)</span>
             <span style="font-size: 11px; color: var(--text-muted);">Follow steps 1 &rarr; 6 to independently inspect end-to-end clearing</span>
           </div>
           <div class="judge-tour-grid" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;">
-            <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 8px; text-align: left;" onclick="tourStep(1)"><strong>1. Clearing Room</strong><br><span style="color: var(--text-muted); font-size: 10px;">Open Overview</span></button>
-            <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 8px; text-align: left;" onclick="tourStep(2)"><strong>2. Run Flagship</strong><br><span style="color: var(--text-muted); font-size: 10px;">Execute 5-agent sim</span></button>
-            <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 8px; text-align: left;" onclick="tourStep(3)"><strong>3. AI SLA Verdict</strong><br><span style="color: var(--text-muted); font-size: 10px;">Inspect clamp</span></button>
-            <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 8px; text-align: left;" onclick="tourStep(4)"><strong>4. Net Positions</strong><br><span style="color: var(--text-muted); font-size: 10px;">$130 &rarr; $45 net</span></button>
-            <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 8px; text-align: left;" onclick="tourStep(5)"><strong>5. PayPal Proof</strong><br><span style="color: var(--text-muted); font-size: 10px;">Live Debug-ID</span></button>
-            <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 8px; text-align: left;" onclick="tourStep(6)"><strong>6. Merkle Ledger</strong><br><span style="color: var(--text-muted); font-size: 10px;">Δ = $0.00 proof</span></button>
+            <button class="btn btn-secondary tour-step-btn" id="tour-step-1" style="font-size: 11px; padding: 6px 8px; text-align: left;" onclick="tourStep(1)"><strong>1. Clearing Room</strong><br><span style="color: var(--text-muted); font-size: 10px;">Open Overview</span></button>
+            <button class="btn btn-secondary tour-step-btn" id="tour-step-2" style="font-size: 11px; padding: 6px 8px; text-align: left;" onclick="tourStep(2)"><strong>2. Run Flagship</strong><br><span style="color: var(--text-muted); font-size: 10px;">Execute 5-agent sim</span></button>
+            <button class="btn btn-secondary tour-step-btn" id="tour-step-3" style="font-size: 11px; padding: 6px 8px; text-align: left;" onclick="tourStep(3)"><strong>3. AI SLA Verdict</strong><br><span style="color: var(--text-muted); font-size: 10px;">Inspect clamp</span></button>
+            <button class="btn btn-secondary tour-step-btn" id="tour-step-4" style="font-size: 11px; padding: 6px 8px; text-align: left;" onclick="tourStep(4)"><strong>4. Net Positions</strong><br><span style="color: var(--text-muted); font-size: 10px;">$130 &rarr; $45 net</span></button>
+            <button class="btn btn-secondary tour-step-btn" id="tour-step-5" style="font-size: 11px; padding: 6px 8px; text-align: left;" onclick="tourStep(5)"><strong>5. PayPal Proof</strong><br><span style="color: var(--text-muted); font-size: 10px;">Live Debug-ID</span></button>
+            <button class="btn btn-secondary tour-step-btn" id="tour-step-6" style="font-size: 11px; padding: 6px 8px; text-align: left;" onclick="tourStep(6)"><strong>6. Merkle Ledger</strong><br><span style="color: var(--text-muted); font-size: 10px;">Δ = $0.00 proof</span></button>
           </div>
         </div>
       </div>
@@ -1499,6 +1552,16 @@ export function getDashboardHtml(): string {
     }
 
     function tourStep(step) {
+      document.querySelectorAll('.tour-step-btn').forEach(b => {
+        b.style.borderColor = 'var(--card-border)';
+        b.style.background = 'var(--surface-secondary)';
+      });
+      const activeBtn = document.getElementById('tour-step-' + step);
+      if (activeBtn) {
+        activeBtn.style.borderColor = 'var(--accent-turquoise)';
+        activeBtn.style.background = 'rgba(67, 214, 207, 0.12)';
+      }
+
       if (step === 1) {
         switchTab('overview');
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1648,95 +1711,95 @@ export function getDashboardHtml(): string {
   </script>
 
   <!-- Authoritative PayPal Verification Modal -->
-  <div id="paypal-verify-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); z-index: 9999; justify-content: center; align-items: center; padding: 20px;">
-    <div style="background: #0f172a; border: 1px solid #334155; border-radius: 14px; max-width: 680px; width: 100%; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); overflow: hidden;">
-      <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; border-bottom: 1px solid #1e293b; background: #0b1120;">
+  <div id="paypal-verify-modal" style="display: none; position: fixed; inset: 0; background: rgba(8,13,22,0.85); backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center; padding: 20px;">
+    <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; max-width: 680px; width: 100%; box-shadow: var(--shadow-modal); overflow: hidden;">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 22px; border-bottom: 1px solid var(--card-border); background: var(--surface-secondary);">
         <div style="display: flex; align-items: center; gap: 10px;">
-          <span style="font-size: 20px;">🛡️</span>
+          <span style="font-size: 18px;">🛡️</span>
           <div>
-            <div style="font-weight: 700; color: #fff; font-size: 16px;">PayPal Sandbox Authoritative Proof</div>
-            <div style="font-size: 12px; color: #94a3b8;">Cryptographically linked server-side verification</div>
+            <div style="font-weight: 700; color: #fff; font-size: 15px;">PayPal Sandbox Authoritative Proof</div>
+            <div style="font-size: 12px; color: var(--text-muted);">Cryptographically linked server-side verification</div>
           </div>
         </div>
-        <button onclick="closeVerifyModal()" style="background: none; border: none; color: #94a3b8; font-size: 20px; cursor: pointer;">&times;</button>
+        <button onclick="closeVerifyModal()" style="background: none; border: none; color: #94a3b8; font-size: 20px; cursor: pointer; line-height: 1;">&times;</button>
       </div>
-      <div style="padding: 24px; max-height: 75vh; overflow-y: auto;">
-        <div id="verify-modal-loading" style="text-align: center; padding: 30px; color: #38bdf8;">
-          <div class="pulse-dot" style="margin: 0 auto 12px; width: 14px; height: 14px;"></div>
-          <div>Querying api-m.sandbox.paypal.com in real-time...</div>
+      <div style="padding: 22px; max-height: 75vh; overflow-y: auto;">
+        <div id="verify-modal-loading" style="text-align: center; padding: 30px; color: var(--accent-turquoise);">
+          <div class="pulse-dot" style="margin: 0 auto 12px; width: 12px; height: 12px;"></div>
+          <div style="font-size: 13px;">Querying api-m.sandbox.paypal.com in real-time...</div>
         </div>
         <div id="verify-modal-content" style="display: none;">
-          <div id="modal-notice-banner" style="display: none; background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; padding: 10px 14px; border-radius: 6px; margin-bottom: 14px; color: #fbbf24; font-size: 12px; line-height: 1.4;"></div>
+          <div id="modal-notice-banner" style="display: none; background: rgba(243, 182, 91, 0.12); border: 1px solid var(--accent-amber); padding: 10px 14px; border-radius: 6px; margin-bottom: 14px; color: var(--accent-amber); font-size: 12px; line-height: 1.45;"></div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
             <span id="modal-status-badge" class="tag tag-success">VERIFIED ON PAYPAL SANDBOX</span>
-            <span id="modal-env-pill" class="tag tag-info" style="font-family: monospace;">api-m.sandbox.paypal.com</span>
+            <span id="modal-env-pill" class="tag tag-info" style="font-family: var(--font-mono);">api-m.sandbox.paypal.com</span>
           </div>
-          <div style="background: #090e1a; border: 1px solid #1e293b; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
-            <div style="display: grid; grid-template-columns: 140px 1fr; row-gap: 8px; font-size: 13px;">
-              <span style="color: #64748b;">Identifier:</span>
-              <span id="modal-id" class="mono" style="color: #38bdf8; word-break: break-all;">-</span>
-              <span style="color: #64748b;">Provider Status:</span>
-              <span id="modal-provider-status" style="font-weight: 700; color: #34d399;">-</span>
-              <span style="color: #64748b;">Amount:</span>
-              <span id="modal-amount" style="font-weight: 700; color: #fff;">-</span>
-              <span style="color: #64748b;">Merkle Anchor:</span>
-              <span id="modal-anchor" class="mono" style="color: #f59e0b; word-break: break-all;">-</span>
-              <span style="color: #64748b;">PayPal Debug ID:</span>
+          <div style="background: var(--surface-secondary); border: 1px solid var(--card-border); border-radius: 8px; padding: 14px; margin-bottom: 16px;">
+            <div style="display: grid; grid-template-columns: 140px 1fr; row-gap: 8px; font-size: 12.5px;">
+              <span style="color: var(--text-muted);">Identifier:</span>
+              <span id="modal-id" class="mono" style="color: var(--accent-cyan); word-break: break-all;">-</span>
+              <span style="color: var(--text-muted);">Provider Status:</span>
+              <span id="modal-provider-status" style="font-weight: 700; color: var(--accent-emerald);">-</span>
+              <span style="color: var(--text-muted);">Amount:</span>
+              <span id="modal-amount" style="font-weight: 700; color: #fff; font-variant-numeric: tabular-nums;">-</span>
+              <span style="color: var(--text-muted);">Merkle Anchor:</span>
+              <span id="modal-anchor" class="mono" style="color: var(--accent-amber); word-break: break-all;">-</span>
+              <span style="color: var(--text-muted);">PayPal Debug ID:</span>
               <span id="modal-debug-id" class="mono" style="color: #a7f3d0;">-</span>
-              <span style="color: #64748b;">Stored Evidence:</span>
+              <span style="color: var(--text-muted);">Stored Evidence:</span>
               <span id="modal-evidence-match" class="tag tag-success" style="display: inline-block; width: fit-content;">VERIFIED MATCH</span>
             </div>
           </div>
-          <div style="font-size: 12px; color: #94a3b8; margin-bottom: 6px; font-weight: 600;">Full Authoritative Provider Response:</div>
-          <pre id="modal-raw-json" class="mono" style="background: #020617; border: 1px solid #1e293b; border-radius: 6px; padding: 12px; font-size: 11px; color: #cbd5e1; max-height: 220px; overflow-y: auto;"></pre>
+          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600;">Full Authoritative Provider Response:</div>
+          <pre id="modal-raw-json" class="mono" style="background: #04070d; border: 1px solid var(--card-border); border-radius: 6px; padding: 12px; font-size: 11px; color: #cbd5e1; max-height: 220px; overflow-y: auto;"></pre>
         </div>
       </div>
-      <div style="padding: 14px 24px; border-top: 1px solid #1e293b; background: #0b1120; display: flex; justify-content: flex-end;">
+      <div style="padding: 12px 22px; border-top: 1px solid var(--card-border); background: var(--surface-secondary); display: flex; justify-content: flex-end;">
         <button class="btn btn-secondary" onclick="closeVerifyModal()">Close</button>
       </div>
     </div>
   </div>
 
   <!-- Interactive Merkle Proof & Ed25519 Cryptographic Modal (AG Grid Custom Widget) -->
-  <div id="merkle-proof-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(6px); z-index: 10000; justify-content: center; align-items: center; padding: 20px;">
-    <div style="background: #0f172a; border: 1px solid #0284c7; border-radius: 14px; max-width: 700px; width: 100%; box-shadow: 0 25px 50px -12px rgba(2,132,199,0.25); overflow: hidden;">
-      <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; border-bottom: 1px solid #1e293b; background: #0b1120;">
+  <div id="merkle-proof-modal" style="display: none; position: fixed; inset: 0; background: rgba(8,13,22,0.85); backdrop-filter: blur(8px); z-index: 10000; justify-content: center; align-items: center; padding: 20px;">
+    <div style="background: var(--card-bg); border: 1px solid rgba(67, 214, 207, 0.4); border-radius: 12px; max-width: 700px; width: 100%; box-shadow: var(--shadow-modal); overflow: hidden;">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 22px; border-bottom: 1px solid var(--card-border); background: var(--surface-secondary);">
         <div style="display: flex; align-items: center; gap: 10px;">
-          <span style="font-size: 20px;">🛡️</span>
+          <span style="font-size: 18px;">🛡️</span>
           <div>
-            <div id="merkle-modal-title" style="font-weight: 700; color: #38bdf8; font-size: 16px;">IOU Cryptographic Proof & Merkle Anchor</div>
-            <div style="font-size: 12px; color: #94a3b8;">Ed25519 digital signature verified over RFC 8785 canonical JSON digest</div>
+            <div id="merkle-modal-title" style="font-weight: 700; color: var(--accent-turquoise); font-size: 15px;">IOU Cryptographic Proof & Merkle Anchor</div>
+            <div style="font-size: 12px; color: var(--text-muted);">Ed25519 digital signature verified over RFC 8785 canonical JSON digest</div>
           </div>
         </div>
-        <button onclick="closeMerkleProofModal()" style="background: none; border: none; color: #94a3b8; font-size: 24px; cursor: pointer;">&times;</button>
+        <button onclick="closeMerkleProofModal()" style="background: none; border: none; color: #94a3b8; font-size: 20px; cursor: pointer; line-height: 1;">&times;</button>
       </div>
-      <div style="padding: 24px; max-height: 75vh; overflow-y: auto;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <div style="padding: 22px; max-height: 75vh; overflow-y: auto;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
           <span class="tag tag-success">CRYPTOGRAPHICALLY VERIFIED</span>
-          <span class="tag tag-info" style="font-family: monospace;">RFC 8785 CANONICAL</span>
+          <span class="tag tag-info" style="font-family: var(--font-mono);">RFC 8785 CANONICAL</span>
         </div>
-        <div style="background: #090e1a; border: 1px solid #1e293b; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
-          <div style="display: grid; grid-template-columns: 140px 1fr; row-gap: 8px; font-size: 13px;">
-            <span style="color: #64748b;">Task Description:</span>
+        <div style="background: var(--surface-secondary); border: 1px solid var(--card-border); border-radius: 8px; padding: 14px; margin-bottom: 16px;">
+          <div style="display: grid; grid-template-columns: 140px 1fr; row-gap: 8px; font-size: 12.5px;">
+            <span style="color: var(--text-muted);">Task Description:</span>
             <span id="mp-task-title" style="font-weight: 600; color: #f1f5f9;">-</span>
-            <span style="color: #64748b;">Debtor (Issuer):</span>
-            <span id="mp-debtor" style="color: #f87171;">-</span>
-            <span style="color: #64748b;">Creditor (Receiver):</span>
-            <span id="mp-creditor" style="color: #34d399;">-</span>
-            <span style="color: #64748b;">Amount:</span>
-            <span id="mp-amount" style="font-weight: 700; color: #38bdf8;">-</span>
-            <span style="color: #64748b;">Merkle Anchor:</span>
-            <span id="mp-anchor" class="mono" style="color: #f59e0b; word-break: break-all;">-</span>
-            <span style="color: #64748b;">Debtor Public Key:</span>
+            <span style="color: var(--text-muted);">Debtor (Issuer):</span>
+            <span id="mp-debtor" style="color: var(--accent-rose);">-</span>
+            <span style="color: var(--text-muted);">Creditor (Receiver):</span>
+            <span id="mp-creditor" style="color: var(--accent-emerald);">-</span>
+            <span style="color: var(--text-muted);">Amount:</span>
+            <span id="mp-amount" style="font-weight: 700; color: var(--accent-turquoise); font-variant-numeric: tabular-nums;">-</span>
+            <span style="color: var(--text-muted);">Merkle Anchor:</span>
+            <span id="mp-anchor" class="mono" style="color: var(--accent-amber); word-break: break-all;">-</span>
+            <span style="color: var(--text-muted);">Debtor Public Key:</span>
             <span id="mp-pubkey" class="mono" style="color: #a7f3d0; word-break: break-all; font-size: 11px;">-</span>
-            <span style="color: #64748b;">Ed25519 Signature:</span>
+            <span style="color: var(--text-muted);">Ed25519 Signature:</span>
             <span id="mp-signature" class="mono" style="color: #a5b4fc; word-break: break-all; font-size: 11px;">-</span>
           </div>
         </div>
-        <div style="font-size: 12px; color: #94a3b8; margin-bottom: 6px; font-weight: 600;">Signed Canonical RFC 8785 Payload:</div>
-        <pre id="mp-payload" class="mono" style="background: #020617; border: 1px solid #1e293b; border-radius: 6px; padding: 12px; font-size: 11px; color: #cbd5e1; max-height: 180px; overflow-y: auto;"></pre>
+        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600;">Signed Canonical RFC 8785 Payload:</div>
+        <pre id="mp-payload" class="mono" style="background: #04070d; border: 1px solid var(--card-border); border-radius: 6px; padding: 12px; font-size: 11px; color: #cbd5e1; max-height: 180px; overflow-y: auto;"></pre>
       </div>
-      <div style="padding: 14px 24px; border-top: 1px solid #1e293b; background: #0b1120; display: flex; justify-content: flex-end;">
+      <div style="padding: 12px 22px; border-top: 1px solid var(--card-border); background: var(--surface-secondary); display: flex; justify-content: flex-end;">
         <button class="btn btn-secondary" onclick="closeMerkleProofModal()">Close Proof</button>
       </div>
     </div>

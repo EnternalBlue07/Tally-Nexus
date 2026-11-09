@@ -1,20 +1,20 @@
 {
-  "evaluationId": "2d213b46-c4ce-4023-a3d0-4305b28e1ace",
-  "taskId": "cyc_flagship_1794249891110_tsk1",
+  "evaluationId": "83882dac-9153-4587-a606-1251f9ae7177",
+  "taskId": "cyc_flagship_1794251626309_tsk1",
   "provider": "FREEMODEL",
   "model": "gemini-3.7-flash",
   "modelUsed": "gemini-3.7-flash",
   "fallbackTriggered": false,
   "aiAvailable": true,
-  "promptHash": "efa014789367b4cafd4e159112998b8bd4106e0a78571ac02df5363b429a1665",
-  "rawResponseText": "{\"verdict\":\"FAIL\",\"confidence\":0.99,\"reasons\":[\"The submitted sha256PayloadDigest e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 is the SHA-256 hash of an empty payload, so no STRUCTURED_FINANCIAL_SENTIMENT deliverable was actually submitted.\",\"The claim of recordsAggregated=5000 is unsupported because the payload digest corresponds to zero content and cannot contain 5000 records.\",\"The evidence only contains metadata fields; it does not provide the required Market Metrics Dataset (JSON) content for SLA verification.\"],\"proposedCreditBps\":10000}",
+  "promptHash": "becd8414192bdb7f75ae6579049dd5e7e6cd60e92686b7a5d810a1639c5568bb",
+  "rawResponseText": "{\"verdict\":\"FAIL\",\"confidence\":0.99,\"reasons\":[\"sha256PayloadDigest is the SHA-256 hash of an empty payload (e3b0c442...), so no structured financial sentiment dataset was actually delivered.\",\"The claimed recordsAggregated=5000 is unsupported by the empty payload digest and cannot be verified.\",\"The submitted evidence provides only metadata; it does not contain a STRUCTURED_FINANCIAL_SENTIMENT deliverable satisfying SLA-DATA-01.\"],\"proposedCreditBps\":10000}",
   "rawJson": {
     "verdict": "FAIL",
     "confidence": 0.99,
     "reasons": [
-      "The submitted sha256PayloadDigest e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 is the SHA-256 hash of an empty payload, so no STRUCTURED_FINANCIAL_SENTIMENT deliverable was actually submitted.",
-      "The claim of recordsAggregated=5000 is unsupported because the payload digest corresponds to zero content and cannot contain 5000 records.",
-      "The evidence only contains metadata fields; it does not provide the required Market Metrics Dataset (JSON) content for SLA verification."
+      "sha256PayloadDigest is the SHA-256 hash of an empty payload (e3b0c442...), so no structured financial sentiment dataset was actually delivered.",
+      "The claimed recordsAggregated=5000 is unsupported by the empty payload digest and cannot be verified.",
+      "The submitted evidence provides only metadata; it does not contain a STRUCTURED_FINANCIAL_SENTIMENT deliverable satisfying SLA-DATA-01."
     ],
     "proposedCreditBps": 10000
   },
@@ -26,16 +26,16 @@
   "clampedCreditBps": 10000,
   "authorizedCreditCents": 4000,
   "reasons": [
-    "The submitted sha256PayloadDigest e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 is the SHA-256 hash of an empty payload, so no STRUCTURED_FINANCIAL_SENTIMENT deliverable was actually submitted.",
-    "The claim of recordsAggregated=5000 is unsupported because the payload digest corresponds to zero content and cannot contain 5000 records.",
-    "The evidence only contains metadata fields; it does not provide the required Market Metrics Dataset (JSON) content for SLA verification.",
+    "sha256PayloadDigest is the SHA-256 hash of an empty payload (e3b0c442...), so no structured financial sentiment dataset was actually delivered.",
+    "The claimed recordsAggregated=5000 is unsupported by the empty payload digest and cannot be verified.",
+    "The submitted evidence provides only metadata; it does not contain a STRUCTURED_FINANCIAL_SENTIMENT deliverable satisfying SLA-DATA-01.",
     "SLA deliverable rejected: Contractual credit relief of 10000 bps ($40.00) applied against debtor obligation."
   ],
   "injectionAttemptDetected": false,
-  "evaluatedAt": "2026-11-09T18:44:51.133Z",
+  "evaluatedAt": "2026-11-09T19:13:46.318Z",
   "tokenUsage": {
     "promptTokens": 467,
-    "completionTokens": 920,
-    "totalTokens": 1387
+    "completionTokens": 788,
+    "totalTokens": 1255
   }
 }
