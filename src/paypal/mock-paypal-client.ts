@@ -181,4 +181,81 @@ export class MockPayPalClient implements IPayPalClient {
 
     return { verification_status: 'SUCCESS' };
   }
+
+  public async getOrder(orderId: string): Promise<{ data: any; debugId: string | null; httpStatus: number }> {
+    const order = this.orders.get(orderId);
+    if (!order) {
+      return { data: { name: 'RESOURCE_NOT_FOUND', message: `Order ${orderId} not found` }, debugId: 'mock-debug-id', httpStatus: 404 };
+    }
+    return {
+      data: {
+        id: orderId,
+        status: order.status,
+        intent: 'CAPTURE',
+        purchase_units: [
+          {
+            amount: { currency_code: 'USD', value: (order.params.amountCents / 100).toFixed(2) },
+            custom_id: order.params.customId,
+            payments: order.captureId
+              ? { captures: [{ id: order.captureId, status: 'COMPLETED', custom_id: order.params.customId }] }
+              : undefined,
+          },
+        ],
+      },
+      debugId: 'mock-debug-order-id',
+      httpStatus: 200,
+    };
+  }
+
+  public async getCapture(captureId: string): Promise<{ data: any; debugId: string | null; httpStatus: number }> {
+    for (const [orderId, order] of this.orders.entries()) {
+      if (order.captureId === captureId) {
+        return {
+          data: {
+            id: captureId,
+            status: 'COMPLETED',
+            amount: { currency_code: 'USD', value: (order.params.amountCents / 100).toFixed(2) },
+            custom_id: order.params.customId,
+          },
+          debugId: 'mock-debug-cap-id',
+          httpStatus: 200,
+        };
+      }
+    }
+    return { data: { name: 'RESOURCE_NOT_FOUND', message: `Capture ${captureId} not found` }, debugId: 'mock-debug-id', httpStatus: 404 };
+  }
+
+  public async getPayoutBatchRaw(payoutBatchId: string): Promise<{ data: any; debugId: string | null; httpStatus: number }> {
+    const batch = this.payoutBatches.get(payoutBatchId);
+    if (!batch) {
+      return { data: { name: 'RESOURCE_NOT_FOUND', message: `Payout batch ${payoutBatchId} not found` }, debugId: 'mock-debug-id', httpStatus: 404 };
+    }
+    const items = Array.from(batch.items.values()).map((item) => ({
+      payout_item_id: item.payoutItemId,
+      transaction_status: item.status,
+      payout_item: {
+        amount: { currency: 'USD', value: (item.amountCents / 100).toFixed(2) },
+        sender_item_id: item.senderItemId,
+      },
+      payout_item_fee: { currency: 'USD', value: (item.feeCents / 100).toFixed(2) },
+    }));
+
+    const totalCents = Array.from(batch.items.values()).reduce((sum, i) => sum + i.amountCents, 0);
+    const totalFeeCents = Array.from(batch.items.values()).reduce((sum, i) => sum + i.feeCents, 0);
+
+    return {
+      data: {
+        batch_header: {
+          payout_batch_id: payoutBatchId,
+          batch_status: batch.batchStatus,
+          sender_batch_header: { sender_batch_id: batch.params.senderBatchId },
+          amount: { currency: 'USD', value: (totalCents / 100).toFixed(2) },
+          fees: { currency: 'USD', value: (totalFeeCents / 100).toFixed(2) },
+        },
+        items,
+      },
+      debugId: 'mock-debug-payout-id',
+      httpStatus: 200,
+    };
+  }
 }

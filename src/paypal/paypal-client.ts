@@ -78,6 +78,9 @@ export interface IPayPalClient {
   getPayoutBatchStatus(payoutBatchId: string): Promise<PayoutBatchStatusResponse>;
   getPayoutItemStatus(payoutItemId: string): Promise<PayoutItemStatusResponse>;
   verifyWebhookSignature(params: VerifyWebhookSignatureParams): Promise<{ verification_status: 'SUCCESS' | 'FAILURE' }>;
+  getOrder?(orderId: string): Promise<{ data: any; debugId: string | null; httpStatus: number }>;
+  getCapture?(captureId: string): Promise<{ data: any; debugId: string | null; httpStatus: number }>;
+  getPayoutBatchRaw?(payoutBatchId: string): Promise<{ data: any; debugId: string | null; httpStatus: number }>;
 }
 
 export class PayPalSandboxClient implements IPayPalClient {
@@ -372,5 +375,38 @@ export class PayPalSandboxClient implements IPayPalClient {
 
     const data = (await res.json()) as { verification_status: 'SUCCESS' | 'FAILURE' };
     return { verification_status: data.verification_status };
+  }
+
+  public async getOrder(orderId: string): Promise<{ data: any; debugId: string | null; httpStatus: number }> {
+    const token = await this.getAccessToken();
+    const res = await fetch(`${this.config.apiBase}/v2/checkout/orders/${orderId}`, {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const debugId = res.headers.get('paypal-debug-id');
+    const data = await res.json();
+    return { data, debugId, httpStatus: res.status };
+  }
+
+  public async getCapture(captureId: string): Promise<{ data: any; debugId: string | null; httpStatus: number }> {
+    const token = await this.getAccessToken();
+    const res = await fetch(`${this.config.apiBase}/v2/payments/captures/${captureId}`, {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const debugId = res.headers.get('paypal-debug-id');
+    const data = await res.json();
+    return { data, debugId, httpStatus: res.status };
+  }
+
+  public async getPayoutBatchRaw(payoutBatchId: string): Promise<{ data: any; debugId: string | null; httpStatus: number }> {
+    const token = await this.getAccessToken();
+    const res = await fetch(`${this.config.apiBase}/v1/payments/payouts/${payoutBatchId}`, {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const debugId = res.headers.get('paypal-debug-id');
+    const data = await res.json();
+    return { data, debugId, httpStatus: res.status };
   }
 }

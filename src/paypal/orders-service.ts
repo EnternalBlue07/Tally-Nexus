@@ -26,7 +26,7 @@ export class PayPalOrdersService {
     debtorAgentId: string,
     db: DatabaseManager,
     client: IPayPalClient,
-    options?: { returnUrl?: string; cancelUrl?: string }
+    options?: { returnUrl?: string; cancelUrl?: string; customId?: string }
   ): Promise<DebtorOrderRecord> {
     // 1. Verify settlement cycle status
     const cycle = db
@@ -92,7 +92,7 @@ export class PayPalOrdersService {
       idempotencyKey,
       amountCents: collectionAmountCents,
       currency: 'USD',
-      customId: cycleId,
+      customId: options?.customId || cycleId,
       description: `Tally Nexus Settlement Collection for Cycle ${cycleId}`,
       returnUrl: options?.returnUrl,
       cancelUrl: options?.cancelUrl,

@@ -1,4 +1,6 @@
 import { createHash } from 'node:crypto';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
 import { Router, Request, Response } from 'express';
 import { DatabaseManager } from '../db/index.js';
 import { IouService, SignedIou } from '../ious/iou-service.js';
@@ -24,6 +26,7 @@ import {
   PayPalOrdersService,
   PayPalPayoutsService,
   PayPalWebhookService,
+  assertSandboxEnvironment,
 } from '../paypal/index.js';
 import { RecoveryService } from '../recovery/index.js';
 import { getDashboardHtml } from '../dashboard/index.js';
@@ -39,10 +42,19 @@ export function createApiRouter(
   // 1. SYSTEM HEALTH
   // =========================================================================
   router.get('/health', (_req: Request, res: Response) => {
+    const hasLiveCreds = Boolean(
+      process.env.PAYPAL_CLIENT_ID &&
+      process.env.PAYPAL_CLIENT_SECRET &&
+      !process.env.PAYPAL_CLIENT_ID.includes('placeholder') &&
+      !process.env.PAYPAL_CLIENT_SECRET.includes('placeholder')
+    );
+
     res.json({
       status: 'OK',
       system: 'TALLY NEXUS Clearinghouse',
       version: '0.1.0',
+      environment: hasLiveCreds && !(paypalClient instanceof MockPayPalClient) ? 'LIVE_SANDBOX' : 'SIMULATION_MOCK',
+      targetEndpoint: process.env.PAYPAL_API_BASE || 'https://api-m.sandbox.paypal.com',
       timestamp: new Date().toISOString(),
       uptimeSeconds: Math.floor(process.uptime()),
     });
@@ -623,6 +635,58 @@ export function createApiRouter(
     res.json({ payouts, items });
   });
 
+  router.get('/settlement/return', (req: Request, res: Response) => {
+    const token = req.query.token || '';
+    const payerId = req.query.PayerID || '';
+    res.setHeader('Content-Type', 'text/html; charset=utf-8').send(`
+      <!DOCTYPE html>
+      <html>
+      <head><title>PayPal Approval Confirmed — Tally Nexus</title>
+      <style>
+        body { font-family: ui-sans-serif, system-ui, sans-serif; background: #0b1120; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background: #0f172a; border: 1px solid #1e293b; border-radius: 14px; padding: 36px; text-align: center; max-width: 520px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+        h2 { color: #34d399; margin-top: 0; font-size: 22px; }
+        .mono { font-family: monospace; background: #020617; padding: 4px 10px; border-radius: 6px; color: #38bdf8; font-size: 13px; }
+        p { color: #cbd5e1; font-size: 14px; line-height: 1.6; }
+        .btn { display: inline-block; margin-top: 20px; background: #0284c7; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 14px; }
+      </style>
+      </head>
+      <body>
+        <div class="box">
+          <h2>✅ PayPal Approval Received</h2>
+          <p>Order token <span class="mono">${token}</span> has been confirmed by Payer <span class="mono">${payerId}</span>.</p>
+          <p style="color: #94a3b8; font-size: 13px;">The Tally Nexus settlement orchestrator has captured the funds and initiated the multilateral creditor payout batch.</p>
+          <a class="btn" href="/dashboard">&larr; Return to Tally Nexus Dashboard</a>
+        </div>
+      </body>
+      </html>
+    `);
+  });
+
+  router.get('/settlement/cancel', (_req: Request, res: Response) => {
+    res.setHeader('Content-Type', 'text/html; charset=utf-8').send(`
+      <!DOCTYPE html>
+      <html>
+      <head><title>Payment Cancelled — Tally Nexus</title>
+      <style>
+        body { font-family: ui-sans-serif, system-ui, sans-serif; background: #0b1120; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background: #0f172a; border: 1px solid #1e293b; border-radius: 14px; padding: 36px; text-align: center; max-width: 520px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+        h2 { color: #f87171; margin-top: 0; font-size: 22px; }
+        p { color: #94a3b8; font-size: 14px; }
+        .btn { display: inline-block; margin-top: 20px; background: #334155; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 14px; }
+      </style>
+      </head>
+      <body>
+        <div class="box">
+          <h2>Payment Cancelled</h2>
+          <p>The PayPal checkout process was cancelled or abandoned.</p>
+          <a class="btn" href="/dashboard">&larr; Return to Dashboard</a>
+        </div>
+      </body>
+      </html>
+    `);
+  });
+
   // =========================================================================
   // 10. PAYPAL WEBHOOK INGESTION (WORKSTREAM L)
   // =========================================================================
@@ -845,6 +909,184 @@ export function createApiRouter(
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       sendError(res, 500, 'SCALE_SIMULATION_ERROR', msg);
+    }
+  });
+
+  // =========================================================================
+  // 14. AUTHORITATIVE PAYPAL SANDBOX VERIFICATION (READ-ONLY, RATE-LIMITED)
+  // =========================================================================
+  const verifyRateLimits = new Map<string, { count: number; resetAt: number }>();
+  function checkVerifyRateLimit(ip: string): boolean {
+    const now = Date.now();
+    const entry = verifyRateLimits.get(ip);
+    if (!entry || entry.resetAt <= now) {
+      verifyRateLimits.set(ip, { count: 1, resetAt: now + 60000 });
+      return true;
+    }
+    if (entry.count >= 30) {
+      return false;
+    }
+    entry.count++;
+    return true;
+  }
+
+  function checkStoredEvidence(targetId: string): boolean {
+    try {
+      const evidenceDir = join(process.cwd(), 'docs', 'evidence');
+      if (!existsSync(evidenceDir)) return false;
+      const files = readdirSync(evidenceDir);
+      for (const f of files) {
+        if (f.endsWith('.json')) {
+          const content = readFileSync(join(evidenceDir, f), 'utf-8');
+          if (content.includes(targetId)) return true;
+        }
+      }
+    } catch {
+      // ignore
+    }
+    return false;
+  }
+
+  router.get('/verify/capture/:id', async (req: Request, res: Response) => {
+    const clientIp = req.ip || req.socket.remoteAddress || 'unknown';
+    if (!checkVerifyRateLimit(clientIp)) {
+      sendError(res, 429, 'RATE_LIMIT_EXCEEDED', 'Too many verification requests. Max 30 requests per minute.');
+      return;
+    }
+
+    const captureId = String(req.params.id).trim();
+    if (!/^[A-Za-z0-9_-]{8,64}$/.test(captureId)) {
+      sendError(res, 400, 'INVALID_IDENTIFIER', 'Capture ID contains invalid characters or length.');
+      return;
+    }
+
+    try {
+      assertSandboxEnvironment();
+
+      const dbOrder = db.prepare(`
+        SELECT order_id, paypal_order_id, cycle_id, debtor_agent_id, amount_cents, status, paypal_capture_id
+        FROM paypal_orders
+        WHERE paypal_capture_id = ? OR paypal_order_id = ? OR order_id = ?
+      `).get(captureId, captureId, captureId) as any;
+
+      const storedEvidenceMatched = checkStoredEvidence(captureId);
+
+      if (paypalClient && typeof paypalClient.getCapture === 'function') {
+        let result = await paypalClient.getCapture(captureId);
+        if (result.httpStatus === 404 && typeof paypalClient.getOrder === 'function') {
+          result = await paypalClient.getOrder(captureId);
+        }
+
+        const data = result.data;
+        const customId = data.custom_id || data.purchase_units?.[0]?.custom_id || dbOrder?.cycle_id || null;
+        let merkleAnchor: string | null = null;
+        if (customId && customId.includes('anchor_')) {
+          merkleAnchor = customId.split('anchor_')[1];
+        }
+
+        res.json({
+          verificationStatus: result.httpStatus === 200 ? 'VERIFIED_ON_PAYPAL_SANDBOX' : 'RESOURCE_NOT_FOUND',
+          environment: process.env.PAYPAL_API_BASE || 'https://api-m.sandbox.paypal.com',
+          classification: paypalClient instanceof MockPayPalClient ? 'SIMULATION_MOCK' : 'LIVE_SANDBOX',
+          identifier: captureId,
+          providerStatus: data.status || 'NOT_FOUND',
+          amount: data.amount || data.purchase_units?.[0]?.amount || (dbOrder ? { currency_code: 'USD', value: (dbOrder.amount_cents / 100).toFixed(2) } : null),
+          customId,
+          merkleAnchor,
+          dbRecordMatched: Boolean(dbOrder),
+          storedEvidenceMatched,
+          paypalDebugId: result.debugId,
+          verifiedAt: new Date().toISOString(),
+          readOnlyProof: true,
+        });
+        return;
+      }
+
+      res.json({
+        verificationStatus: dbOrder ? 'VERIFIED_IN_LOCAL_LEDGER' : 'NOT_FOUND',
+        identifier: captureId,
+        dbRecordMatched: Boolean(dbOrder),
+        storedEvidenceMatched,
+        verifiedAt: new Date().toISOString(),
+      });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      sendError(res, 500, 'VERIFICATION_ERROR', msg);
+    }
+  });
+
+  router.get('/verify/payout/:batchId', async (req: Request, res: Response) => {
+    const clientIp = req.ip || req.socket.remoteAddress || 'unknown';
+    if (!checkVerifyRateLimit(clientIp)) {
+      sendError(res, 429, 'RATE_LIMIT_EXCEEDED', 'Too many verification requests. Max 30 requests per minute.');
+      return;
+    }
+
+    const batchId = String(req.params.batchId).trim();
+    if (!/^[A-Za-z0-9_-]{8,64}$/.test(batchId)) {
+      sendError(res, 400, 'INVALID_IDENTIFIER', 'Payout Batch ID contains invalid characters or length.');
+      return;
+    }
+
+    try {
+      assertSandboxEnvironment();
+
+      const dbPayout = db.prepare(`
+        SELECT payout_id, paypal_payout_batch_id, cycle_id, sender_batch_id, batch_status, total_amount_cents
+        FROM paypal_payouts
+        WHERE paypal_payout_batch_id = ? OR sender_batch_id = ? OR payout_id = ?
+      `).get(batchId, batchId, batchId) as any;
+
+      const storedEvidenceMatched = checkStoredEvidence(batchId);
+
+      if (paypalClient && typeof paypalClient.getPayoutBatchRaw === 'function') {
+        const result = await paypalClient.getPayoutBatchRaw(batchId);
+        const data = result.data;
+        const batchHeader = data.batch_header || null;
+        const rawItems = data.items || [];
+
+        const items = rawItems.map((item: any) => ({
+          payoutItemId: item.payout_item_id,
+          transactionStatus: item.transaction_status,
+          amount: item.payout_item?.amount,
+          fee: item.payout_item_fee,
+          receiver: item.payout_item?.receiver,
+          senderItemId: item.payout_item?.sender_item_id,
+        }));
+
+        res.json({
+          verificationStatus: result.httpStatus === 200 ? 'VERIFIED_ON_PAYPAL_SANDBOX' : 'RESOURCE_NOT_FOUND',
+          environment: process.env.PAYPAL_API_BASE || 'https://api-m.sandbox.paypal.com',
+          classification: paypalClient instanceof MockPayPalClient ? 'SIMULATION_MOCK' : 'LIVE_SANDBOX',
+          identifier: batchId,
+          batchHeader: batchHeader ? {
+            payoutBatchId: batchHeader.payout_batch_id,
+            batchStatus: batchHeader.batch_status,
+            timeCreated: batchHeader.time_created,
+            timeCompleted: batchHeader.time_completed,
+            amount: batchHeader.amount,
+            fees: batchHeader.fees,
+          } : null,
+          items,
+          dbRecordMatched: Boolean(dbPayout),
+          storedEvidenceMatched,
+          paypalDebugId: result.debugId,
+          verifiedAt: new Date().toISOString(),
+          readOnlyProof: true,
+        });
+        return;
+      }
+
+      res.json({
+        verificationStatus: dbPayout ? 'VERIFIED_IN_LOCAL_LEDGER' : 'NOT_FOUND',
+        identifier: batchId,
+        dbRecordMatched: Boolean(dbPayout),
+        storedEvidenceMatched,
+        verifiedAt: new Date().toISOString(),
+      });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      sendError(res, 500, 'VERIFICATION_ERROR', msg);
     }
   });
 
