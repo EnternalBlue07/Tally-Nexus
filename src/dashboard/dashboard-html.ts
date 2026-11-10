@@ -1445,8 +1445,11 @@ export function getDashboardHtml(): string {
       <!-- CONTENT CANVAS -->
       <main class="content-canvas">
 
-        <!-- HACKATHON JUDGE BRIEFING PANEL -->
-        <div class="card" id="judge-briefing-panel">
+        <!-- 1. OVERVIEW TAB (RECONSTRUCTED WITH HERO FINTECH CARDS & CHARTS) -->
+        <div id="tab-overview" class="tab-content active">
+
+          <!-- HACKATHON JUDGE BRIEFING PANEL -->
+          <div class="card" id="judge-briefing-panel">
           <div class="card-header" style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px; margin-bottom: 14px;">
             <div style="display: flex; align-items: center; gap: 10px;">
               <span style="font-size: 20px;">⚖️</span>
@@ -1522,9 +1525,6 @@ export function getDashboardHtml(): string {
             </div>
           </div>
         </div>
-
-        <!-- 1. OVERVIEW TAB (RECONSTRUCTED WITH HERO FINTECH CARDS & CHARTS) -->
-        <div id="tab-overview" class="tab-content active">
 
           <!-- EXECUTIVE HERO GRID (AREA CHART + FEATURED PAYPAL ENTERPRISE CARD STACK) -->
           <div class="hero-fintech-grid">
@@ -2302,11 +2302,18 @@ export function getDashboardHtml(): string {
         <div id="tab-events" class="tab-content">
           <div class="card">
             <div class="card-header">
-              <span class="card-title">📡 Server-Sent Events (SSE) Monotonic Outbox Stream</span>
-              <button class="btn btn-secondary" onclick="clearStreamLog()">🧹 Clear Log</button>
+              <div>
+                <span class="card-title">📡 Server-Sent Events (SSE) Monotonic Outbox Stream</span>
+                <div class="card-desc">Real-time cryptographic audit trail of all settlement events streamed directly from SQLite outbox.</div>
+              </div>
+              <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                <span class="tag tag-info" id="stream-counter-tag">0 Events Cached</span>
+                <button class="btn btn-primary" onclick="runFlagshipDemo()">🚀 Run Demo (Stream Events)</button>
+                <button class="btn btn-secondary" onclick="clearStreamLog()">🧹 Clear Log</button>
+              </div>
             </div>
-            <div class="stream-box" id="stream-box">
-              <div class="stream-line"><span class="stream-time">[INIT]</span> Connected to /api/events/stream. Awaiting realtime system events...</div>
+            <div class="stream-box" id="stream-box" style="height: 560px;">
+              <div class="stream-line"><span class="stream-time">[INIT]</span> Connected to /api/events/stream. Realtime cryptographic event outbox active...</div>
             </div>
           </div>
         </div>
@@ -2466,6 +2473,7 @@ export function getDashboardHtml(): string {
     }
 
     function switchTab(tabName) {
+      window.scrollTo({ top: 0, behavior: 'instant' });
       // Update sidebar nav items
       document.querySelectorAll('.sidebar-nav-btn').forEach(b => b.classList.remove('active'));
       const activeNavBtn = document.getElementById('btn-nav-' + tabName);
@@ -3035,20 +3043,82 @@ export function getDashboardHtml(): string {
     }
 
     function initSse() {
-      const source = new EventSource('/api/events/stream');
       const box = document.getElementById('stream-box');
-      source.onmessage = function(e) {
+      const sseBadge = document.getElementById('sse-badge');
+      const counterTag = document.getElementById('stream-counter-tag');
+      const seenSeq = new Set();
+      let eventCount = 0;
+
+      function renderEvent(event) {
+        if (!event || !event.sequenceId || seenSeq.has(event.sequenceId)) return;
+        seenSeq.add(event.sequenceId);
+        eventCount++;
+        if (counterTag) counterTag.textContent = eventCount + ' Events Logged';
+
+        const line = document.createElement('div');
+        line.className = 'stream-line';
+        
+        const type = event.eventType || 'EVENT';
+        let color = '#00C3FF';
+        if (type.includes('FAIL') || type.includes('REJECT') || type.includes('BREACH')) color = '#EF4444';
+        else if (type.includes('SETTLED') || type.includes('SUCCESS') || type.includes('APPROVED')) color = '#10B981';
+        else if (type.includes('PAY') || type.includes('ORDER') || type.includes('IOU')) color = '#F59E0B';
+        else if (type.includes('LEDGER')) color = '#C084FC';
+
+        const timeStr = event.emittedAt || new Date().toLocaleTimeString();
+        const payloadStr = event.payload ? JSON.stringify(event.payload).slice(0, 110) : '';
+        line.innerHTML = \`<span class="stream-time">[\${timeStr}]</span> <strong class="stream-type" style="color: \${color}; font-weight: 700;">\${type}</strong> <span style="color: #94A3B8; font-family: var(--font-mono);">seq=\${event.sequenceId}</span> <span style="color: #64748B; font-family: var(--font-mono);">cycle=\${event.cycleId || 'N/A'}</span> <span style="color: #CBD5E1; font-size: 11px; font-family: var(--font-mono);">\${payloadStr}</span>\`;
+        box.prepend(line);
+      }
+
+      // 1. Initial replay of historical outbox events so stream is immediately populated
+      fetch('/api/events/stream?afterSequenceId=0&closeAfterReplay=true')
+        .then(function(res) { return res.text(); })
+        .then(function(text) {
+          const blocks = text.split('\\n\\n');
+          for (const blk of blocks) {
+            const dataMatch = blk.match(/data:\\s*(\\{.*\\})/);
+            if (dataMatch) {
+              try {
+                renderEvent(JSON.parse(dataMatch[1]));
+              } catch (e) {}
+            }
+          }
+        }).catch(function() {});
+
+      // 2. Real-time EventSource connection for live broadcast
+      const source = new EventSource('/api/events/stream');
+      const knownEvents = [
+        'TASK_VERIFIED', 'TASK_REJECTED', 'TASK_EVALUATED', 'IOU_SIGNED', 'NETTING_PROPOSED',
+        'CYCLE_FIREWALL_APPROVED', 'ORDER_CREATED', 'CAPTURE_COMPLETED', 'CYCLE_CAPTURED',
+        'PAYOUT_DISPATCHED', 'PAYOUT_ITEM_SUCCESS', 'PAYOUT_ITEM_CONFIRMED', 'PAYMENT_RETURNED',
+        'REISSUE_AUTHORIZED', 'CYCLE_SETTLED', 'MERKLE_TREE_SEALED', 'LEDGER_ENTRY_POSTED',
+        'INVARIANT_BREACH_DETECTED', 'FLAGSHIP_DEMO_COMPLETED', 'LIVE_TEST_EVENT'
+      ];
+
+      function handleSse(e) {
         try {
-          const event = JSON.parse(e.data);
-          const line = document.createElement('div');
-          line.className = 'stream-line';
-          line.innerHTML = \`<span class="stream-time">[\${new Date().toLocaleTimeString()}]</span> <span class="stream-type">\${event.eventType}</span> seq=\${event.sequenceId} cycle=\${event.cycleId || 'N/A'}\`;
-          box.prepend(line);
+          renderEvent(JSON.parse(e.data));
         } catch (err) {}
+      }
+
+      source.onmessage = handleSse;
+      knownEvents.forEach(function(evt) {
+        source.addEventListener(evt, handleSse);
+      });
+
+      source.onopen = function() {
+        if (sseBadge) {
+          sseBadge.className = 'badge badge-live-stream';
+          sseBadge.innerHTML = '<span class="pulse-dot"></span>SSE Live';
+        }
       };
+
       source.onerror = function() {
-        document.getElementById('sse-badge').className = 'badge tag-error';
-        document.getElementById('sse-badge').innerHTML = '<span class="pulse-dot"></span>SSE Offline';
+        if (sseBadge) {
+          sseBadge.className = 'badge tag-error';
+          sseBadge.innerHTML = '<span class="pulse-dot"></span>SSE Offline';
+        }
       };
     }
 
