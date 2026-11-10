@@ -1171,9 +1171,9 @@ export function getDashboardHtml(): string {
       border-radius: 9999px;
       font-size: 11px;
       font-weight: 700;
-      background: rgba(147, 51, 234, 0.18);
-      border: 1px solid rgba(168, 85, 247, 0.4);
-      color: #C084FC;
+      background: #F3E8FF;
+      border: 1px solid #E9D5FF;
+      color: #7E22CE;
       letter-spacing: 0.3px;
     }
     .fee-inputs-row {
@@ -1193,7 +1193,8 @@ export function getDashboardHtml(): string {
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.6px;
-      color: #94A3B8;
+      color: #475569;
+      font-weight: 700;
       text-align: center;
     }
     .fee-chip {
@@ -2192,10 +2193,10 @@ export function getDashboardHtml(): string {
               </div>
               <div>
                 <div style="display: flex; align-items: center; gap: 10px;">
-                  <span style="font-weight: 800; font-size: 15.5px; color: #FFFFFF; letter-spacing: -0.2px;">Payment Rail Fee Model</span>
+                  <span style="font-weight: 800; font-size: 15.5px; color: #0B1E3F; letter-spacing: -0.2px;">Payment Rail Fee Model</span>
                   <span class="pill-badge-purple">⚙️ Configurable</span>
                 </div>
-                <div style="font-size: 12px; color: #94A3B8; margin-top: 4px; font-weight: 500;">Configure settlement rails & estimate savings</div>
+                <div style="font-size: 12px; color: #64748B; margin-top: 4px; font-weight: 500;">Configure settlement rails & estimate savings</div>
               </div>
             </div>
 
@@ -2581,8 +2582,8 @@ export function getDashboardHtml(): string {
             </svg>
           </div>
           <div>
-            <div style="font-weight: 800; color: #0B1E3F; font-size: 16px; letter-spacing: -0.2px;">PayPal Sandbox Authoritative Proof</div>
-            <div style="font-size: 12.5px; color: var(--text-secondary); margin-top: 2px;">Cryptographically linked server-side verification</div>
+            <div id="verify-modal-header-title" style="font-weight: 800; color: #0B1E3F; font-size: 16px; letter-spacing: -0.2px;">PayPal Sandbox Authoritative Proof</div>
+            <div id="verify-modal-header-sub" style="font-size: 12.5px; color: #64748B; margin-top: 2px;">Cryptographically linked server-side verification</div>
           </div>
         </div>
         <button onclick="closeVerifyModal()" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 50%; width: 32px; height: 32px; color: #94A3B8; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;">&times;</button>
@@ -2619,8 +2620,8 @@ export function getDashboardHtml(): string {
           <pre id="modal-raw-json" class="mono" style="background: rgba(4, 8, 16, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 14px; font-size: 11.5px; color: #CBD5E1; max-height: 220px; overflow-y: auto; line-height: 1.45;"></pre>
         </div>
       </div>
-      <div style="padding: 16px 28px; border-top: 1px solid rgba(0, 156, 222, 0.2); background: rgba(7, 13, 26, 0.9); display: flex; justify-content: flex-end;">
-        <button class="btn btn-secondary" style="padding: 8px 20px; border-radius: 9999px; font-size: 13px; font-weight: 600;" onclick="closeVerifyModal()">Close</button>
+      <div style="padding: 14px 28px; border-top: 1px solid #E2E8F0; background: #F8FAFD; display: flex; justify-content: flex-end;">
+        <button class="btn btn-secondary" style="padding: 8px 22px; border-radius: 9999px; font-size: 13px; font-weight: 700; background: #FFFFFF; border: 1px solid #CBD5E1; color: #0F172A;" onclick="closeVerifyModal()">Close</button>
       </div>
     </div>
   </div>
@@ -2632,7 +2633,7 @@ export function getDashboardHtml(): string {
         <div style="display: flex; align-items: center; gap: 10px;">
           <span style="font-size: 20px;">🛡️</span>
           <div>
-            <div id="merkle-modal-title" style="font-weight: 700; color: var(--accent-secondary); font-size: 15px;">IOU Cryptographic Proof & Merkle Anchor</div>
+            <div id="merkle-modal-title" style="font-weight: 800; color: #0B1E3F; font-size: 16px; letter-spacing: -0.2px;">IOU Cryptographic Proof & Merkle Anchor</div>
             <div style="font-size: 12px; color: var(--text-secondary);">Ed25519 digital signature verified over RFC 8785 canonical JSON digest</div>
           </div>
         </div>
@@ -2652,19 +2653,19 @@ export function getDashboardHtml(): string {
             <span style="color: var(--text-secondary);">Creditor (Receiver):</span>
             <span id="mp-creditor" style="color: var(--accent-emerald);">-</span>
             <span style="color: var(--text-secondary);">Amount:</span>
-            <span id="mp-amount" style="font-weight: 700; color: var(--accent-secondary); font-variant-numeric: tabular-nums;">-</span>
+            <span id="mp-amount" style="font-weight: 800; color: #0070BA; font-variant-numeric: tabular-nums;">-</span>
             <span style="color: var(--text-secondary);">Merkle Anchor:</span>
-            <span id="mp-anchor" class="mono" style="color: var(--accent-amber); word-break: break-all;">-</span>
+            <span id="mp-anchor" class="mono" style="color: #B45309; word-break: break-all; font-weight: 600;">-</span>
             <span style="color: var(--text-secondary);">Debtor Public Key:</span>
-            <span id="mp-pubkey" class="mono" style="color: #A7F3D0; word-break: break-all; font-size: 11px;">-</span>
+            <span id="mp-pubkey" class="mono" style="color: #047857; word-break: break-all; font-size: 11px; font-weight: 600;">-</span>
             <span style="color: var(--text-secondary);">Ed25519 Signature:</span>
-            <span id="mp-signature" class="mono" style="color: #A5B4FC; word-break: break-all; font-size: 11px;">-</span>
+            <span id="mp-signature" class="mono" style="color: #4338CA; word-break: break-all; font-size: 11px; font-weight: 600;">-</span>
           </div>
         </div>
         <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600;">Signed Canonical RFC 8785 Payload:</div>
         <pre id="mp-payload" class="mono" style="background: #050608; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 12px; font-size: 11px; color: #CBD5E1; max-height: 180px; overflow-y: auto;"></pre>
       </div>
-      <div style="padding: 14px 24px; border-top: 1px solid var(--border-subtle); background: var(--surface-elevated); display: flex; justify-content: flex-end;">
+      <div style="padding: 14px 24px; border-top: 1px solid #E2E8F0; background: #F8FAFD; display: flex; justify-content: flex-end;">
         <button class="btn btn-secondary" onclick="closeMerkleProofModal()">Close Proof</button>
       </div>
     </div>
@@ -3646,14 +3647,34 @@ export function getDashboardHtml(): string {
     }
 
     function tourStep(step) {
-      document.querySelectorAll('.tour-step-btn').forEach(b => {
-        b.style.borderColor = 'var(--border-subtle)';
-        b.style.background = 'var(--surface-primary)';
-      });
-      const activeBtn = document.getElementById('tour-step-' + step);
-      if (activeBtn) {
-        activeBtn.style.borderColor = 'var(--accent-secondary)';
-        activeBtn.style.background = 'rgba(0, 112, 186, 0.22)';
+      console.log('Executing Tour Step:', step);
+
+      // Reset all 6 step cards
+      for (let i = 1; i <= 6; i++) {
+        const card = document.getElementById('tour-card-' + i);
+        if (card) {
+          card.style.borderColor = '#E2E8F0';
+          card.style.background = '#FFFFFF';
+          card.style.boxShadow = '0 2px 6px rgba(0, 112, 186, 0.04)';
+          const badge = card.querySelector('.tour-step-badge');
+          if (badge) {
+            badge.style.background = '#EBF4FC';
+            badge.style.color = '#0070BA';
+          }
+        }
+      }
+
+      // Highlight the active step card with signature PayPal blue border & soft tint
+      const activeCard = document.getElementById('tour-card-' + step);
+      if (activeCard) {
+        activeCard.style.borderColor = '#0070BA';
+        activeCard.style.background = '#F0F7FF';
+        activeCard.style.boxShadow = '0 4px 14px rgba(0, 112, 186, 0.16)';
+        const activeBadge = activeCard.querySelector('.tour-step-badge');
+        if (activeBadge) {
+          activeBadge.style.background = '#0070BA';
+          activeBadge.style.color = '#FFFFFF';
+        }
       }
 
       if (step === 1) {
@@ -3661,14 +3682,17 @@ export function getDashboardHtml(): string {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (step === 2) {
         switchTab('overview');
+        const stepper = document.querySelector('.stepper');
+        if (stepper) stepper.scrollIntoView({ behavior: 'smooth', block: 'center' });
         runFlagshipDemo();
       } else if (step === 3) {
-        switchTab('overview');
-        const s1 = document.getElementById('step-1');
-        if (s1) s1.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        testLiveAiJudge();
       } else if (step === 4) {
         switchTab('scale');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(() => {
+          const posGrid = document.getElementById('positions-grid');
+          if (posGrid) posGrid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 150);
       } else if (step === 5) {
         verifyPayPalCapture('7PV82720RX415822V');
       } else if (step === 6) {
@@ -3679,6 +3703,11 @@ export function getDashboardHtml(): string {
 
     async function testLiveAiJudge() {
       openVerifyModal();
+      const modalTitle = document.getElementById('verify-modal-header-title');
+      if (modalTitle) modalTitle.textContent = 'AI SLA Judge Adjudication Evidence';
+      const modalSub = document.getElementById('verify-modal-header-sub');
+      if (modalSub) modalSub.textContent = 'Live FreeModel (Gemini 3.7 / DeepSeek) evaluation with deterministic clamping';
+
       document.getElementById('modal-id').textContent = 'Live SLA AI Adjudication';
       document.getElementById('modal-provider-status').textContent = 'EVALUATING...';
       try {
@@ -3767,6 +3796,10 @@ export function getDashboardHtml(): string {
 
     async function verifyPayPalCapture(captureId) {
       openVerifyModal();
+      const modalTitle = document.getElementById('verify-modal-header-title');
+      if (modalTitle) modalTitle.textContent = 'PayPal Sandbox Authoritative Proof';
+      const modalSub = document.getElementById('verify-modal-header-sub');
+      if (modalSub) modalSub.textContent = 'Cryptographically linked server-side verification against PayPal rails';
       try {
         const res = await fetch('/api/verify/capture/' + encodeURIComponent(captureId));
         const data = await res.json();
@@ -3778,6 +3811,10 @@ export function getDashboardHtml(): string {
 
     async function verifyPayPalPayout(batchId) {
       openVerifyModal();
+      const modalTitle = document.getElementById('verify-modal-header-title');
+      if (modalTitle) modalTitle.textContent = 'PayPal Sandbox Authoritative Proof';
+      const modalSub = document.getElementById('verify-modal-header-sub');
+      if (modalSub) modalSub.textContent = 'Cryptographically linked server-side verification against PayPal rails';
       try {
         const res = await fetch('/api/verify/payout/' + encodeURIComponent(batchId));
         const data = await res.json();
@@ -3792,82 +3829,100 @@ export function getDashboardHtml(): string {
       document.getElementById('verify-modal-content').style.display = 'block';
 
       const noticeBanner = document.getElementById('modal-notice-banner');
-      if ((data.notice || data.explanation) && noticeBanner) {
-        noticeBanner.style.display = 'block';
-        const icon = data.isSimulatedRecord ? 'ℹ️' : (data.amountMatched === false ? '❌' : '⚠️');
-        noticeBanner.innerHTML = icon + ' <strong>' + (data.isSimulatedRecord ? 'Simulation Notice:' : 'Verification Notice:') + '</strong> ' + (data.notice || data.explanation);
-        if (data.isSimulatedRecord) {
-          noticeBanner.style.background = 'rgba(0, 156, 222, 0.12)';
-          noticeBanner.style.borderColor = 'rgba(0, 156, 222, 0.4)';
-          noticeBanner.style.color = '#38BDF8';
-        } else if (data.amountMatched === false) {
-          noticeBanner.style.background = 'rgba(239, 68, 68, 0.12)';
-          noticeBanner.style.borderColor = 'rgba(239, 68, 68, 0.4)';
-          noticeBanner.style.color = '#FCA5A5';
-        } else {
-          noticeBanner.style.background = 'rgba(245, 158, 11, 0.12)';
-          noticeBanner.style.borderColor = 'var(--accent-amber)';
-          noticeBanner.style.color = 'var(--accent-amber)';
-        }
-      } else if (noticeBanner) {
-        noticeBanner.style.display = 'none';
-      }
-
       const badge = document.getElementById('modal-status-badge');
       const vStatus = data.verificationStatus || data.providerVerificationStatus;
+      const provStatusElem = document.getElementById('modal-provider-status');
+      const provStatus = data.providerStatus || data.batchHeader?.batchStatus || (data.isSimulatedRecord ? 'NOT_FOUND_ON_RAILS' : 'NOT_FOUND');
+      provStatusElem.textContent = provStatus;
 
-      if (vStatus === 'STORED_CANONICAL_EVIDENCE' || data.storedEvidenceMatched) {
+      const evMatch = document.getElementById('modal-evidence-match');
+
+      // Clear any prior inline styles
+      badge.style.background = '';
+      badge.style.color = '';
+      evMatch.style.background = '';
+      evMatch.style.color = '';
+
+      if (vStatus === 'VERIFIED_ON_PAYPAL_SANDBOX' || ((provStatus === 'COMPLETED' || provStatus === 'SUCCESS') && !data.isSimulatedRecord && vStatus !== 'RESOURCE_NOT_FOUND')) {
+        provStatusElem.style.color = 'var(--accent-emerald)';
+        badge.className = 'tag tag-success';
+        badge.textContent = 'VERIFIED ON PAYPAL SANDBOX';
+        evMatch.className = 'tag tag-success';
+        evMatch.textContent = 'LIVE SANDBOX & LEDGER VERIFIED';
+      } else if (vStatus === 'STORED_CANONICAL_EVIDENCE' || data.storedEvidenceMatched) {
+        provStatusElem.style.color = 'var(--accent-emerald)';
         badge.className = 'tag';
         badge.style.background = '#F59E0B';
         badge.style.color = '#000';
         badge.style.fontWeight = '700';
-        badge.textContent = 'STORED CANONICAL EVIDENCE (OFFLINE RUN)';
-      } else if (vStatus === 'VERIFIED_ON_PAYPAL_SANDBOX' || vStatus === 'PROVIDER_VERIFIED') {
-        badge.className = 'tag tag-success';
-        badge.style.background = '';
-        badge.style.color = '';
-        badge.textContent = 'VERIFIED ON PAYPAL SANDBOX';
-      } else if (vStatus === 'LOCAL_RECORD_FOUND') {
+        badge.textContent = 'STORED CANONICAL EVIDENCE (SANDBOX RUN)';
+        evMatch.className = 'tag tag-success';
+        evMatch.textContent = 'MATCHED CANONICAL PROOF';
+      } else if (provStatus === 'NOT_FOUND' || vStatus === 'RESOURCE_NOT_FOUND' || vStatus === 'LOCAL_RECORD_FOUND') {
+        provStatusElem.style.color = 'var(--accent-rose)';
+        badge.className = 'tag tag-error';
+        badge.textContent = 'RESOURCE NOT FOUND ON PAYPAL';
+        if (data.dbRecordMatched) {
+          evMatch.className = 'tag';
+          evMatch.style.background = '#FEF3C7';
+          evMatch.style.color = '#B45309';
+          evMatch.style.border = '1px solid #FDE68A';
+          evMatch.textContent = 'LOCAL LEDGER ONLY (UNCONFIRMED ON PAYPAL)';
+        } else {
+          evMatch.className = 'tag tag-error';
+          evMatch.textContent = 'RECORD NOT FOUND';
+        }
+      } else if (data.isSimulatedRecord) {
+        provStatusElem.style.color = 'var(--accent-amber)';
         badge.className = 'tag tag-info';
-        badge.style.background = 'rgba(0, 112, 186, 0.2)';
-        badge.style.color = '#38BDF8';
-        badge.style.border = '1px solid rgba(0, 156, 222, 0.4)';
-        badge.textContent = 'LOCAL LEDGER RECORD FOUND (SIMULATED)';
+        badge.textContent = 'LOCAL LEDGER RECORD (SIMULATED)';
+        evMatch.className = 'tag tag-info';
+        evMatch.textContent = 'SIMULATED DEMO RECORD';
       } else if (vStatus === 'EVIDENCE_MISMATCH') {
+        provStatusElem.style.color = 'var(--accent-rose)';
         badge.className = 'tag tag-error';
-        badge.style.background = '';
-        badge.style.color = '';
         badge.textContent = 'EVIDENCE MISMATCH (AMOUNT / CURRENCY)';
-      } else if (vStatus === 'PROVIDER_PENDING') {
-        badge.className = 'tag tag-warning';
-        badge.style.background = '';
-        badge.style.color = '';
-        badge.textContent = 'PROVIDER PENDING';
-      } else if (vStatus === 'PROVIDER_ERROR') {
-        badge.className = 'tag tag-error';
-        badge.style.background = '';
-        badge.style.color = '';
-        badge.textContent = 'PROVIDER ERROR / UNAVAILABLE';
+        evMatch.className = 'tag tag-error';
+        evMatch.textContent = 'AMOUNT MISMATCH';
       } else {
+        provStatusElem.style.color = 'var(--accent-rose)';
         badge.className = 'tag tag-error';
-        badge.style.background = '';
-        badge.style.color = '';
         badge.textContent = vStatus || 'RESOURCE NOT FOUND';
+        evMatch.className = 'tag tag-error';
+        evMatch.textContent = 'UNCONFIRMED';
+      }
+
+      // Display Contextual Notice Banners
+      if (noticeBanner) {
+        if (data.notice || data.explanation) {
+          noticeBanner.style.display = 'block';
+          const icon = data.isSimulatedRecord ? 'ℹ️' : (data.amountMatched === false ? '❌' : '⚠️');
+          noticeBanner.innerHTML = icon + ' <strong>' + (data.isSimulatedRecord ? 'Simulation Notice:' : 'Verification Notice:') + '</strong> ' + (data.notice || data.explanation);
+          if (data.isSimulatedRecord) {
+            noticeBanner.style.background = 'rgba(0, 112, 186, 0.08)';
+            noticeBanner.style.borderColor = 'rgba(0, 112, 186, 0.3)';
+            noticeBanner.style.color = '#0070BA';
+          } else if (data.amountMatched === false) {
+            noticeBanner.style.background = 'rgba(239, 68, 68, 0.08)';
+            noticeBanner.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+            noticeBanner.style.color = '#DC2626';
+          } else {
+            noticeBanner.style.background = 'rgba(245, 158, 11, 0.08)';
+            noticeBanner.style.borderColor = '#FDE68A';
+            noticeBanner.style.color = '#B45309';
+          }
+        } else if ((provStatus === 'NOT_FOUND' || vStatus === 'RESOURCE_NOT_FOUND') && data.dbRecordMatched) {
+          noticeBanner.style.display = 'block';
+          noticeBanner.style.background = '#FEF3C7';
+          noticeBanner.style.borderColor = '#FDE68A';
+          noticeBanner.style.color = '#B45309';
+          noticeBanner.innerHTML = '⚠️ <strong>Unconfirmed on Live Rails:</strong> This record exists in the local clearinghouse database, but PayPal Sandbox reported NOT_FOUND. It represents a local test cycle.';
+        } else {
+          noticeBanner.style.display = 'none';
+        }
       }
 
       document.getElementById('modal-id').textContent = data.identifier || '-';
-      
-      const provStatusElem = document.getElementById('modal-provider-status');
-      const provStatus = data.providerStatus || data.batchHeader?.batchStatus || (data.isSimulatedRecord ? 'NOT_FOUND_ON_RAILS' : 'NOT_FOUND');
-      provStatusElem.textContent = provStatus;
-      if (provStatus === 'COMPLETED' || provStatus === 'SUCCESS') {
-        provStatusElem.style.color = 'var(--accent-emerald)';
-      } else if (provStatus === 'PENDING' || provStatus === 'PROCESSING') {
-        provStatusElem.style.color = 'var(--accent-amber)';
-      } else {
-        provStatusElem.style.color = 'var(--accent-rose)';
-      }
-
       const amt = data.amount || data.batchHeader?.amount;
       document.getElementById('modal-amount').textContent = amt ? (amt.value + ' ' + (amt.currency_code || amt.currency || 'USD')) : '-';
       
@@ -3875,24 +3930,6 @@ export function getDashboardHtml(): string {
       document.getElementById('modal-anchor').textContent = anchor;
 
       document.getElementById('modal-debug-id').textContent = data.paypalDebugId || (data.isSimulatedRecord ? 'N/A (Simulated Demonstration)' : 'N/A');
-
-      const evMatch = document.getElementById('modal-evidence-match');
-      if (data.storedEvidenceMatched) {
-        evMatch.className = 'tag tag-success';
-        evMatch.textContent = 'MATCHED CANONICAL PROOF';
-      } else if (data.isSimulatedRecord) {
-        evMatch.className = 'tag tag-info';
-        evMatch.textContent = 'SIMULATED DEMO RECORD';
-      } else if (data.amountMatched === false) {
-        evMatch.className = 'tag tag-error';
-        evMatch.textContent = 'AMOUNT MISMATCH';
-      } else if (data.dbRecordMatched) {
-        evMatch.className = 'tag tag-success';
-        evMatch.textContent = 'LEDGER RECORD VERIFIED';
-      } else {
-        evMatch.className = 'tag tag-error';
-        evMatch.textContent = 'RECORD NOT FOUND';
-      }
 
       document.getElementById('modal-raw-json').textContent = JSON.stringify(data, null, 2);
     }
