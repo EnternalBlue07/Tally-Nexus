@@ -265,40 +265,159 @@ export function getDashboardHtml(): string {
       gap: 18px;
     }
 
-    /* Search / Command Palette Bar */
+    /* Search / Command Palette Bar - Sleek Single-Line Pill */
     .command-search {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 10px;
-      background: rgba(11, 23, 44, 0.7);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--border-glass);
-      padding: 8px 16px;
-      border-radius: 12px;
-      width: 260px;
-      max-width: 100%;
+      gap: 12px;
+      background: rgba(11, 23, 44, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 156, 222, 0.32);
+      padding: 7px 16px;
+      border-radius: 9999px;
+      width: 340px;
+      max-width: 380px;
+      min-width: 260px;
+      height: 38px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+      user-select: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
     .command-search:hover {
-      border-color: rgba(0, 156, 222, 0.45);
-      background: rgba(16, 34, 64, 0.8);
-      box-shadow: 0 0 16px rgba(0, 112, 186, 0.2);
+      border-color: rgba(0, 156, 222, 0.7);
+      background: rgba(16, 34, 64, 0.92);
+      box-shadow: 0 0 20px rgba(0, 112, 186, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      transform: translateY(-1px);
+    }
+    .command-search-icon {
+      color: var(--accent-secondary);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
     .command-search-text {
       font-size: 12.5px;
       color: var(--text-secondary);
       flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 500;
+      letter-spacing: -0.1px;
     }
     .command-key {
       background: rgba(255, 255, 255, 0.08);
-      border: 1px solid var(--border-subtle);
-      border-radius: 6px;
-      padding: 2px 7px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 9999px;
+      padding: 3px 10px;
       font-size: 10px;
       font-family: var(--font-mono);
+      font-weight: 600;
+      color: #94A3B8;
+      flex-shrink: 0;
+      letter-spacing: 0.3px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    /* Command Palette Modal Styling */
+    .palette-dialog {
+      background: rgba(10, 18, 36, 0.97);
+      border: 1px solid rgba(0, 156, 222, 0.45);
+      border-radius: 22px;
+      max-width: 680px;
+      width: 100%;
+      box-shadow: 0 35px 80px rgba(0, 0, 0, 0.9), 0 0 45px rgba(0, 112, 186, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      overflow: hidden;
+      backdrop-filter: blur(32px);
+      -webkit-backdrop-filter: blur(32px);
+      animation: palettePop 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes palettePop {
+      0% { opacity: 0; transform: scale(0.96) translateY(-10px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .palette-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
       color: var(--text-muted);
+      padding: 10px 14px 6px 14px;
+    }
+    .palette-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      margin-bottom: 3px;
+      background: transparent;
+      border: 1px solid transparent;
+      user-select: none;
+    }
+    .palette-item:hover, .palette-item.selected {
+      background: rgba(0, 156, 222, 0.14);
+      border-color: rgba(0, 156, 222, 0.38);
+      transform: translateX(2px);
+    }
+    .palette-item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .palette-item-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
+    }
+    .palette-item:hover .palette-item-icon, .palette-item.selected .palette-item-icon {
+      background: rgba(0, 156, 222, 0.28);
+      border-color: rgba(0, 156, 222, 0.55);
+      box-shadow: 0 0 12px rgba(0, 112, 186, 0.35);
+    }
+    .palette-item-title {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #F8FAFC;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .palette-item-subtitle {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 2px;
+    }
+    .palette-item-badge {
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      flex-shrink: 0;
+      font-family: var(--font-mono);
+      letter-spacing: 0.3px;
     }
 
     .topbar-actions {
@@ -1410,8 +1529,8 @@ export function getDashboardHtml(): string {
       <header class="topbar">
         <button class="mobile-menu-toggle" onclick="toggleMobileSidebar()" aria-label="Toggle navigation">☰</button>
 
-        <div class="command-search" onclick="openCommandPalette()">
-          <span style="color: var(--text-muted); font-size: 14px;">🔍</span>
+        <div class="command-search" onclick="openCommandPalette()" role="button" tabindex="0" title="Search transactions, agents, IOUs (⌘ + Space or Ctrl + K)">
+          <span class="command-search-icon">🔍</span>
           <span class="command-search-text">Search transactions, agents, IOUs...</span>
           <span class="command-key">⌘ + Space</span>
         </div>
@@ -2425,6 +2544,36 @@ export function getDashboardHtml(): string {
     </div>
   </div>
 
+  <!-- Global Command Palette & Search Modal -->
+  <div id="command-palette-modal" style="display: none; position: fixed; inset: 0; background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); z-index: 10001; justify-content: center; align-items: flex-start; padding: 70px 20px 20px 20px;" onclick="handlePaletteBackdropClick(event)">
+    <div class="palette-dialog" onclick="event.stopPropagation()">
+      <div style="display: flex; align-items: center; gap: 14px; padding: 18px 24px; border-bottom: 1px solid rgba(0, 156, 222, 0.22); background: linear-gradient(90deg, rgba(0, 48, 135, 0.3) 0%, rgba(0, 112, 186, 0.15) 100%);">
+        <div style="width: 38px; height: 38px; border-radius: 12px; background: rgba(0, 156, 222, 0.18); border: 1px solid rgba(0, 156, 222, 0.4); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--accent-secondary); flex-shrink: 0;">
+          🔍
+        </div>
+        <input type="text" id="palette-search-input" placeholder="Search transactions, agents, IOUs, routes, or type an action..." autocomplete="off" spellcheck="false" style="flex: 1; background: transparent; border: none; outline: none; font-size: 15.5px; font-weight: 500; color: #FFFFFF; font-family: var(--font-sans);" oninput="filterCommandPalette(this.value)" onkeydown="handlePaletteKeydown(event)">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span class="command-key" style="border-radius: 9999px; padding: 4px 10px; font-size: 10px; font-weight: 600; letter-spacing: 0.5px;">ESC</span>
+          <button onclick="closeCommandPalette()" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 50%; width: 30px; height: 30px; color: #94A3B8; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;">&times;</button>
+        </div>
+      </div>
+      <div id="palette-results-list" style="max-height: 420px; overflow-y: auto; padding: 10px 14px;">
+        <!-- Dynamically rendered -->
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 24px; border-top: 1px solid rgba(255, 255, 255, 0.08); background: rgba(7, 13, 26, 0.9); font-size: 11.5px; color: var(--text-muted);">
+        <div style="display: flex; gap: 16px;">
+          <span><strong style="color: var(--text-secondary);">↑↓</strong> to navigate</span>
+          <span><strong style="color: var(--text-secondary);">↵</strong> to select</span>
+          <span><strong style="color: var(--text-secondary);">ESC</strong> to close</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span class="pulse-dot" style="width: 6px; height: 6px;"></span>
+          <span style="font-family: var(--font-mono); font-size: 11px;">TALLY NEXUS PALETTE</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     let iouGridApi = null;
     let positionsGridApi = null;
@@ -2440,9 +2589,214 @@ export function getDashboardHtml(): string {
       if (sidebar) sidebar.classList.toggle('mobile-open');
     }
 
+    /* --- COMMAND PALETTE & GLOBAL SEARCH ENGINE --- */
+    let filteredPaletteItems = [];
+    let selectedPaletteIndex = 0;
+
+    const STATIC_PALETTE_ITEMS = [
+      // Quick Actions
+      { id: 'act-demo', category: '⚡ Quick Actions', title: 'Run 180s Flagship Demo', subtitle: 'Execute 5-agent micro-IOU simulation, bilateral netting & PayPal settlement', icon: '🚀', badge: 'DEMO', action: function() { runFlagshipDemo(); } },
+      { id: 'act-ai', category: '⚡ Quick Actions', title: 'Run Live AI SLA Evaluation', subtitle: 'Evaluate dispute deliverable via Gemini 3.7 Flash with DeepSeek failover', icon: '🤖', badge: 'AI JUDGE', action: function() { testLiveAiJudge(); } },
+      { id: 'act-capture', category: '⚡ Quick Actions', title: 'Verify Live PayPal Capture', subtitle: 'Query api-m.sandbox.paypal.com Orders v2 authoritative record', icon: '💳', badge: 'PAYPAL', action: function() { verifyPayPalCapture('7PV82720RX415822V'); } },
+      { id: 'act-payout', category: '⚡ Quick Actions', title: 'Verify Live PayPal Payout', subtitle: 'Query api-m.sandbox.paypal.com Payouts v1 authoritative record', icon: '🪙', badge: 'PAYPAL', action: function() { verifyPayPalPayout('N4M49PUHNCNQ4'); } },
+      { id: 'act-recalc', category: '⚡ Quick Actions', title: 'Recalculate Rail Fee Savings', subtitle: 'Run fee model calculation against configured interchange rates', icon: '🧮', badge: 'FEE MODEL', action: function() { recalculateFeesCustom(); } },
+      { id: 'act-refresh', category: '⚡ Quick Actions', title: 'Refresh Dashboard & Subledger', subtitle: 'Poll subledger balances and assert zero-variance state', icon: '🔄', badge: 'SYNC', action: function() { refreshDashboardData(); } },
+
+      // Navigation
+      { id: 'nav-overview', category: '🧭 Navigation', title: 'Executive Overview', subtitle: 'Conserved net exposure, fee comparison & judge briefing', icon: '🏛️', badge: 'VIEW', action: function() { switchTab('overview'); } },
+      { id: 'nav-cycles', category: '🧭 Navigation', title: 'Clearing Room & Settlement Cycles', subtitle: 'Bilateral netting graph, debt compression & net positions', icon: '⚡', badge: 'VIEW', action: function() { switchTab('cycles'); } },
+      { id: 'nav-agents', category: '🧭 Navigation', title: 'Agent Directory', subtitle: 'Registered swarm agents, public keys & credit limits', icon: '🤖', badge: 'VIEW', action: function() { switchTab('agents'); } },
+      { id: 'nav-scale', category: '🧭 Navigation', title: 'Hero Scale & AG Grid (1,500+ IOUs)', subtitle: 'High-density grid with 1,500+ micro-IOU cryptographic audit', icon: '📊', badge: 'VIEW', action: function() { switchTab('scale'); } },
+      { id: 'nav-payments', category: '🧭 Navigation', title: 'Payment Rails (PayPal Sandbox)', subtitle: 'PayPal Sandbox Orders v2 captures & Payouts v1 disbursements', icon: '💳', badge: 'VIEW', action: function() { switchTab('payments'); } },
+      { id: 'nav-ledger', category: '🧭 Navigation', title: 'Double-Entry Subledger', subtitle: '14 SQLite triggers asserting zero-sum mathematical balance', icon: '⚖️', badge: 'VIEW', action: function() { switchTab('ledger'); } },
+      { id: 'nav-security', category: '🧭 Navigation', title: 'Trust & Security Center', subtitle: 'Cryptographic Merkle anchors, Ed25519 keys & failovers', icon: '🛡️', badge: 'VIEW', action: function() { switchTab('security'); } },
+      { id: 'nav-events', category: '🧭 Navigation', title: 'Live Event Stream (SSE)', subtitle: 'Monotonic outbox event stream of signed state mutations', icon: '📡', badge: 'VIEW', action: function() { switchTab('events'); } },
+      { id: 'nav-recovery', category: '🧭 Navigation', title: 'Recovery Operations', subtitle: 'Crash recovery, stale lock pruning & idempotency ledger', icon: '🔄', badge: 'VIEW', action: function() { switchTab('recovery'); } },
+
+      // Swarm Agents
+      { id: 'agent-research', category: '🤖 Swarm Agents', title: 'agent_research', subtitle: 'Lead Research Analyst • $10,000 credit • Ed25519 Verified', icon: '🔬', badge: 'AGENT', action: function() { switchTab('agents'); } },
+      { id: 'agent-data', category: '🤖 Swarm Agents', title: 'agent_data', subtitle: 'Data Extraction Worker • $10,000 credit • Active Ingestion', icon: '📥', badge: 'AGENT', action: function() { switchTab('agents'); } },
+      { id: 'agent-compute', category: '🤖 Swarm Agents', title: 'agent_compute', subtitle: 'Compute Infrastructure Node • High GPU throughput', icon: '⚡', badge: 'AGENT', action: function() { switchTab('agents'); } },
+      { id: 'agent-loc', category: '🤖 Swarm Agents', title: 'agent_loc', subtitle: 'Liquidity Optimization Controller • Dynamic Netting Engine', icon: '💧', badge: 'AGENT', action: function() { switchTab('agents'); } },
+      { id: 'agent-qa', category: '🤖 Swarm Agents', title: 'agent_qa', subtitle: 'Quality Assurance Assessor • Autonomous SLA Adjudicator', icon: '✅', badge: 'AGENT', action: function() { switchTab('agents'); } },
+
+      // Canonical Micro-IOUs
+      { id: 'iou-1', category: '📜 Micro-IOU Proofs', title: 'IOU #001 ($15.00 USD)', subtitle: 'agent_research → agent_compute • RFC 8785 Ed25519 Verified', icon: '📄', badge: 'PROOF', action: function() { showMerkleProof('iou_001'); } },
+      { id: 'iou-2', category: '📜 Micro-IOU Proofs', title: 'IOU #002 ($25.00 USD)', subtitle: 'agent_data → agent_compute • Milvus vector database slice', icon: '📄', badge: 'PROOF', action: function() { showMerkleProof('iou_002'); } },
+      { id: 'iou-3', category: '📜 Micro-IOU Proofs', title: 'IOU #003 ($5.00 USD)', subtitle: 'agent_compute → agent_qa • Validation gate execution', icon: '📄', badge: 'PROOF', action: function() { showMerkleProof('iou_003'); } }
+    ];
+
     function openCommandPalette() {
-      showToast('info', 'Command Palette (⌘ + Space)', 'Search agent economy, jump to clearing cycles, or verify Ed25519 signatures.');
+      const modal = document.getElementById('command-palette-modal');
+      if (!modal) return;
+      modal.style.display = 'flex';
+      const input = document.getElementById('palette-search-input');
+      if (input) {
+        input.value = '';
+        setTimeout(function() { input.focus(); }, 50);
+      }
+      filterCommandPalette('');
     }
+
+    function closeCommandPalette() {
+      const modal = document.getElementById('command-palette-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function handlePaletteBackdropClick(e) {
+      if (e.target && e.target.id === 'command-palette-modal') {
+        closeCommandPalette();
+      }
+    }
+
+    function filterCommandPalette(query) {
+      query = (query || '').trim().toLowerCase();
+      selectedPaletteIndex = 0;
+
+      let items = STATIC_PALETTE_ITEMS.slice();
+
+      // Dynamically add matches from 1,500 scale IOUs if loaded
+      if (query && currentScaleData && Array.isArray(currentScaleData.ious)) {
+        let matchingIous = currentScaleData.ious.filter(function(iou) {
+          return (iou.iouId && iou.iouId.toLowerCase().includes(query)) ||
+                 (iou.taskTitle && iou.taskTitle.toLowerCase().includes(query)) ||
+                 (iou.debtorAgentId && iou.debtorAgentId.toLowerCase().includes(query)) ||
+                 (iou.creditorAgentId && iou.creditorAgentId.toLowerCase().includes(query));
+        }).slice(0, 6);
+
+        matchingIous.forEach(function(iou) {
+          items.push({
+            id: 'dyn-iou-' + iou.iouId,
+            category: '🔍 AG Grid Matches',
+            title: iou.iouId + ' ($' + (iou.amountCents / 100).toFixed(2) + ' USD)',
+            subtitle: iou.debtorAgentId + ' → ' + iou.creditorAgentId + ' • ' + iou.taskTitle,
+            icon: '📄',
+            badge: 'SCALE IOU',
+            action: function() { showMerkleProof(iou.iouId); }
+          });
+        });
+      }
+
+      if (query) {
+        filteredPaletteItems = items.filter(function(item) {
+          return item.title.toLowerCase().includes(query) ||
+                 item.subtitle.toLowerCase().includes(query) ||
+                 item.category.toLowerCase().includes(query) ||
+                 item.badge.toLowerCase().includes(query);
+        });
+      } else {
+        filteredPaletteItems = items;
+      }
+
+      renderPaletteResults();
+    }
+
+    function renderPaletteResults() {
+      const container = document.getElementById('palette-results-list');
+      if (!container) return;
+
+      if (filteredPaletteItems.length === 0) {
+        container.innerHTML = '<div style="text-align: center; padding: 36px 20px; color: var(--text-secondary);"><div style="font-size: 28px; margin-bottom: 8px;">🔍</div><div style="font-weight: 600; color: #FFF; font-size: 14px;">No matching actions or records found</div><div style="font-size: 12px; margin-top: 4px;">Try searching for "demo", "paypal", "agent", "ledger", or an IOU ID.</div></div>';
+        return;
+      }
+
+      let html = '';
+      let currentCategory = '';
+
+      filteredPaletteItems.forEach(function(item, idx) {
+        if (item.category !== currentCategory) {
+          currentCategory = item.category;
+          html += '<div class="palette-section-title">' + escapeHtml(currentCategory) + '</div>';
+        }
+
+        const isSelected = idx === selectedPaletteIndex;
+        html += '<div class="palette-item ' + (isSelected ? 'selected' : '') + '" id="palette-item-' + idx + '" onclick="executePaletteItem(' + idx + ')">' +
+          '<div class="palette-item-left">' +
+            '<div class="palette-item-icon">' + item.icon + '</div>' +
+            '<div style="min-width: 0;">' +
+              '<div class="palette-item-title">' + escapeHtml(item.title) + '</div>' +
+              '<div class="palette-item-subtitle">' + escapeHtml(item.subtitle) + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<span class="palette-item-badge">' + escapeHtml(item.badge) + '</span>' +
+        '</div>';
+      });
+
+      container.innerHTML = html;
+      scrollPaletteSelectionIntoView();
+    }
+
+    function updatePaletteSelection() {
+      document.querySelectorAll('.palette-item').forEach(function(el, idx) {
+        if (idx === selectedPaletteIndex) {
+          el.classList.add('selected');
+        } else {
+          el.classList.remove('selected');
+        }
+      });
+      scrollPaletteSelectionIntoView();
+    }
+
+    function scrollPaletteSelectionIntoView() {
+      const el = document.getElementById('palette-item-' + selectedPaletteIndex);
+      if (el) {
+        el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    }
+
+    function executePaletteItem(index) {
+      if (index >= 0 && index < filteredPaletteItems.length) {
+        const item = filteredPaletteItems[index];
+        closeCommandPalette();
+        if (typeof item.action === 'function') {
+          setTimeout(function() { item.action(); }, 80);
+        }
+      }
+    }
+
+    function handlePaletteKeydown(e) {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (filteredPaletteItems.length > 0) {
+          selectedPaletteIndex = (selectedPaletteIndex + 1) % filteredPaletteItems.length;
+          updatePaletteSelection();
+        }
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (filteredPaletteItems.length > 0) {
+          selectedPaletteIndex = (selectedPaletteIndex - 1 + filteredPaletteItems.length) % filteredPaletteItems.length;
+          updatePaletteSelection();
+        }
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        executePaletteItem(selectedPaletteIndex);
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        closeCommandPalette();
+      }
+    }
+
+    // Global keyboard shortcut listeners (Cmd+Space, Ctrl+K, Cmd+K, '/')
+    document.addEventListener('keydown', function(e) {
+      const isCmdSpace = (e.metaKey && e.code === 'Space');
+      const isCtrlK = (e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K');
+      const isSlash = e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA';
+
+      if (isCmdSpace || isCtrlK || isSlash) {
+        e.preventDefault();
+        const modal = document.getElementById('command-palette-modal');
+        if (modal && modal.style.display === 'flex') {
+          closeCommandPalette();
+        } else {
+          openCommandPalette();
+        }
+      } else if (e.key === 'Escape') {
+        const modal = document.getElementById('command-palette-modal');
+        if (modal && modal.style.display === 'flex') {
+          closeCommandPalette();
+        }
+      }
+    });
 
     function showToast(type, title, message, details) {
       const container = document.getElementById('toast-container');
