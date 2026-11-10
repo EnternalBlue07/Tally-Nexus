@@ -107,7 +107,7 @@ To ensure zero downtime, zero latency lag, and zero quota exhaustion during reco
 
 ## 5. Precise Demo Recording Procedure (2:40 Master Plan)
 
-Follow the timestamped script in [`DEMO_SCRIPT.md`](DEMO_SCRIPT.md):
+Follow the timestamped script in [`DEMO_SCRIPT.md`](../../submission/DEMO_SCRIPT.md):
 
 ### Recording Setup:
 - **Display Resolution:** 1920×1080 (1080p, 60fps) or 1440×900 window.
@@ -160,12 +160,12 @@ Capture and save these 6 authoritative screenshots into `docs/screenshots/`:
 
 ## 7. Devpost Submission Checklist
 
-Review [`SUBMISSION.md`](SUBMISSION.md) and prepare the Devpost submission form fields:
+Review [`SUBMISSION.md`](../../submission/SUBMISSION.md) and prepare the Devpost submission form fields:
 
 - [ ] **Project Title:** `TALLY NEXUS`
 - [ ] **Elevator Pitch / Tagline:**  
   `Autonomous agent clearinghouse and multilateral netting engine enabling AI agent swarms to clear debts, compress liquidity by 65% to 99.4%, and settle via PayPal with verifiable AI SLA adjudication.`
-- [ ] **Project Description:** Copy full formatted markdown text from [`SUBMISSION.md`](SUBMISSION.md).
+- [ ] **Project Description:** Copy full formatted markdown text from [`SUBMISSION.md`](../../submission/SUBMISSION.md).
 - [ ] **Video URL:** Link to public YouTube / Vimeo video (recorded using `DEMO_SCRIPT.md`).
 - [ ] **GitHub Repository URL:** Public GitHub repository URL (after push approval).
 - [ ] **Sponsor Track:**  

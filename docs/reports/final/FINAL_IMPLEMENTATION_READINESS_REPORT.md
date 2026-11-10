@@ -25,11 +25,11 @@ flowchart LR
 | Readiness Gate | Scope & Invariants Evaluated | Audit Evidence | Gate Status |
 | :--- | :--- | :--- | :---: |
 | **Gate A: Documentation** | Complete cross-synchronization of all 15 authoritative specifications. Zero conflicting states or definitions. | Direct line-by-line inspection of all markdown files in `D:\tally-nexus\`. | **PASSED (100%)** |
-| **Gate B: Dependencies** | Zero-bloat Node 24 runtime; native `node:crypto`; MIT/BSD licenses; OmniRoute strictly isolated. | Manifest audited in [`DEPENDENCY_AND_LICENSE_AUDIT.md`](file:///D:/tally-nexus/DEPENDENCY_AND_LICENSE_AUDIT.md). | **PASSED (100%)** |
-| **Gate C: Financial Safety** | All P0 blockers from Phase 5.21 remediated; 16/16 adversarial fault-injection tests pass empirically. | Script [`verify_phase5_22_complete_suite.py`](file:///D:/tally-nexus/verify_phase5_22_complete_suite.py) executed: 16 PASS. | **PASSED (100%)** |
+| **Gate B: Dependencies** | Zero-bloat Node 24 runtime; native `node:crypto`; MIT/BSD licenses; OmniRoute strictly isolated. | Manifest audited in [`DEPENDENCY_AND_LICENSE_AUDIT.md`](../../security/DEPENDENCY_AND_LICENSE_AUDIT.md). | **PASSED (100%)** |
+| **Gate C: Financial Safety** | All P0 blockers from Phase 5.21 remediated; 16/16 adversarial fault-injection tests pass empirically. | Script [`verify_phase5_22_complete_suite.py`](../../../scripts/archive/verify_phase5_22_complete_suite.py) executed: 16 PASS. | **PASSED (100%)** |
 | **Gate D: Authorization** | No production code, migrations, or PayPal API calls executed prior to explicit authorization. | Codebase inspection confirms 0 production files created; all locked. | **PASSED (LOCKED)** |
-| **Gate E: Sandbox Plan** | Detailed step-by-step Sandbox test execution protocol established. | Protocol specified in [`PAYPAL_SANDBOX_EXECUTION_PLAN.md`](file:///D:/tally-nexus/PAYPAL_SANDBOX_EXECUTION_PLAN.md). | **PASSED (READY)** |
-| **Gate F: Demo Readiness** | Deterministic 5-agent consortium clearing scenario (< 180s) fully scripted with CLI runner. | Script specified in [`DEMO_SCRIPT.md`](file:///D:/tally-nexus/DEMO_SCRIPT.md). | **PASSED (READY)** |
+| **Gate E: Sandbox Plan** | Detailed step-by-step Sandbox test execution protocol established. | Protocol specified in [`PAYPAL_SANDBOX_EXECUTION_PLAN.md`](../../integrations/paypal/PAYPAL_SANDBOX_EXECUTION_PLAN.md). | **PASSED (READY)** |
+| **Gate F: Demo Readiness** | Deterministic 5-agent consortium clearing scenario (< 180s) fully scripted with CLI runner. | Script specified in [`DEMO_SCRIPT.md`](../../submission/DEMO_SCRIPT.md). | **PASSED (READY)** |
 
 ---
 

@@ -43,7 +43,7 @@
   - Token Usage: 448 prompt / 498 completion / **946 total tokens**
   - Prompt Injection Flow: Pre-flight heuristic flagged injection pattern; payload was also evaluated by `gemini-3.7-flash` which returned `FAIL` (Confidence: 0.99) with explicit reasons citing unauthorized limit modification attempts.
   - Deterministic Financial Clamp: Enforced 10,000 bps credit relief ($100.00 USD), ensuring the debtor owes **$0.00 USD** for the malicious task.
-- **Evidence Artifact:** [`docs/evidence/ai-judge-freemodel-2026-11-09T16-24-42-185Z.json`](file:///d:/tally-nexus/docs/evidence/ai-judge-freemodel-2026-11-09T16-24-42-185Z.json).
+- **Evidence Artifact:** [`docs/evidence/ai-judge-freemodel-2026-11-09T16-24-42-185Z.json`](../../evidence/ai-judge-freemodel-2026-11-09T16-24-42-185Z.json).
 
 ### Failover Cascade Invariants
 | Condition | Trigger | Resulting State | Disposition |

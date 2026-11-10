@@ -142,7 +142,7 @@ flowchart TD
 
 ## 2. Comprehensive 14-Test Empirical Fault-Injection Suite
 
-All 14 tests were compiled and executed against a fresh, in-memory SQLite database running the exact schema constraints, indices, foreign keys, and triggers documented in [`DATABASE_SCHEMA.md`](file:///D:/tally-nexus/DATABASE_SCHEMA.md).
+All 14 tests were compiled and executed against a fresh, in-memory SQLite database running the exact schema constraints, indices, foreign keys, and triggers documented in [`DATABASE_SCHEMA.md`](../../database/DATABASE_SCHEMA.md).
 
 ### Execution Log Output:
 ```

@@ -119,7 +119,7 @@ The following 6 authoritative screenshots should be captured at **1440×900 (Des
 
 ## 5. Step 4: Demo Video Plan (2:40 Precise Storyboard)
 
-A frame-by-frame script with exact timestamps has been finalized in [`DEMO_SCRIPT.md`](DEMO_SCRIPT.md):
+A frame-by-frame script with exact timestamps has been finalized in [`DEMO_SCRIPT.md`](../../submission/DEMO_SCRIPT.md):
 
 | Time Window | Scene Description | On-Screen Action / Visual | Audio Narration Highlight |
 | :--- | :--- | :--- | :--- |
@@ -136,7 +136,7 @@ A frame-by-frame script with exact timestamps has been finalized in [`DEMO_SCRIP
 
 ## 6. Step 5: Optional Render Cloud Deployment (3-Hour Window)
 
-The repository includes a battle-tested Render infrastructure blueprint: [`render.yaml`](render.yaml) and [`Dockerfile`](Dockerfile).
+The repository includes a battle-tested Render infrastructure blueprint: [`render.yaml`](../../../render.yaml) and [`Dockerfile`](../../../Dockerfile).
 
 ### Key Deployment Characteristics:
 - **Zero External DB Dependency:** SQLite runs in WAL mode directly on a Render 1GB persistent disk mount (`/data`), maintaining sub-millisecond query latency and zero multi-service coordination overhead.
@@ -163,7 +163,7 @@ The repository includes a battle-tested Render infrastructure blueprint: [`rende
 
 ## 7. Step 6: Devpost Copy-Paste Readiness
 
-[`SUBMISSION.md`](SUBMISSION.md) has been completely aligned and populated with:
+[`SUBMISSION.md`](../../submission/SUBMISSION.md) has been completely aligned and populated with:
 - Project Title & Elevator Pitch
 - The Core Problem (Micro-transaction fee drag and agent rail gridlock)
 - The Solution (Multilateral netting, Ed25519 IOUs, FreeModel AI SLA Judge, PayPal Dual Rails)

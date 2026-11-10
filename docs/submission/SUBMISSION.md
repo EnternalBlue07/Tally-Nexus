@@ -143,7 +143,7 @@ $$\text{Debtor Collected } (\$1.00\text{ USD}) \equiv \text{Creditor Disbursed }
 - **Fee Derivation ($0.54 on $1.00):** Standard PayPal US domestic fee is 3.49% + $0.49 fixed ($0.52). Because the receiving merchant sandbox account is registered in India receiving USD, PayPal assessed its published **+1.50% cross-border fee** ($0.49 + 4.99% * $1.00 = $0.5399 ≈ **$0.54 USD**).
 - **Payout Item Fee:** **$0.25 USD** fixed per disbursement item charged by PayPal Payouts v1.
 - **Configurable Fee Model:** All fee savings models in the clearinghouse engine and dashboard UI are configurable (`captureFixedCents`, `captureVariableRate`, `payoutFixedCents`), rather than relying on hardcoded percentages.
-- **Raw Evidence Archive:** Full raw API request/response payloads with unredacted Debug-IDs are preserved in [`docs/evidence/sandbox-run-verified-success.json`](docs/evidence/sandbox-run-verified-success.json).
+- **Raw Evidence Archive:** Full raw API request/response payloads with unredacted Debug-IDs are preserved in [`docs/evidence/sandbox-run-verified-success.json`](../evidence/sandbox-run-verified-success.json).
 
 ---
 

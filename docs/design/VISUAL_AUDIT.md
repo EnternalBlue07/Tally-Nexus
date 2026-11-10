@@ -27,10 +27,10 @@ Playwright automated tests executed across four target viewports with zero horiz
 
 | Viewport | Dimensions | Device Profile | Body Scroll Width | Window Inner Width | Overflow Status | Screenshot Artifact |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Desktop** | `1440 × 900` | Standard Widescreen | 1,440 px | 1,440 px | **PASS (0 px overflow)** | [`baseline_desktop_1440x900.png`](file:///D:/tally-nexus/docs/screenshots/audit/baseline_desktop_1440x900.png) |
-| **Laptop** | `1366 × 768` | Common Corporate Laptop | 1,366 px | 1,366 px | **PASS (0 px overflow)** | [`baseline_laptop_1366x768.png`](file:///D:/tally-nexus/docs/screenshots/audit/baseline_laptop_1366x768.png) |
-| **Tablet** | `768 × 1024` | iPad / Tablet Portrait | 768 px | 768 px | **PASS (0 px overflow)** | [`baseline_tablet_768x1024.png`](file:///D:/tally-nexus/docs/screenshots/audit/baseline_tablet_768x1024.png) |
-| **Mobile** | `390 × 844` | iPhone 12/13/14 Portrait | 390 px | 390 px | **PASS (0 px overflow)** | [`baseline_mobile_390x844.png`](file:///D:/tally-nexus/docs/screenshots/audit/baseline_mobile_390x844.png) |
+| **Desktop** | `1440 × 900` | Standard Widescreen | 1,440 px | 1,440 px | **PASS (0 px overflow)** | [`baseline_desktop_1440x900.png`](../screenshots/audit/baseline_desktop_1440x900.png) |
+| **Laptop** | `1366 × 768` | Common Corporate Laptop | 1,366 px | 1,366 px | **PASS (0 px overflow)** | [`baseline_laptop_1366x768.png`](../screenshots/audit/baseline_laptop_1366x768.png) |
+| **Tablet** | `768 × 1024` | iPad / Tablet Portrait | 768 px | 768 px | **PASS (0 px overflow)** | [`baseline_tablet_768x1024.png`](../screenshots/audit/baseline_tablet_768x1024.png) |
+| **Mobile** | `390 × 844` | iPhone 12/13/14 Portrait | 390 px | 390 px | **PASS (0 px overflow)** | [`baseline_mobile_390x844.png`](../screenshots/audit/baseline_mobile_390x844.png) |
 
 ---
 

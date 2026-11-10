@@ -337,3 +337,4 @@ if (isCrlf) {
 
 fs.writeFileSync(targetPath, content, 'utf8');
 console.log('Successfully updated dashboard-html.ts. New length:', content.length);
+

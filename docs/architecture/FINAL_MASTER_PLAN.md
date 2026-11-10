@@ -70,16 +70,16 @@ To eliminate ambiguity across the documentation corpus, the following hierarchy 
 
 | Dimension | Primary Authoritative Document | Secondary Cross-Reference | Authority Standard |
 | :--- | :--- | :--- | :--- |
-| **Product Vision & Scope** | [`PRD.md`](file:///D:/tally-nexus/PRD.md) | [`PRODUCT.md`](file:///D:/tally-nexus/PRODUCT.md) | Definitive functional and non-functional requirements. |
-| **System Architecture** | [`ARCHITECTURE.md`](file:///D:/tally-nexus/ARCHITECTURE.md) | [`FINAL_ARCHITECTURE_DECISIONS.md`](file:///D:/tally-nexus/FINAL_ARCHITECTURE_DECISIONS.md) | Node.js 24, TypeScript, Express, SQLite, SSE, security. |
-| **Database Schema & DDL** | [`DATABASE_SCHEMA.md`](file:///D:/tally-nexus/DATABASE_SCHEMA.md) | [`verify_phase5_22_complete_suite.py`](file:///D:/tally-nexus/verify_phase5_22_complete_suite.py) | Authoritative tables, constraints, triggers, and partial indexes. |
-| **API Contracts** | [`API_SPEC.md`](file:///D:/tally-nexus/API_SPEC.md) | [`PAYPAL_INTEGRATION_DESIGN.md`](file:///D:/tally-nexus/PAYPAL_INTEGRATION_DESIGN.md) | REST endpoints, webhook signatures, payloads, and SSE stream. |
-| **Settlement State Machine** | [`PAYPAL_STATE_MACHINE.md`](file:///D:/tally-nexus/PAYPAL_STATE_MACHINE.md) | [`PAYPAL_FAILURE_MATRIX.md`](file:///D:/tally-nexus/PAYPAL_FAILURE_MATRIX.md) | Formal lifecycle, journal entries, and error transitions. |
-| **PayPal Rail Integration** | [`PAYPAL_INTEGRATION_DESIGN.md`](file:///D:/tally-nexus/PAYPAL_INTEGRATION_DESIGN.md) | [`PAYPAL_SANDBOX_VALIDATION.md`](file:///D:/tally-nexus/PAYPAL_SANDBOX_VALIDATION.md) | Orders v2, Payouts v1, Webhook verification, HATEOAS recovery. |
-| **Security & Threat Model** | [`SECURITY_THREAT_MODEL.md`](file:///D:/tally-nexus/SECURITY_THREAT_MODEL.md) | [`DATABASE_SCHEMA.md`](file:///D:/tally-nexus/DATABASE_SCHEMA.md) | Ed25519, STRIDE threat mitigation, webhook auth, rate limits. |
-| **Test & Validation Plan** | [`TEST_STRATEGY.md`](file:///D:/tally-nexus/TEST_STRATEGY.md) | [`PAYPAL_SANDBOX_EXECUTION_PLAN.md`](file:///D:/tally-nexus/PAYPAL_SANDBOX_EXECUTION_PLAN.md) | Unit, integration, fault injection, and Sandbox execution. |
-| **End-to-End Visual Flow** | [`FLOW.md`](file:///D:/tally-nexus/FLOW.md) | [`DEMO_SCRIPT.md`](file:///D:/tally-nexus/DEMO_SCRIPT.md) | Sequential state diagrams from task submission to payout. |
-| **Implementation Plan** | [`IMPLEMENTATION_ROADMAP.md`](file:///D:/tally-nexus/IMPLEMENTATION_ROADMAP.md) | [`FINAL_IMPLEMENTATION_READINESS_REPORT.md`](file:///D:/tally-nexus/FINAL_IMPLEMENTATION_READINESS_REPORT.md) | Dependency-ordered workstreams A through R. |
+| **Product Vision & Scope** | [`PRD.md`](./PRD.md) | [`PRODUCT.md`](./PRODUCT.md) | Definitive functional and non-functional requirements. |
+| **System Architecture** | [`ARCHITECTURE.md`](./ARCHITECTURE.md) | [`FINAL_ARCHITECTURE_DECISIONS.md`](./FINAL_ARCHITECTURE_DECISIONS.md) | Node.js 24, TypeScript, Express, SQLite, SSE, security. |
+| **Database Schema & DDL** | [`DATABASE_SCHEMA.md`](../database/DATABASE_SCHEMA.md) | [`verify_phase5_22_complete_suite.py`](../../scripts/archive/verify_phase5_22_complete_suite.py) | Authoritative tables, constraints, triggers, and partial indexes. |
+| **API Contracts** | [`API_SPEC.md`](../api/API_SPEC.md) | [`PAYPAL_INTEGRATION_DESIGN.md`](../integrations/paypal/PAYPAL_INTEGRATION_DESIGN.md) | REST endpoints, webhook signatures, payloads, and SSE stream. |
+| **Settlement State Machine** | [`PAYPAL_STATE_MACHINE.md`](../integrations/paypal/PAYPAL_STATE_MACHINE.md) | [`PAYPAL_FAILURE_MATRIX.md`](../integrations/paypal/PAYPAL_FAILURE_MATRIX.md) | Formal lifecycle, journal entries, and error transitions. |
+| **PayPal Rail Integration** | [`PAYPAL_INTEGRATION_DESIGN.md`](../integrations/paypal/PAYPAL_INTEGRATION_DESIGN.md) | [`PAYPAL_SANDBOX_VALIDATION.md`](../integrations/paypal/PAYPAL_SANDBOX_VALIDATION.md) | Orders v2, Payouts v1, Webhook verification, HATEOAS recovery. |
+| **Security & Threat Model** | [`SECURITY_THREAT_MODEL.md`](../security/SECURITY_THREAT_MODEL.md) | [`DATABASE_SCHEMA.md`](../database/DATABASE_SCHEMA.md) | Ed25519, STRIDE threat mitigation, webhook auth, rate limits. |
+| **Test & Validation Plan** | [`TEST_STRATEGY.md`](../testing/TEST_STRATEGY.md) | [`PAYPAL_SANDBOX_EXECUTION_PLAN.md`](../integrations/paypal/PAYPAL_SANDBOX_EXECUTION_PLAN.md) | Unit, integration, fault injection, and Sandbox execution. |
+| **End-to-End Visual Flow** | [`FLOW.md`](./FLOW.md) | [`DEMO_SCRIPT.md`](../submission/DEMO_SCRIPT.md) | Sequential state diagrams from task submission to payout. |
+| **Implementation Plan** | [`IMPLEMENTATION_ROADMAP.md`](./IMPLEMENTATION_ROADMAP.md) | [`FINAL_IMPLEMENTATION_READINESS_REPORT.md`](../reports/final/FINAL_IMPLEMENTATION_READINESS_REPORT.md) | Dependency-ordered workstreams A through R. |
 
 ---
 
