@@ -337,50 +337,58 @@ export function getDashboardHtml(): string {
     /* Buttons */
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 10px 18px; border-radius: 10px; font-size: 13px; font-weight: 600;
+      padding: 10px 22px; border-radius: 9999px; font-size: 13px; font-weight: 700;
       cursor: pointer; border: none; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      letter-spacing: -0.1px;
     }
     .btn:active { transform: scale(0.98); }
     .btn-primary {
-      background: var(--accent-gradient);
+      background: linear-gradient(135deg, #004DB3 0%, #0070BA 55%, #009CDE 100%);
       color: #FFF;
       font-weight: 700;
       box-shadow: 0 4px 18px rgba(0, 112, 186, 0.45);
-      border: 1px solid rgba(0, 156, 222, 0.4);
+      border: 1px solid rgba(0, 156, 222, 0.45);
     }
     .btn-primary:hover {
-      filter: brightness(1.1);
-      box-shadow: 0 6px 24px rgba(0, 112, 186, 0.6);
+      filter: brightness(1.12);
+      box-shadow: 0 6px 26px rgba(0, 112, 186, 0.65);
+      transform: translateY(-1px);
     }
     .btn-demo {
-      background: var(--accent-gradient);
+      background: linear-gradient(135deg, #004DB3 0%, #0070BA 55%, #009CDE 100%);
       color: #FFF;
       font-weight: 700;
       box-shadow: 0 4px 18px rgba(0, 112, 186, 0.45);
-      border: 1px solid rgba(0, 156, 222, 0.4);
+      border: 1px solid rgba(0, 156, 222, 0.45);
     }
     .btn-demo:hover {
-      filter: brightness(1.1);
+      filter: brightness(1.12);
       transform: translateY(-1px);
-      box-shadow: 0 6px 24px rgba(0, 112, 186, 0.6);
+      box-shadow: 0 6px 26px rgba(0, 112, 186, 0.65);
     }
     .btn-secondary {
-      background: var(--surface-primary);
-      color: var(--text-main);
-      border: 1px solid var(--border-subtle);
+      background: rgba(11, 23, 44, 0.75);
+      color: #E2E8F0;
+      border: 1px solid rgba(0, 156, 222, 0.28);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
     .btn-secondary:hover {
-      background: var(--surface-elevated);
-      border-color: rgba(0, 156, 222, 0.3);
+      background: rgba(16, 34, 64, 0.9);
+      border-color: rgba(0, 156, 222, 0.5);
+      color: #FFF;
+      transform: translateY(-1px);
     }
     .btn-white {
       background: #FFFFFF;
       color: #040914;
       font-weight: 700;
       border: none;
+      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.2);
     }
     .btn-white:hover {
       background: #F1F5F9;
+      transform: translateY(-1px);
     }
 
     /* Mobile Hamburger Menu Toggle */
@@ -388,7 +396,7 @@ export function getDashboardHtml(): string {
       display: none;
       background: none;
       border: 1px solid var(--border-subtle);
-      border-radius: 8px;
+      border-radius: 10px;
       color: var(--text-main);
       padding: 8px 10px;
       font-size: 16px;
@@ -417,19 +425,19 @@ export function getDashboardHtml(): string {
        FINTECH EXECUTIVE CARDS & METRIC HIERARCHY
        ========================================================================== */
     .card {
-      background: rgba(8, 15, 30, 0.72);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(0, 156, 222, 0.22);
-      border-radius: 20px;
-      padding: 26px 28px;
-      box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 0 0 1px rgba(0, 112, 186, 0.12);
+      background: rgba(8, 15, 30, 0.78);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(0, 156, 222, 0.28);
+      border-radius: 24px;
+      padding: 26px 30px;
+      box-shadow: 0 18px 48px -8px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 0 24px rgba(0, 112, 186, 0.12);
       position: relative;
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .card:hover {
-      border-color: rgba(0, 156, 222, 0.48);
-      box-shadow: 0 20px 48px -6px rgba(0, 112, 186, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 22px rgba(0, 156, 222, 0.18);
+      border-color: rgba(0, 156, 222, 0.52);
+      box-shadow: 0 22px 52px -6px rgba(0, 112, 186, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 0 28px rgba(0, 156, 222, 0.2);
       transform: translateY(-2px);
     }
     .card-header {
@@ -441,7 +449,7 @@ export function getDashboardHtml(): string {
       gap: 12px;
     }
     .card-title {
-      font-size: 15.5px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--text-main);
       letter-spacing: -0.2px;
@@ -454,6 +462,45 @@ export function getDashboardHtml(): string {
       color: var(--text-secondary);
       margin-top: 4px;
       line-height: 1.55;
+    }
+
+    /* Metric Icon Badges */
+    .metric-icon-box {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      margin-right: 10px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+    .metric-icon-cyan {
+      background: rgba(0, 156, 222, 0.16);
+      border: 1px solid rgba(0, 156, 222, 0.35);
+      color: #38BDF8;
+    }
+    .metric-icon-blue {
+      background: rgba(0, 112, 186, 0.18);
+      border: 1px solid rgba(0, 112, 186, 0.4);
+      color: #60A5FA;
+    }
+    .metric-icon-amber {
+      background: rgba(245, 158, 11, 0.16);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: #FBBF24;
+    }
+    .metric-icon-emerald {
+      background: rgba(16, 185, 129, 0.16);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #34D399;
+    }
+    .metric-icon-purple {
+      background: rgba(147, 51, 234, 0.18);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      color: #C084FC;
     }
 
     /* Executive Hero Grid Layout */
@@ -793,43 +840,50 @@ export function getDashboardHtml(): string {
       margin-top: 16px;
     }
     .step-card {
-      background: var(--surface-elevated);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid var(--border-glass);
-      border-radius: 12px;
-      padding: 16px 14px;
+      background: rgba(8, 15, 30, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 156, 222, 0.28);
+      border-radius: 18px;
+      padding: 18px 16px;
       font-size: 12px;
-      transition: all 0.2s ease;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
     .step-card:hover {
-      border-color: rgba(0, 156, 222, 0.4);
+      border-color: rgba(0, 156, 222, 0.55);
       transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0, 112, 186, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.18);
     }
     .step-card.done {
-      border-color: rgba(16, 185, 129, 0.4);
-      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.45);
+      background: linear-gradient(135deg, rgba(8, 15, 30, 0.9) 0%, rgba(16, 185, 129, 0.08) 100%);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 0 18px rgba(16, 185, 129, 0.12);
     }
     .step-num {
-      font-weight: 800; font-size: 10px;
-      color: var(--accent-primary);
+      font-weight: 800; font-size: 11px;
+      color: var(--accent-secondary);
       text-transform: uppercase;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
-    .step-title { font-weight: 700; color: var(--text-main); font-size: 12.5px; }
-    .step-desc { color: var(--text-secondary); font-size: 11px; margin-top: 4px; line-height: 1.45; }
+    .step-title { font-weight: 700; color: #FFF; font-size: 13px; letter-spacing: -0.1px; }
+    .step-desc { color: #94A3B8; font-size: 11px; margin-top: 6px; line-height: 1.5; }
 
     /* ==========================================================================
        HACKATHON JUDGE BRIEFING PANEL
        ========================================================================== */
     #judge-briefing-panel {
       margin-bottom: 26px;
-      border: 1px solid rgba(0, 112, 186, 0.3);
+      border: 1px solid rgba(0, 156, 222, 0.35);
+      border-radius: 24px;
       background: linear-gradient(135deg, rgba(7, 18, 36, 0.95) 0%, rgba(11, 23, 44, 0.98) 100%);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 10px 32px -4px rgba(0, 112, 186, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      box-shadow: 0 16px 40px -4px rgba(0, 112, 186, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.14);
     }
     .judge-panel-grid {
       display: grid;
@@ -846,25 +900,34 @@ export function getDashboardHtml(): string {
     /* ==========================================================================
        DATA TABLES & AG GRID THEME
        ========================================================================== */
-    .table-responsive { width: 100%; overflow-x: auto; }
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 18px;
+      border: 1px solid rgba(0, 156, 222, 0.25);
+      background: rgba(4, 9, 20, 0.7);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      margin-top: 8px;
+    }
     table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
     th {
-      padding: 13px 16px;
-      background: rgba(16, 34, 64, 0.85);
-      color: var(--text-secondary);
-      font-weight: 600;
-      border-bottom: 1px solid var(--border-subtle);
+      padding: 14px 18px;
+      background: rgba(10, 23, 44, 0.95);
+      color: #94A3B8;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(0, 156, 222, 0.25);
       text-transform: uppercase;
       font-size: 11px;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.6px;
     }
     td {
-      padding: 13px 16px;
-      border-bottom: 1px solid var(--border-subtle);
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       color: #E2E8F0;
       font-variant-numeric: tabular-nums;
     }
-    tr:hover td { background: var(--surface-hover); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(0, 112, 186, 0.1); }
 
     /* Custom AG Grid Dark Theme with PayPal Blue Highlights */
     .ag-theme-nexus-dark,
@@ -897,25 +960,216 @@ export function getDashboardHtml(): string {
       color: #94A3B8;
     }
     .grid-status-bar {
-      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
-      background: var(--surface-primary); border: 1px solid rgba(0, 112, 186, 0.25); border-top: none;
-      padding: 12px 20px; font-size: 12.5px; border-radius: 0 0 14px 14px; color: var(--text-secondary);
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+      background: rgba(8, 15, 30, 0.85); border: 1px solid rgba(0, 112, 186, 0.25); border-top: none;
+      padding: 14px 22px; border-radius: 0 0 18px 18px; color: var(--text-secondary);
+    }
+    .grid-status-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(4, 9, 20, 0.75); border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 9999px; padding: 6px 14px; font-size: 12px; color: #CBD5E1;
+      font-variant-numeric: tabular-nums; box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+      transition: all 0.2s ease;
+    }
+    .grid-status-pill:hover {
+      border-color: rgba(0, 156, 222, 0.4); background: rgba(10, 20, 40, 0.9);
     }
     .status-chip-proof {
       display: inline-flex; align-items: center; gap: 6px;
       background: rgba(0, 112, 186, 0.15); border: 1px solid rgba(0, 156, 222, 0.35);
-      color: var(--accent-secondary); padding: 4px 10px; border-radius: 12px; font-size: 11px; cursor: pointer;
+      color: var(--accent-secondary); padding: 5px 12px; border-radius: 9999px; font-size: 11.5px; font-weight: 600; cursor: pointer;
       transition: all 0.15s ease; font-variant-numeric: tabular-nums;
     }
     .status-chip-proof:hover {
       background: rgba(0, 112, 186, 0.25); border-color: var(--accent-primary); transform: translateY(-1px);
     }
 
+    /* ==========================================================================
+       PAYPAL STYLE FEE MODEL CAPSULE & ROUNDED PARAMETER BLOCKS
+       ========================================================================== */
+    .fee-model-capsule {
+      border-radius: 26px;
+      background: radial-gradient(ellipse at 85% 120%, rgba(147, 51, 234, 0.18) 0%, transparent 60%),
+                  radial-gradient(ellipse at 15% 120%, rgba(0, 112, 186, 0.25) 0%, transparent 60%),
+                  rgba(8, 14, 28, 0.88);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(0, 156, 222, 0.35);
+      box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 0 24px rgba(0, 112, 186, 0.14);
+      padding: 16px 26px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      position: relative;
+      overflow: hidden;
+    }
+    .fee-model-capsule::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(147, 51, 234, 0.4) 30%, rgba(0, 156, 222, 0.5) 70%, transparent 100%);
+      pointer-events: none;
+    }
+    .fee-model-title-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .fee-model-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(0, 48, 135, 0.6) 0%, rgba(0, 112, 186, 0.35) 100%);
+      border: 1px solid rgba(0, 156, 222, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 16px rgba(0, 112, 186, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      flex-shrink: 0;
+    }
+    .pill-badge-purple {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(147, 51, 234, 0.18);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      color: #C084FC;
+      letter-spacing: 0.3px;
+    }
+    .fee-inputs-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .fee-input-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+    .fee-input-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #94A3B8;
+      text-align: center;
+    }
+    .fee-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(4, 9, 20, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 4px 10px 4px 6px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.25);
+      transition: all 0.2s ease;
+    }
+    .fee-chip:hover, .fee-chip:focus-within {
+      border-color: rgba(0, 156, 222, 0.55);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5), 0 0 14px rgba(0, 112, 186, 0.25);
+    }
+    .fee-chip-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .fee-icon-amber {
+      background: rgba(245, 158, 11, 0.18);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #FBBF24;
+      box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);
+    }
+    .fee-icon-purple {
+      background: rgba(147, 51, 234, 0.2);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      color: #C084FC;
+      box-shadow: 0 2px 6px rgba(147, 51, 234, 0.2);
+    }
+    .fee-input-val {
+      width: 44px;
+      text-align: center;
+      border: none;
+      background: transparent;
+      color: #FFFFFF;
+      font-size: 14.5px;
+      font-weight: 800;
+      font-family: var(--font-sans);
+      font-variant-numeric: tabular-nums;
+      outline: none;
+      padding: 2px 0;
+    }
+    .fee-val-wide {
+      width: 48px;
+    }
+    .fee-unit {
+      font-size: 12px;
+      font-weight: 700;
+      color: #94A3B8;
+    }
+    .btn-recalc-glow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 26px;
+      border-radius: 9999px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #FFFFFF;
+      background: linear-gradient(135deg, #FF6A00 0%, #EE0979 50%, #9333EA 100%);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 4px 20px rgba(255, 106, 0, 0.45), 0 0 25px rgba(147, 51, 234, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      position: relative;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+    .btn-recalc-glow:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 30px rgba(255, 106, 0, 0.6), 0 0 35px rgba(147, 51, 234, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+      filter: brightness(1.1);
+    }
+    .btn-recalc-glow:active {
+      transform: scale(0.98);
+    }
+    .sparkle-star {
+      font-size: 13px;
+      margin-left: 2px;
+      animation: sparkle 2s ease-in-out infinite;
+    }
+    @keyframes sparkle {
+      0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.9; }
+      50% { transform: scale(1.2) rotate(15deg); opacity: 1; }
+    }
+
     /* Tags */
     .tag {
-      display: inline-block; padding: 4px 9px; border-radius: 6px;
-      font-size: 11px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.3px; font-variant-numeric: tabular-nums;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      font-variant-numeric: tabular-nums;
     }
     .tag-success { background: rgba(16,185,129,0.14); color: var(--accent-emerald); border: 1px solid rgba(16,185,129,0.35); }
     .tag-pending { background: rgba(245,158,11,0.14); color: var(--accent-amber); border: 1px solid rgba(245,158,11,0.35); }
@@ -923,16 +1177,35 @@ export function getDashboardHtml(): string {
     .tag-error { background: rgba(239,68,68,0.14); color: var(--accent-rose); border: 1px solid rgba(239,68,68,0.35); }
 
     .search-input {
-      background: var(--surface-elevated); border: 1px solid var(--border-glass); color: #FFF; padding: 10px 16px;
-      border-radius: 10px; font-size: 13px; min-width: 280px; font-family: var(--font-sans);
+      background: rgba(4, 9, 20, 0.85);
+      border: 1px solid rgba(0, 156, 222, 0.3);
+      color: #FFF;
+      padding: 10px 20px;
+      border-radius: 9999px;
+      font-size: 13px;
+      min-width: 280px;
+      font-family: var(--font-sans);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
     }
-    .search-input:focus { outline: none; border-color: var(--accent-primary); box-shadow: 0 0 12px rgba(0, 112, 186, 0.3); }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent-secondary);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5), 0 0 16px rgba(0, 156, 222, 0.35);
+    }
 
     /* Live Stream Log */
     .stream-box {
-      background: #030712; border: 1px solid var(--border-glass); border-radius: 12px;
-      padding: 16px; font-family: var(--font-mono); font-size: 12px; height: 380px;
-      overflow-y: auto; color: #FF9A52; line-height: 1.7;
+      background: rgba(3, 7, 18, 0.95);
+      border: 1px solid rgba(0, 156, 222, 0.28);
+      border-radius: 20px;
+      padding: 20px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      height: 380px;
+      overflow-y: auto;
+      color: #FF9A52;
+      line-height: 1.7;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.65);
     }
     .stream-line { border-bottom: 1px solid rgba(255,255,255,0.04); padding: 4px 0; }
     .stream-time { color: #64748B; margin-right: 8px; font-variant-numeric: tabular-nums; }
@@ -1192,53 +1465,59 @@ export function getDashboardHtml(): string {
           <div id="judge-panel-body">
             <!-- 3 Headline Claims Grid -->
             <div class="judge-panel-grid">
-              <div style="background: rgba(11, 23, 44, 0.72); border: 1px solid rgba(0, 156, 222, 0.3); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 12px; padding: 18px;">
-                <div style="color: var(--accent-secondary); font-weight: 700; font-size: 13.5px; margin-bottom: 6px;">1. AI-Assisted SLA Evaluation</div>
-                <p style="font-size: 12px; color: #CBD5E1; line-height: 1.5; margin-bottom: 12px;">
+              <div style="background: rgba(8, 15, 30, 0.75); border: 1px solid rgba(0, 156, 222, 0.35); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-radius: 18px; padding: 20px; box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);">
+                <div style="color: var(--accent-secondary); font-weight: 800; font-size: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                  <span>🤖</span> <span>1. AI-Assisted SLA Evaluation</span>
+                </div>
+                <p style="font-size: 12px; color: #CBD5E1; line-height: 1.55; margin-bottom: 14px;">
                   Autonomous task deliverables adjudicated via <strong>FreeModel (Gemini 3.7 Flash)</strong> with automatic <strong>DeepSeek v4.1 Flash</strong> failover. Purely advisory: zero access to money movement, enforced by deterministic credit clamps.
                 </p>
-                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                   <button class="status-chip-proof" onclick="testLiveAiJudge()">⚡ Run Live AI Evaluation</button>
-                  <a href="/api/judge/evaluate" target="_blank" class="tag tag-info" style="font-size: 10px; text-decoration: none;">Live Route</a>
+                  <a href="/api/judge/evaluate" target="_blank" class="tag tag-info" style="font-size: 10.5px; text-decoration: none; padding: 4px 10px; border-radius: 9999px;">Live Route</a>
                 </div>
               </div>
 
-              <div style="background: rgba(11, 23, 44, 0.72); border: 1px solid rgba(16, 185, 129, 0.3); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 12px; padding: 18px;">
-                <div style="color: var(--accent-emerald); font-weight: 700; font-size: 13.5px; margin-bottom: 6px;">2. Deterministic Netting & PayPal Rails</div>
-                <p style="font-size: 12px; color: #CBD5E1; line-height: 1.5; margin-bottom: 12px;">
+              <div style="background: rgba(8, 15, 30, 0.75); border: 1px solid rgba(16, 185, 129, 0.35); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-radius: 18px; padding: 20px; box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);">
+                <div style="color: var(--accent-emerald); font-weight: 800; font-size: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                  <span>💳</span> <span>2. Deterministic Netting & PayPal Rails</span>
+                </div>
+                <p style="font-size: 12px; color: #CBD5E1; line-height: 1.55; margin-bottom: 14px;">
                   Compresses circular bilateral agent debt by <strong>65.38% to 99.4%</strong>. Settles conserved net debtor balances via <strong>PayPal Orders v2</strong> capture ($1.00) and creditor disbursements via <strong>PayPal Payouts v1</strong> ($0.50 + $0.50).
                 </p>
-                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                   <button class="status-chip-proof" onclick="verifyPayPalCapture('7PV82720RX415822V')">🔍 Verify Live Capture</button>
                   <button class="status-chip-proof" onclick="verifyPayPalPayout('N4M49PUHNCNQ4')">🔍 Verify Live Payout</button>
                 </div>
               </div>
 
-              <div style="background: rgba(11, 23, 44, 0.72); border: 1px solid rgba(0, 112, 186, 0.35); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 12px; padding: 18px;">
-                <div style="color: var(--accent-secondary); font-weight: 700; font-size: 13.5px; margin-bottom: 6px;">3. Verifiable Subledger & Cryptography</div>
-                <p style="font-size: 12px; color: #CBD5E1; line-height: 1.5; margin-bottom: 12px;">
+              <div style="background: rgba(8, 15, 30, 0.75); border: 1px solid rgba(0, 112, 186, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-radius: 18px; padding: 20px; box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);">
+                <div style="color: var(--accent-secondary); font-weight: 800; font-size: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                  <span>🔒</span> <span>3. Verifiable Subledger & Cryptography</span>
+                </div>
+                <p style="font-size: 12px; color: #CBD5E1; line-height: 1.55; margin-bottom: 14px;">
                   Double-entry subledger asserted by <strong>14 SQLite database triggers</strong>, Ed25519 RFC 8785 signatures, cryptographic SHA-256 Merkle tree anchors, and mathematical zero-variance (<span class="mono">Δ = $0.00</span>).
                 </p>
-                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                   <button class="status-chip-proof" onclick="switchTab('ledger')">📊 View Trial Balance</button>
                   <button class="status-chip-proof" onclick="switchTab('security')">🛡️ Invariant Center</button>
                 </div>
               </div>
             </div>
 
-            <!-- 30-Second Guided Tour -->
-            <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 12px 14px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
-                <span style="font-size: 11.5px; font-weight: 700; color: #F1F5F9; text-transform: uppercase; letter-spacing: 0.5px;">⏱️ 30-Second Tour for Judges (6 Guided Clicks)</span>
-                <span style="font-size: 11px; color: var(--text-secondary);">Follow steps 1 &rarr; 6 to independently inspect end-to-end clearing</span>
+            <!-- 30-Second Guided Tour with Rounded Pill Buttons & Emojis -->
+            <div style="background: rgba(4, 9, 20, 0.75); border: 1px solid rgba(0, 156, 222, 0.28); border-radius: 18px; padding: 16px 20px; margin-top: 14px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                <span style="font-size: 12px; font-weight: 700; color: #F1F5F9; text-transform: uppercase; letter-spacing: 0.6px; display: flex; align-items: center; gap: 6px;">⏱️ 30-Second Tour for Judges <span style="font-size: 11px; opacity: 0.7;">(6 Guided Clicks)</span></span>
+                <span style="font-size: 11.5px; color: var(--text-secondary);">Follow steps 1 &rarr; 6 to independently inspect end-to-end clearing</span>
               </div>
               <div class="judge-tour-grid">
-                <button class="btn btn-secondary tour-step-btn" id="tour-step-1" style="font-size: 11px; padding: 8px 10px; text-align: left;" onclick="tourStep(1)"><strong>1. Clearing Room</strong><br><span style="color: var(--text-secondary); font-size: 10px;">Open Overview</span></button>
-                <button class="btn btn-secondary tour-step-btn" id="tour-step-2" style="font-size: 11px; padding: 8px 10px; text-align: left;" onclick="tourStep(2)"><strong>2. Run Flagship</strong><br><span style="color: var(--text-secondary); font-size: 10px;">Execute 5-agent sim</span></button>
-                <button class="btn btn-secondary tour-step-btn" id="tour-step-3" style="font-size: 11px; padding: 8px 10px; text-align: left;" onclick="tourStep(3)"><strong>3. AI SLA Verdict</strong><br><span style="color: var(--text-secondary); font-size: 10px;">Inspect clamp</span></button>
-                <button class="btn btn-secondary tour-step-btn" id="tour-step-4" style="font-size: 11px; padding: 8px 10px; text-align: left;" onclick="tourStep(4)"><strong>4. Net Positions</strong><br><span style="color: var(--text-secondary); font-size: 10px;">$130 &rarr; $45 net</span></button>
-                <button class="btn btn-secondary tour-step-btn" id="tour-step-5" style="font-size: 11px; padding: 8px 10px; text-align: left;" onclick="tourStep(5)"><strong>5. PayPal Proof</strong><br><span style="color: var(--text-secondary); font-size: 10px;">Live Debug-ID</span></button>
-                <button class="btn btn-secondary tour-step-btn" id="tour-step-6" style="font-size: 11px; padding: 8px 10px; text-align: left;" onclick="tourStep(6)"><strong>6. Merkle Ledger</strong><br><span style="color: var(--text-secondary); font-size: 10px;">Δ = $0.00 proof</span></button>
+                <button class="btn btn-secondary tour-step-btn" id="tour-step-1" style="font-size: 11.5px; padding: 10px 12px; text-align: left; border-radius: 14px;" onclick="tourStep(1)"><strong>1. 🏛️ Clearing Room</strong><br><span style="color: var(--text-secondary); font-size: 10.5px;">Open Overview</span></button>
+                <button class="btn btn-secondary tour-step-btn" id="tour-step-2" style="font-size: 11.5px; padding: 10px 12px; text-align: left; border-radius: 14px;" onclick="tourStep(2)"><strong>2. 🚀 Run Flagship</strong><br><span style="color: var(--text-secondary); font-size: 10.5px;">Execute 5-agent sim</span></button>
+                <button class="btn btn-secondary tour-step-btn" id="tour-step-3" style="font-size: 11.5px; padding: 10px 12px; text-align: left; border-radius: 14px;" onclick="tourStep(3)"><strong>3. 🤖 AI SLA Verdict</strong><br><span style="color: var(--text-secondary); font-size: 10.5px;">Inspect clamp</span></button>
+                <button class="btn btn-secondary tour-step-btn" id="tour-step-4" style="font-size: 11.5px; padding: 10px 12px; text-align: left; border-radius: 14px;" onclick="tourStep(4)"><strong>4. ⚖️ Net Positions</strong><br><span style="color: var(--text-secondary); font-size: 10.5px;">$130 &rarr; $45 net</span></button>
+                <button class="btn btn-secondary tour-step-btn" id="tour-step-5" style="font-size: 11.5px; padding: 10px 12px; text-align: left; border-radius: 14px;" onclick="tourStep(5)"><strong>5. 🛡️ PayPal Proof</strong><br><span style="color: var(--text-secondary); font-size: 10.5px;">Live Debug-ID</span></button>
+                <button class="btn btn-secondary tour-step-btn" id="tour-step-6" style="font-size: 11.5px; padding: 10px 12px; text-align: left; border-radius: 14px;" onclick="tourStep(6)"><strong>6. 🔒 Merkle Ledger</strong><br><span style="color: var(--text-secondary); font-size: 10.5px;">Δ = $0.00 proof</span></button>
               </div>
             </div>
           </div>
@@ -1398,22 +1677,44 @@ export function getDashboardHtml(): string {
           <!-- 4-METRIC FINANCIAL CARDS -->
           <div class="metrics-grid">
             <div class="card">
-              <div class="card-header"><span class="card-title">Liquidity Compression</span><span class="tag tag-success">Active Engine</span></div>
+              <div class="card-header">
+                <div style="display: flex; align-items: center;">
+                  <span class="metric-icon-box metric-icon-cyan">⚡</span>
+                  <span class="card-title">Liquidity Compression</span>
+                </div>
+                <span class="tag tag-success">Active Engine</span>
+              </div>
               <div class="metric-value" id="metric-compression">65.38%</div>
               <div class="metric-sub">Gross-to-Net Capital Optimization</div>
             </div>
             <div class="card">
-              <div class="card-header"><span class="card-title">Gross Volume</span></div>
+              <div class="card-header">
+                <div style="display: flex; align-items: center;">
+                  <span class="metric-icon-box metric-icon-blue">📊</span>
+                  <span class="card-title">Gross Volume</span>
+                </div>
+              </div>
               <div class="metric-value" id="metric-gross">$130.00</div>
               <div class="metric-sub">Total Agent Tasks Cleared</div>
             </div>
             <div class="card">
-              <div class="card-header"><span class="card-title">Net Cash Settled</span></div>
+              <div class="card-header">
+                <div style="display: flex; align-items: center;">
+                  <span class="metric-icon-box metric-icon-amber">💳</span>
+                  <span class="card-title">Net Cash Settled</span>
+                </div>
+              </div>
               <div class="metric-value" id="metric-net">$45.00</div>
               <div class="metric-sub">Physical PayPal Settlement Cash</div>
             </div>
             <div class="card">
-              <div class="card-header"><span class="card-title">Subledger Balance</span><span class="tag tag-success" id="metric-trial-badge">Balanced</span></div>
+              <div class="card-header">
+                <div style="display: flex; align-items: center;">
+                  <span class="metric-icon-box metric-icon-emerald">⚖️</span>
+                  <span class="card-title">Subledger Balance</span>
+                </div>
+                <span class="tag tag-success" id="metric-trial-badge">Balanced</span>
+              </div>
               <div class="metric-value mono" id="metric-variance">Δ = $0.00</div>
               <div class="metric-sub">Zero-Sum Mathematical Invariant</div>
             </div>
@@ -1538,32 +1839,32 @@ export function getDashboardHtml(): string {
             </div>
             <div class="stepper">
               <div class="step-card done" id="step-1">
-                <div class="step-num">Scene 1</div>
+                <div class="step-num"><span>🤖</span> <span>Scene 1</span></div>
                 <div class="step-title">SLA Adjudication</div>
                 <div class="step-desc">6 valid tasks PASS ($130 gross); 1 malformed task FAILS with 0 IOUs.</div>
               </div>
               <div class="step-card done" id="step-2">
-                <div class="step-num">Scene 2</div>
+                <div class="step-num"><span>🔄</span> <span>Scene 2</span></div>
                 <div class="step-title">Multilateral Netting</div>
                 <div class="step-desc">Circular debt collapses $130 gross &rarr; $45 net (65.38% rail volume saved).</div>
               </div>
               <div class="step-card done" id="step-3">
-                <div class="step-num">Scene 3</div>
+                <div class="step-num"><span>🛡️</span> <span>Scene 3</span></div>
                 <div class="step-title">Financial Firewall</div>
                 <div class="step-desc">Zero-sum asserted (&Sigma;&Delta; &equiv; 0); operator reserves &ge; $10.00 verified.</div>
               </div>
               <div class="step-card done" id="step-4">
-                <div class="step-num">Scene 4</div>
+                <div class="step-num"><span>💳</span> <span>Scene 4</span></div>
                 <div class="step-title">PayPal Settlement</div>
                 <div class="step-desc">Orders v2 captures $45 from debtor; Payouts v1 dispatches to 4 creditors.</div>
               </div>
               <div class="step-card done" id="step-5">
-                <div class="step-num">Scene 5</div>
+                <div class="step-num"><span>🩹</span> <span>Scene 5</span></div>
                 <div class="step-title">Self-Healing Return</div>
                 <div class="step-desc">5-stage return recovery; Trigger 5 blocks adversarial late duplicate collision.</div>
               </div>
               <div class="step-card done" id="step-6">
-                <div class="step-num">Scene 6</div>
+                <div class="step-num"><span>🔒</span> <span>Scene 6</span></div>
                 <div class="step-title">Subledger Finality</div>
                 <div class="step-desc">Double-entry trial balance zero-variance proof and SHA-256 state seal.</div>
               </div>
@@ -1572,7 +1873,10 @@ export function getDashboardHtml(): string {
 
           <div class="card">
             <div class="card-header">
-              <span class="card-title">Multilateral Clearing Architectural Principle</span>
+              <div style="display: flex; align-items: center;">
+                <span class="metric-icon-box metric-icon-purple">🏛️</span>
+                <span class="card-title">Multilateral Clearing Architectural Principle</span>
+              </div>
             </div>
             <p style="color: #CBD5E1; font-size: 13.5px; line-height: 1.7;">
               <strong>AI Analyzes &bull; Crypto Verifies &bull; Math Clears &bull; Deterministic Code Controls &bull; PayPal Settles &bull; Ledger Proves.</strong><br>
@@ -1585,37 +1889,105 @@ export function getDashboardHtml(): string {
         <div id="tab-scale" class="tab-content">
           <div class="metrics-grid">
             <div class="card">
-              <div class="card-header"><span class="card-title">Swarm Volume</span><span class="tag tag-success">1,500 IOUs</span></div>
+              <div class="card-header">
+                <div style="display: flex; align-items: center;">
+                  <span class="metric-icon-box metric-icon-cyan">🚀</span>
+                  <span class="card-title">Swarm Volume</span>
+                </div>
+                <span class="tag tag-success">1,500 IOUs</span>
+              </div>
               <div class="metric-value" id="scale-gross-vol">$51,248.50</div>
               <div class="metric-sub">10 Swarm Agents Bilateral Tasks</div>
             </div>
             <div class="card">
-              <div class="card-header"><span class="card-title">Net Settled Cash</span><span class="tag tag-info">O(V) Collapsed</span></div>
+              <div class="card-header">
+                <div style="display: flex; align-items: center;">
+                  <span class="metric-icon-box metric-icon-blue">🌐</span>
+                  <span class="card-title">Net Settled Cash</span>
+                </div>
+                <span class="tag tag-info">O(V) Collapsed</span>
+              </div>
               <div class="metric-value" id="scale-net-vol">$17,624.10</div>
               <div class="metric-sub" id="scale-compression-sub">65.61% Liquidity Compression</div>
             </div>
             <div class="card">
-              <div class="card-header"><span class="card-title">Rail Transfers</span><span class="tag tag-success">99.4% Reduction</span></div>
+              <div class="card-header">
+                <div style="display: flex; align-items: center;">
+                  <span class="metric-icon-box metric-icon-amber">⚡</span>
+                  <span class="card-title">Rail Transfers</span>
+                </div>
+                <span class="tag tag-success">99.4% Reduction</span>
+              </div>
               <div class="metric-value" id="scale-move-count">9 Movements</div>
               <div class="metric-sub">Collapsed from 1,500 transfers</div>
             </div>
             <div class="card">
-              <div class="card-header"><span class="card-title">Rail Fee Savings</span><span class="tag tag-success">Modeled Benchmark</span></div>
+              <div class="card-header">
+                <div style="display: flex; align-items: center;">
+                  <span class="metric-icon-box metric-icon-emerald">💰</span>
+                  <span class="card-title">Rail Fee Savings</span>
+                </div>
+                <span class="tag tag-success">Modeled Benchmark</span>
+              </div>
               <div class="metric-value" id="scale-fee-savings">$1,552.05</div>
               <div class="metric-sub" id="scale-fee-percent">95.0% Cost Cut (Configured Benchmark)</div>
               <div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;" id="scale-fee-assumptions">Modeled: 49¢ capture + 25¢ payout (74¢ fixed) + 3.49% vol; Observed Sandbox sample: $0.54 on $1.00</div>
             </div>
           </div>
 
-          <!-- Configurable Fee Parameters Panel -->
-          <div style="background: var(--surface-primary); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
-            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-              <span style="font-weight: 700; font-size: 13px; color: var(--accent-secondary);">⚙️ Payment Rail Fee Model (Configurable):</span>
-              <label style="font-size: 12px; color: var(--text-secondary);">Capture Fixed: <input type="number" id="fee-capture-fixed" value="49" style="width: 52px; background: #08090C; border: 1px solid var(--border-subtle); color: #FFF; padding: 4px 6px; border-radius: 6px;">¢</label>
-              <label style="font-size: 12px; color: var(--text-secondary);">Payout Fixed: <input type="number" id="fee-payout-fixed" value="25" style="width: 52px; background: #08090C; border: 1px solid var(--border-subtle); color: #FFF; padding: 4px 6px; border-radius: 6px;">¢</label>
-              <label style="font-size: 12px; color: var(--text-secondary);">Variable Rate: <input type="number" id="fee-variable-rate" value="3.49" step="0.01" style="width: 60px; background: #08090C; border: 1px solid var(--border-subtle); color: #FFF; padding: 4px 6px; border-radius: 6px;">%</label>
+          <!-- Configurable Fee Parameters Panel (Exact PayPal Style Capsule) -->
+          <div class="fee-model-capsule">
+            <div class="fee-model-title-group">
+              <div class="fee-model-icon-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                  <polyline points="2 17 12 22 22 17"></polyline>
+                  <polyline points="2 12 12 17 22 12"></polyline>
+                </svg>
+              </div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span style="font-weight: 800; font-size: 15.5px; color: #FFFFFF; letter-spacing: -0.2px;">Payment Rail Fee Model</span>
+                  <span class="pill-badge-purple">⚙️ Configurable</span>
+                </div>
+                <div style="font-size: 12px; color: #94A3B8; margin-top: 4px; font-weight: 500;">Configure settlement rails & estimate savings</div>
+              </div>
             </div>
-            <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 14px;" onclick="recalculateFeesCustom()">Recalculate Savings</button>
+
+            <div class="fee-inputs-row">
+              <div class="fee-input-group">
+                <span class="fee-input-label">Capture Fixed</span>
+                <div class="fee-chip">
+                  <div class="fee-chip-icon fee-icon-amber">💳</div>
+                  <input type="number" id="fee-capture-fixed" value="49" class="fee-input-val" oninput="recalculateFeesCustom()">
+                  <span class="fee-unit">¢</span>
+                </div>
+              </div>
+
+              <div class="fee-input-group">
+                <span class="fee-input-label">Payout Fixed</span>
+                <div class="fee-chip">
+                  <div class="fee-chip-icon fee-icon-amber">🪙</div>
+                  <input type="number" id="fee-payout-fixed" value="25" class="fee-input-val" oninput="recalculateFeesCustom()">
+                  <span class="fee-unit">¢</span>
+                </div>
+              </div>
+
+              <div class="fee-input-group">
+                <span class="fee-input-label">Variable Rate</span>
+                <div class="fee-chip">
+                  <div class="fee-chip-icon fee-icon-purple">%</div>
+                  <input type="number" id="fee-variable-rate" value="3.49" step="0.01" class="fee-input-val fee-val-wide" oninput="recalculateFeesCustom()">
+                  <span class="fee-unit">%</span>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn-recalc-glow" onclick="recalculateFeesCustom()">
+              <span style="font-size: 15px;">🧮</span>
+              <span>Recalculate Savings</span>
+              <span class="sparkle-star">✨</span>
+            </button>
           </div>
 
           <!-- IOU Ledger Grid with AG Grid -->
@@ -1631,20 +2003,23 @@ export function getDashboardHtml(): string {
               </div>
             </div>
 
-            <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px; flex-wrap: wrap;">
-              <input type="text" id="ious-filter-input" class="search-input" placeholder="🔍 Quick Filter IOUs (Agent, Task, ID, Signature)..." oninput="onIouQuickFilterChanged()">
-              <span style="font-size: 12px; color: var(--text-secondary);" id="grid-row-count-badge">Displaying 1,500 rows</span>
+            <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 10px; background: rgba(4, 9, 20, 0.85); border: 1px solid rgba(0, 156, 222, 0.3); border-radius: 9999px; padding: 6px 16px; flex: 1; max-width: 480px; box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);">
+                <span style="font-size: 14px; color: var(--accent-secondary);">🔍</span>
+                <input type="text" id="ious-filter-input" style="background: transparent; border: none; color: #FFF; outline: none; font-size: 13px; font-family: var(--font-sans); width: 100%;" placeholder="Quick Filter IOUs (Agent, Task, ID, Signature)..." oninput="onIouQuickFilterChanged()">
+              </div>
+              <span class="pill-badge-purple" id="grid-row-count-badge" style="font-size: 12px; padding: 6px 14px; border-radius: 9999px;">📊 Displaying 1,500 rows</span>
             </div>
 
             <div id="ious-grid" class="ag-theme-nexus-dark ag-theme-alpine-dark" style="height: 480px; width: 100%;"></div>
             
-            <!-- Conservation Status-Bar Widget -->
+            <!-- Conservation Status-Bar Widget with Rounded Pills & Emojis -->
             <div class="grid-status-bar" id="grid-conservation-bar">
-              <div class="grid-status-item"><span style="color: var(--accent-primary);">●</span> <strong id="bar-row-count">1,500 Micro-IOUs</strong></div>
-              <div class="grid-status-item">Zero-Sum: <strong style="color: #34D399;" id="bar-zero-sum">Δ ≡ $0.00 Conserved</strong></div>
-              <div class="grid-status-item">Gross Debt: <strong id="bar-gross-vol">$51,248.50</strong></div>
-              <div class="grid-status-item">Net Cleared: <strong style="color: var(--accent-secondary);" id="bar-net-vol">$17,624.10</strong></div>
-              <div class="grid-status-item">Fee Elimination: <strong style="color: #A7F3D0;" id="bar-fee-savings">95.0% Saved</strong></div>
+              <div class="grid-status-pill"><span style="color: var(--accent-secondary);">📜</span> <strong id="bar-row-count">1,500 Micro-IOUs</strong></div>
+              <div class="grid-status-pill"><span style="color: #34D399;">⚖️</span> Zero-Sum: <strong style="color: #34D399;" id="bar-zero-sum">Δ ≡ $0.00 Conserved</strong></div>
+              <div class="grid-status-pill"><span style="color: var(--accent-amber);">💳</span> Gross Debt: <strong id="bar-gross-vol">$51,248.50</strong></div>
+              <div class="grid-status-pill"><span style="color: var(--accent-secondary);">🌐</span> Net Cleared: <strong style="color: var(--accent-secondary);" id="bar-net-vol">$17,624.10</strong></div>
+              <div class="grid-status-pill"><span style="color: #A7F3D0;">💰</span> Rail Cost Cut: <strong style="color: #A7F3D0;" id="bar-fee-savings">95.0% Saved</strong></div>
             </div>
           </div>
 
@@ -1688,24 +2063,27 @@ export function getDashboardHtml(): string {
           <div class="card">
             <div class="card-header">
               <div>
-                <span class="card-title">Cryptographic IOU Signature & Invariant Verifier</span>
+                <span class="card-title">🛡️ Cryptographic IOU Signature & Invariant Verifier</span>
                 <div class="card-desc">Verify Ed25519 digital signatures against RFC 8785 Canonical JSON representations and agent public keys in real-time.</div>
               </div>
               <span class="tag tag-info">Trust Engine</span>
             </div>
 
-            <div style="display: flex; gap: 12px; align-items: center; margin-top: 8px; flex-wrap: wrap;">
-              <input type="text" id="verify-iou-input" class="search-input" style="flex: 1; min-width: 300px;" placeholder="Enter IOU ID (e.g. iou_001, iou_002, iou_003)">
-              <button class="btn btn-primary" onclick="verifyIouFromInput()">Verify Cryptographic Proof</button>
-              <button class="btn btn-secondary" onclick="document.getElementById('verify-iou-input').value='iou_001'; verifyIouFromInput();">Test Sample IOU 1</button>
+            <div style="display: flex; gap: 12px; align-items: center; margin-top: 14px; flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: 10px; background: rgba(4, 9, 20, 0.85); border: 1px solid rgba(0, 156, 222, 0.3); border-radius: 9999px; padding: 6px 18px; flex: 1; min-width: 300px; box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);">
+                <span style="font-size: 14px; color: var(--accent-secondary);">🔍</span>
+                <input type="text" id="verify-iou-input" style="background: transparent; border: none; color: #FFF; outline: none; font-size: 13px; font-family: var(--font-sans); width: 100%;" placeholder="Enter IOU ID (e.g. iou_001, iou_002, iou_003)">
+              </div>
+              <button class="btn btn-primary" onclick="verifyIouFromInput()">⚡ Verify Proof</button>
+              <button class="btn btn-secondary" onclick="document.getElementById('verify-iou-input').value='iou_001'; verifyIouFromInput();">🧪 Sample IOU 1</button>
             </div>
 
-            <div class="verify-result-box" id="verify-output" style="display: none; background: #050608; border: 1px solid var(--border-subtle); border-radius: 10px; padding: 16px; margin-top: 16px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <span style="font-weight: bold; color: #FFF; font-size: 14px;" id="verify-modal-title">Verification Result</span>
+            <div class="verify-result-box" id="verify-output" style="display: none; background: rgba(3, 7, 18, 0.95); border: 1px solid rgba(0, 156, 222, 0.35); border-radius: 18px; padding: 20px; margin-top: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span style="font-weight: 700; color: #FFF; font-size: 14.5px; display: flex; align-items: center; gap: 8px;" id="verify-modal-title"><span>🛡️</span> Verification Result</span>
                 <span class="tag tag-success" id="verify-status-tag">VALID Ed25519 SIGNATURE</span>
               </div>
-              <pre id="verify-json-details" class="mono" style="color: #FF9A52; overflow-x: auto; white-space: pre-wrap; font-size: 12px;"></pre>
+              <pre id="verify-json-details" class="mono" style="color: #FF9A52; overflow-x: auto; white-space: pre-wrap; font-size: 12px; line-height: 1.5;"></pre>
             </div>
           </div>
 
@@ -1713,7 +2091,7 @@ export function getDashboardHtml(): string {
           <div class="card" style="margin-top: 22px;">
             <div class="card-header">
               <div>
-                <span class="card-title">5-Point Adversarial Defense & Invariant Matrix</span>
+                <span class="card-title">🔒 5-Point Adversarial Defense & Invariant Matrix</span>
                 <div class="card-desc">Every layer in Tally Nexus enforces strict cryptographic, fiduciary, and behavioral boundaries against adversarial interference.</div>
               </div>
               <span class="tag tag-success">All Invariants Active</span>
@@ -1732,35 +2110,35 @@ export function getDashboardHtml(): string {
                 </thead>
                 <tbody>
                   <tr>
-                    <td><strong>1. Cryptographic Authenticity</strong></td>
+                    <td><strong>1. 🔐 Cryptographic Authenticity</strong></td>
                     <td>Signature Forgery / Key Spoofing</td>
                     <td>Ed25519 verification over RFC 8785 canonical digest with domain separation</td>
                     <td>Non-debtor agents cannot mint or alter debt obligations</td>
                     <td><span class="tag tag-success">ENFORCED (401 REJECT)</span></td>
                   </tr>
                   <tr>
-                    <td><strong>2. Replay & Nonce Defense</strong></td>
+                    <td><strong>2. 🔁 Replay & Nonce Defense</strong></td>
                     <td>Duplicate IOU Double-Spend</td>
                     <td>Unique IOU ID + Task ID unique constraint in relational subledger</td>
                     <td>An adjudicated task can strictly generate exactly one IOU</td>
                     <td><span class="tag tag-success">ENFORCED (409 CONFLICT)</span></td>
                   </tr>
                   <tr>
-                    <td><strong>3. Margin & Solvency Floor</strong></td>
+                    <td><strong>3. 🛡️ Margin & Solvency Floor</strong></td>
                     <td>Debtor Capital Exhaustion</td>
                     <td>Financial Firewall reserve check before cycle authorization</td>
                     <td>Clearing cannot proceed if obligations breach minimum floor ($10.00)</td>
                     <td><span class="tag tag-success">ENFORCED (HALT CYCLE)</span></td>
                   </tr>
                   <tr>
-                    <td><strong>4. Payload Integrity</strong></td>
+                    <td><strong>4. 📝 Payload Integrity</strong></td>
                     <td>Amount Tampering ($100 &rarr; $1)</td>
                     <td>Contextual claim matching (claimed amount === evaluated amount)</td>
                     <td>Any discrepancy between evaluated task and signed IOU is rejected</td>
                     <td><span class="tag tag-success">ENFORCED (400 MISMATCH)</span></td>
                   </tr>
                   <tr>
-                    <td><strong>5. SLA Prompt Injection Defense</strong></td>
+                    <td><strong>5. 🤖 SLA Prompt Injection Defense</strong></td>
                     <td>Adversarial LLM Hijack</td>
                     <td>Confidence score quarantine thresholds + deterministic test harness</td>
                     <td>AI cannot mint IOUs; confidence &lt; 0.90 quarantines to operator review</td>
@@ -1776,8 +2154,8 @@ export function getDashboardHtml(): string {
         <div id="tab-cycles" class="tab-content">
           <div class="card">
             <div class="card-header">
-              <span class="card-title">Settlement Cycles</span>
-              <button class="btn btn-primary" onclick="runFlagshipDemo()">Execute Flagship Cycle</button>
+              <span class="card-title">🔄 Settlement Cycles</span>
+              <button class="btn btn-primary" onclick="runFlagshipDemo()">🚀 Execute Flagship Cycle</button>
             </div>
             <div class="table-responsive">
               <table>
@@ -1802,7 +2180,7 @@ export function getDashboardHtml(): string {
         <!-- 5. PAYMENT RAILS TAB -->
         <div id="tab-payments" class="tab-content">
           <div class="card">
-            <div class="card-header"><span class="card-title">Debtor Orders v2 Collections (Inbound Net Cash)</span></div>
+            <div class="card-header"><span class="card-title">💳 Debtor Orders v2 Collections (Inbound Net Cash)</span></div>
             <div class="table-responsive">
               <table>
                 <thead>
@@ -1823,7 +2201,7 @@ export function getDashboardHtml(): string {
           </div>
 
           <div class="card" style="margin-top: 22px;">
-            <div class="card-header"><span class="card-title">Creditor Payouts v1 Disbursements (Outbound Distribution)</span></div>
+            <div class="card-header"><span class="card-title">🪙 Creditor Payouts v1 Disbursements (Outbound Distribution)</span></div>
             <div class="table-responsive">
               <table>
                 <thead>
@@ -1848,8 +2226,8 @@ export function getDashboardHtml(): string {
         <div id="tab-recovery" class="tab-content">
           <div class="card">
             <div class="card-header">
-              <span class="card-title">Recovery Operations & Interrupted State Reconciliation</span>
-              <button class="btn btn-secondary" onclick="triggerReconciliation()">Reconcile Interrupted Operations</button>
+              <span class="card-title">🩹 Recovery Operations & Interrupted State Reconciliation</span>
+              <button class="btn btn-secondary" onclick="triggerReconciliation()">🔄 Reconcile Operations</button>
             </div>
             <div class="table-responsive">
               <table>
@@ -1875,7 +2253,7 @@ export function getDashboardHtml(): string {
         <!-- 7. DOUBLE-ENTRY LEDGER TAB -->
         <div id="tab-ledger" class="tab-content">
           <div class="card">
-            <div class="card-header"><span class="card-title">Compensating & Settlement Double-Entry Subledger</span></div>
+            <div class="card-header"><span class="card-title">⚖️ Compensating & Settlement Double-Entry Subledger</span></div>
             <div class="table-responsive">
               <table>
                 <thead>
@@ -1900,7 +2278,7 @@ export function getDashboardHtml(): string {
         <!-- 8. AGENTS TAB -->
         <div id="tab-agents" class="tab-content">
           <div class="card">
-            <div class="card-header"><span class="card-title">Registered Autonomous Agents</span></div>
+            <div class="card-header"><span class="card-title">🤖 Registered Autonomous Agents</span></div>
             <div class="table-responsive">
               <table>
                 <thead>
@@ -1924,8 +2302,8 @@ export function getDashboardHtml(): string {
         <div id="tab-events" class="tab-content">
           <div class="card">
             <div class="card-header">
-              <span class="card-title">Server-Sent Events (SSE) Monotonic Outbox Stream</span>
-              <button class="btn btn-secondary" onclick="clearStreamLog()">Clear Log</button>
+              <span class="card-title">📡 Server-Sent Events (SSE) Monotonic Outbox Stream</span>
+              <button class="btn btn-secondary" onclick="clearStreamLog()">🧹 Clear Log</button>
             </div>
             <div class="stream-box" id="stream-box">
               <div class="stream-line"><span class="stream-time">[INIT]</span> Connected to /api/events/stream. Awaiting realtime system events...</div>
