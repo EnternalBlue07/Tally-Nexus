@@ -28,3 +28,4 @@ text = text.replace(
 if (isCrlf) text = text.replace(/\n/g, '\r\n');
 fs.writeFileSync(path, text, 'utf8');
 console.log('Fee model styling successfully updated!');
+

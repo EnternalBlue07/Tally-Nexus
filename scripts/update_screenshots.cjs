@@ -23,3 +23,4 @@ for (const [srcName, destName] of mappings) {
     console.warn(`Source not found: ${src}`);
   }
 }
+

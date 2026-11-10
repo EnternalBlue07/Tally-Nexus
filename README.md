@@ -44,16 +44,16 @@ $$\mathbf{AI\ Analyzes} \implies \mathbf{Cryptography\ Verifies} \implies \mathb
 The Tally Nexus dashboard is an institutional-grade, PayPal-inspired financial command center featuring authentic typography, glassmorphic layout, high-density AG Grid virtualization, interactive command palette, and real-time SSE streaming.
 
 ### 🌟 Executive Command Centre (Overview & Hero Stack)
-![Tally Nexus Command Centre](docs/assets/screenshots/01_tally_nexus_command_centre_hero.png)
+![Tally Nexus Command Centre](./docs/assets/screenshots/01_tally_nexus_command_centre_hero.png)
 
 ### ⚡ Hackathon Judge Briefing Panel & 30-Second Guided Tour
-![Hackathon Judge Briefing Panel](docs/assets/screenshots/02_judge_briefing_panel_and_30s_tour.png)
+![Hackathon Judge Briefing Panel](./docs/assets/screenshots/02_judge_briefing_panel_and_30s_tour.png)
 
 ### 📊 Agent Swarm Liquidity Distribution & Settlement Stream
-![Agent Liquidity & Settlements](docs/assets/screenshots/03_agent_liquidity_and_settlements.png)
+![Agent Liquidity & Settlements](./docs/assets/screenshots/03_agent_liquidity_and_settlements.png)
 
 ### 🚀 Flagship 6-Scene Scenario Walkthrough
-![Flagship Scenario Walkthrough](docs/assets/screenshots/04_flagship_scenario_walkthrough.png)
+![Flagship Scenario Walkthrough](./docs/assets/screenshots/04_flagship_scenario_walkthrough.png)
 
 ---
 
