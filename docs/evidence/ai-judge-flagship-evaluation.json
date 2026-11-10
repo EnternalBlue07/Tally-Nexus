@@ -1,41 +1,41 @@
 {
-  "evaluationId": "1dd96eae-8e59-4bd7-82f6-4bc5bb834418",
-  "taskId": "cyc_flagship_1794259376647_tsk1",
+  "evaluationId": "b24dd0d8-ed56-468b-a338-c7fff47132ce",
+  "taskId": "cyc_flagship_1794292630656_tsk1",
   "provider": "FREEMODEL",
   "model": "gemini-3.7-flash",
   "modelUsed": "gemini-3.7-flash",
   "fallbackTriggered": false,
   "aiAvailable": true,
-  "promptHash": "0f3bc7b9231e5b0e7d2a0423d6bc48892b6f7754b1d8c42b41cce6a294fa4d22",
-  "rawResponseText": "{\"verdict\":\"FAIL\",\"confidence\":0.98,\"reasons\":[\"Submitted evidence contains only metadata and does not provide the required STRUCTURED_FINANCIAL_SENTIMENT dataset.\",\"The sha256PayloadDigest e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 is the SHA-256 hash of an empty payload, contradicting recordsAggregated=5000 and indicating no substantive deliverable.\",\"No structured sentiment records, schema-validated payload, or verifiable market metrics are included to satisfy SLA-DATA-01.\"],\"proposedCreditBps\":10000}",
+  "promptHash": "0deb72028dc55c07d888690f57c40841576e43178158f0ab640f351875e9bf13",
+  "rawResponseText": "{\"verdict\":\"FAIL\",\"confidence\":0.99,\"reasons\":[\"sha256PayloadDigest matches the SHA-256 hash of an empty string, indicating the submitted payload is empty despite recordsAggregated=5000.\",\"No structured financial sentiment records or dataset payload were provided to verify schema version 1.2.0 or validate the expected deliverable type.\",\"The submitted evidence is internally inconsistent and cannot substantiate SLA-DATA-01 deliverable satisfaction.\"],\"proposedCreditBps\":10000}",
   "rawJson": {
     "verdict": "FAIL",
-    "confidence": 0.98,
+    "confidence": 0.99,
     "reasons": [
-      "Submitted evidence contains only metadata and does not provide the required STRUCTURED_FINANCIAL_SENTIMENT dataset.",
-      "The sha256PayloadDigest e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 is the SHA-256 hash of an empty payload, contradicting recordsAggregated=5000 and indicating no substantive deliverable.",
-      "No structured sentiment records, schema-validated payload, or verifiable market metrics are included to satisfy SLA-DATA-01."
+      "sha256PayloadDigest matches the SHA-256 hash of an empty string, indicating the submitted payload is empty despite recordsAggregated=5000.",
+      "No structured financial sentiment records or dataset payload were provided to verify schema version 1.2.0 or validate the expected deliverable type.",
+      "The submitted evidence is internally inconsistent and cannot substantiate SLA-DATA-01 deliverable satisfaction."
     ],
     "proposedCreditBps": 10000
   },
   "validatedVerdict": "FAIL",
-  "confidenceScore": 0.98,
+  "confidenceScore": 0.99,
   "obligationDisposition": "CONTRACTUAL_CREDIT_APPLIED",
   "finalObligationCents": 0,
   "contractualCreditCents": 4000,
   "clampedCreditBps": 10000,
   "authorizedCreditCents": 4000,
   "reasons": [
-    "Submitted evidence contains only metadata and does not provide the required STRUCTURED_FINANCIAL_SENTIMENT dataset.",
-    "The sha256PayloadDigest e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 is the SHA-256 hash of an empty payload, contradicting recordsAggregated=5000 and indicating no substantive deliverable.",
-    "No structured sentiment records, schema-validated payload, or verifiable market metrics are included to satisfy SLA-DATA-01.",
+    "sha256PayloadDigest matches the SHA-256 hash of an empty string, indicating the submitted payload is empty despite recordsAggregated=5000.",
+    "No structured financial sentiment records or dataset payload were provided to verify schema version 1.2.0 or validate the expected deliverable type.",
+    "The submitted evidence is internally inconsistent and cannot substantiate SLA-DATA-01 deliverable satisfaction.",
     "SLA deliverable rejected: Contractual credit relief of 10000 bps ($40.00) applied against debtor obligation."
   ],
   "injectionAttemptDetected": false,
-  "evaluatedAt": "2026-11-09T21:22:56.664Z",
+  "evaluatedAt": "2026-11-10T06:37:10.662Z",
   "tokenUsage": {
     "promptTokens": 467,
-    "completionTokens": 847,
-    "totalTokens": 1314
+    "completionTokens": 1072,
+    "totalTokens": 1539
   }
 }

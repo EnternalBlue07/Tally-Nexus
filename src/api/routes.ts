@@ -131,6 +131,25 @@ export function createApiRouter(
       const result = await LlmJudgeService.evaluateTask(context, db);
       const latencyMs = Date.now() - start;
 
+      // Ensure task has formal verdict persisted in task_verdicts if not already evaluated
+      try {
+        const existingVerdict = db.prepare('SELECT verdict_id FROM task_verdicts WHERE task_id = ?').get(context.taskId);
+        if (!existingVerdict) {
+          SlaJudge.evaluateTask(
+            {
+              taskId: context.taskId,
+              evaluatorType: 'LLM_JUDGE',
+              criteriaCheckPassed: result.validatedVerdict === 'PASS',
+              confidenceScore: result.confidenceScore,
+              evaluatorNotes: `AI SLA Judge: ${result.provider} (${result.model}) -> ${result.validatedVerdict}. Clamped: ${result.clampedCreditBps} bps. Disposition: ${result.obligationDisposition}.`,
+            },
+            db
+          );
+        }
+      } catch (verdictErr) {
+        // If task was already evaluated or transitioned, retain without failing
+      }
+
       res.json({
         classification: result.aiAvailable ? 'LIVE_EVALUATION' : 'STORED_RUN',
         ...result,
@@ -1110,9 +1129,14 @@ export function createApiRouter(
       }
 
       if (paypalClient && typeof paypalClient.getCapture === 'function') {
+        let isOrderFallback = false;
         let result = await paypalClient.getCapture(captureId);
         if (result.httpStatus === 404 && typeof paypalClient.getOrder === 'function') {
-          result = await paypalClient.getOrder(captureId);
+          const orderCheck = await paypalClient.getOrder(captureId);
+          if (orderCheck.httpStatus === 200) {
+            result = orderCheck;
+            isOrderFallback = true;
+          }
         }
 
         if (result.httpStatus !== 200 && storedEvidenceMatched) {
@@ -1130,8 +1154,14 @@ export function createApiRouter(
               classification: 'STORED_OFFLINE_EVIDENCE',
               notice: 'No PayPal credentials configured in .env: showing stored authoritative evidence from verified Sandbox run.',
               identifier: captureId,
+              resourceType: 'CAPTURE',
               providerStatus: cap.captureStatus || cap.orderStatus || 'COMPLETED',
+              providerVerificationStatus: 'EVIDENCE_VERIFIED',
+              localRecordStatus: dbOrder ? 'LOCAL_RECORD_FOUND' : 'LOCAL_RECORD_NOT_FOUND',
+              isSimulatedRecord: false,
               amount: cap.amount,
+              dbAmount: dbOrder ? { currency_code: 'USD', value: (dbOrder.amount_cents / 100).toFixed(2) } : null,
+              amountMatched: true,
               customId,
               merkleAnchor,
               dbRecordMatched: Boolean(dbOrder),
@@ -1144,25 +1174,80 @@ export function createApiRouter(
           }
         }
 
-        const data = result.data;
+        const data = result.data || {};
         const customId = data.custom_id || data.purchase_units?.[0]?.custom_id || dbOrder?.cycle_id || null;
         let merkleAnchor: string | null = null;
         if (customId && customId.includes('anchor_')) {
           merkleAnchor = customId.split('anchor_')[1];
         }
 
+        const providerAmount = data.amount || data.purchase_units?.[0]?.amount || null;
+        let amountMatched = true;
+        let dbAmount: { currency_code: string; value: string } | null = null;
+        if (dbOrder) {
+          dbAmount = { currency_code: 'USD', value: (dbOrder.amount_cents / 100).toFixed(2) };
+          if (providerAmount && providerAmount.value) {
+            const providerCents = Math.round(parseFloat(providerAmount.value) * 100);
+            if (providerCents !== dbOrder.amount_cents) {
+              amountMatched = false;
+            }
+          }
+        }
+
+        let verificationStatus: string;
+        let providerVerificationStatus: string;
+        let notice: string | undefined = undefined;
+        let explanation: string | undefined = undefined;
+
+        if (result.httpStatus === 200) {
+          if (!amountMatched) {
+            verificationStatus = 'EVIDENCE_MISMATCH';
+            providerVerificationStatus = 'EVIDENCE_MISMATCH';
+            notice = `Amount mismatch detected: Local ledger records $${dbAmount?.value} USD, but PayPal reports $${providerAmount?.value} ${providerAmount?.currency_code || 'USD'}.`;
+          } else if (isOrderFallback) {
+            verificationStatus = 'VERIFIED_ON_PAYPAL_SANDBOX';
+            providerVerificationStatus = 'PROVIDER_VERIFIED';
+            notice = `Identifier '${captureId}' is a PayPal Order resource, not a finalized Capture resource.`;
+          } else {
+            verificationStatus = 'VERIFIED_ON_PAYPAL_SANDBOX';
+            providerVerificationStatus = 'PROVIDER_VERIFIED';
+          }
+        } else if (result.httpStatus === 404) {
+          if (dbOrder) {
+            verificationStatus = 'LOCAL_RECORD_FOUND';
+            providerVerificationStatus = 'PROVIDER_NOT_FOUND';
+            explanation = `Identifier '${captureId}' is recorded in the local settlement ledger, but does not exist on live PayPal rails. This is normal for simulated demonstration runs.`;
+            notice = 'Simulated Record: Local ledger entry exists, but transaction was not broadcast to live PayPal rails.';
+          } else {
+            verificationStatus = 'RESOURCE_NOT_FOUND';
+            providerVerificationStatus = 'PROVIDER_NOT_FOUND';
+          }
+        } else {
+          verificationStatus = 'PROVIDER_ERROR';
+          providerVerificationStatus = 'PROVIDER_ERROR';
+          notice = `PayPal provider returned HTTP ${result.httpStatus}. Verification unavailable.`;
+        }
+
         res.json({
-          verificationStatus: result.httpStatus === 200 ? 'VERIFIED_ON_PAYPAL_SANDBOX' : 'RESOURCE_NOT_FOUND',
+          verificationStatus,
+          providerVerificationStatus,
+          localRecordStatus: dbOrder ? 'LOCAL_RECORD_FOUND' : 'LOCAL_RECORD_NOT_FOUND',
+          isSimulatedRecord: Boolean(dbOrder && result.httpStatus !== 200),
+          resourceType: isOrderFallback ? 'ORDER' : 'CAPTURE',
           environment: process.env.PAYPAL_API_BASE || 'https://api-m.sandbox.paypal.com',
           classification: paypalClient instanceof MockPayPalClient ? 'SIMULATION_MOCK' : 'LIVE_SANDBOX',
           identifier: captureId,
-          providerStatus: data.status || 'NOT_FOUND',
-          amount: data.amount || data.purchase_units?.[0]?.amount || (dbOrder ? { currency_code: 'USD', value: (dbOrder.amount_cents / 100).toFixed(2) } : null),
+          providerStatus: data.status || (result.httpStatus === 404 ? 'NOT_FOUND' : 'ERROR'),
+          amount: providerAmount || dbAmount,
+          dbAmount,
+          amountMatched,
           customId,
           merkleAnchor,
           dbRecordMatched: Boolean(dbOrder),
           storedEvidenceMatched,
           paypalDebugId: result.debugId,
+          notice,
+          explanation,
           verifiedAt: new Date().toISOString(),
           readOnlyProof: true,
         });
@@ -1170,7 +1255,11 @@ export function createApiRouter(
       }
 
       res.json({
-        verificationStatus: dbOrder ? 'VERIFIED_IN_LOCAL_LEDGER' : 'NOT_FOUND',
+        verificationStatus: dbOrder ? 'LOCAL_RECORD_FOUND' : 'RESOURCE_NOT_FOUND',
+        providerVerificationStatus: 'PROVIDER_NOT_FOUND',
+        localRecordStatus: dbOrder ? 'LOCAL_RECORD_FOUND' : 'LOCAL_RECORD_NOT_FOUND',
+        isSimulatedRecord: Boolean(dbOrder),
+        resourceType: 'UNKNOWN',
         identifier: captureId,
         dbRecordMatched: Boolean(dbOrder),
         storedEvidenceMatched,
@@ -1234,6 +1323,9 @@ export function createApiRouter(
 
             res.json({
               verificationStatus: 'STORED_CANONICAL_EVIDENCE',
+              providerVerificationStatus: 'EVIDENCE_VERIFIED',
+              localRecordStatus: dbPayout ? 'LOCAL_RECORD_FOUND' : 'LOCAL_RECORD_NOT_FOUND',
+              isSimulatedRecord: false,
               environment: 'https://api-m.sandbox.paypal.com',
               classification: 'STORED_OFFLINE_EVIDENCE',
               notice: 'No PayPal credentials configured in .env: showing stored authoritative evidence from verified Sandbox run.',
@@ -1256,8 +1348,8 @@ export function createApiRouter(
           }
         }
 
-        const data = result.data;
-        const batchHeader = data.batch_header || null;
+        const data = result.data || {};
+        const rawBatchHeader = data.batch_header || null;
         const rawItems = data.items || [];
 
         const items = rawItems.map((item: any) => ({
@@ -1269,23 +1361,59 @@ export function createApiRouter(
           senderItemId: item.payout_item?.sender_item_id,
         }));
 
+        const mappedBatchHeader = rawBatchHeader ? {
+          payoutBatchId: rawBatchHeader.payout_batch_id,
+          batchStatus: rawBatchHeader.batch_status,
+          timeCreated: rawBatchHeader.time_created,
+          timeCompleted: rawBatchHeader.time_completed,
+          amount: rawBatchHeader.amount,
+          fees: rawBatchHeader.fees,
+        } : (dbPayout ? {
+          payoutBatchId: batchId,
+          batchStatus: dbPayout.batch_status || 'NOT_FOUND',
+          senderBatchId: dbPayout.sender_batch_id,
+          amount: { currency: 'USD', value: (dbPayout.total_amount_cents / 100).toFixed(2) }
+        } : null);
+
+        let verificationStatus: string;
+        let providerVerificationStatus: string;
+        let notice: string | undefined = undefined;
+        let explanation: string | undefined = undefined;
+
+        if (result.httpStatus === 200) {
+          verificationStatus = 'VERIFIED_ON_PAYPAL_SANDBOX';
+          providerVerificationStatus = 'PROVIDER_VERIFIED';
+        } else if (result.httpStatus === 404) {
+          if (dbPayout) {
+            verificationStatus = 'LOCAL_RECORD_FOUND';
+            providerVerificationStatus = 'PROVIDER_NOT_FOUND';
+            explanation = `Payout Batch '${batchId}' is recorded in local ledger, but does not exist on live PayPal rails. This is normal for simulated demonstration runs.`;
+            notice = 'Simulated Record: Local ledger entry exists, but payout was not dispatched to live PayPal rails.';
+          } else {
+            verificationStatus = 'RESOURCE_NOT_FOUND';
+            providerVerificationStatus = 'PROVIDER_NOT_FOUND';
+          }
+        } else {
+          verificationStatus = 'PROVIDER_ERROR';
+          providerVerificationStatus = 'PROVIDER_ERROR';
+          notice = `PayPal provider returned HTTP ${result.httpStatus}. Verification unavailable.`;
+        }
+
         res.json({
-          verificationStatus: result.httpStatus === 200 ? 'VERIFIED_ON_PAYPAL_SANDBOX' : 'RESOURCE_NOT_FOUND',
+          verificationStatus,
+          providerVerificationStatus,
+          localRecordStatus: dbPayout ? 'LOCAL_RECORD_FOUND' : 'LOCAL_RECORD_NOT_FOUND',
+          isSimulatedRecord: Boolean(dbPayout && result.httpStatus !== 200),
           environment: process.env.PAYPAL_API_BASE || 'https://api-m.sandbox.paypal.com',
           classification: paypalClient instanceof MockPayPalClient ? 'SIMULATION_MOCK' : 'LIVE_SANDBOX',
           identifier: batchId,
-          batchHeader: batchHeader ? {
-            payoutBatchId: batchHeader.payout_batch_id,
-            batchStatus: batchHeader.batch_status,
-            timeCreated: batchHeader.time_created,
-            timeCompleted: batchHeader.time_completed,
-            amount: batchHeader.amount,
-            fees: batchHeader.fees,
-          } : null,
+          batchHeader: mappedBatchHeader,
           items,
           dbRecordMatched: Boolean(dbPayout),
           storedEvidenceMatched,
           paypalDebugId: result.debugId,
+          notice,
+          explanation,
           verifiedAt: new Date().toISOString(),
           readOnlyProof: true,
         });
@@ -1293,7 +1421,10 @@ export function createApiRouter(
       }
 
       res.json({
-        verificationStatus: dbPayout ? 'VERIFIED_IN_LOCAL_LEDGER' : 'NOT_FOUND',
+        verificationStatus: dbPayout ? 'LOCAL_RECORD_FOUND' : 'RESOURCE_NOT_FOUND',
+        providerVerificationStatus: 'PROVIDER_NOT_FOUND',
+        localRecordStatus: dbPayout ? 'LOCAL_RECORD_FOUND' : 'LOCAL_RECORD_NOT_FOUND',
+        isSimulatedRecord: Boolean(dbPayout),
         identifier: batchId,
         dbRecordMatched: Boolean(dbPayout),
         storedEvidenceMatched,

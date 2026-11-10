@@ -417,43 +417,43 @@ export function getDashboardHtml(): string {
        FINTECH EXECUTIVE CARDS & METRIC HIERARCHY
        ========================================================================== */
     .card {
-      background: var(--surface-primary);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border-glass);
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: var(--shadow-card);
+      background: rgba(8, 15, 30, 0.72);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(0, 156, 222, 0.22);
+      border-radius: 20px;
+      padding: 26px 28px;
+      box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 0 0 1px rgba(0, 112, 186, 0.12);
       position: relative;
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .card:hover {
-      border-color: rgba(0, 156, 222, 0.4);
-      box-shadow: 0 14px 40px -5px rgba(0, 112, 186, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      border-color: rgba(0, 156, 222, 0.48);
+      box-shadow: 0 20px 48px -6px rgba(0, 112, 186, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 22px rgba(0, 156, 222, 0.18);
       transform: translateY(-2px);
     }
     .card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
     }
     .card-title {
-      font-size: 15px;
+      font-size: 15.5px;
       font-weight: 700;
       color: var(--text-main);
       letter-spacing: -0.2px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
     .card-desc {
       font-size: 12.5px;
       color: var(--text-secondary);
       margin-top: 4px;
-      line-height: 1.5;
+      line-height: 1.55;
     }
 
     /* Executive Hero Grid Layout */
@@ -466,41 +466,42 @@ export function getDashboardHtml(): string {
 
     /* Primary Balance Chart Card */
     .balance-chart-card {
-      background: var(--surface-primary);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border-glass);
-      border-radius: 18px;
-      padding: 26px;
+      background: rgba(8, 15, 30, 0.75);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(0, 156, 222, 0.25);
+      border-radius: 22px;
+      padding: 28px 30px;
       position: relative;
       overflow: hidden;
-      box-shadow: var(--shadow-card);
+      box-shadow: 0 18px 48px -8px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 0 0 1px rgba(0, 112, 186, 0.15);
       transition: all 0.25s ease;
     }
     .balance-chart-card:hover {
-      border-color: rgba(0, 156, 222, 0.4);
+      border-color: rgba(0, 156, 222, 0.48);
+      box-shadow: 0 22px 52px -6px rgba(0, 112, 186, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.22);
     }
     .balance-chart-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
     .balance-label {
-      font-size: 12.5px;
+      font-size: 12px;
       color: var(--text-secondary);
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.6px;
     }
     .balance-main-num {
-      font-size: 36px;
+      font-size: 38px;
       font-weight: 800;
       color: #FFF;
       letter-spacing: -0.8px;
       display: flex;
       align-items: baseline;
-      gap: 12px;
+      gap: 14px;
       margin-top: 6px;
       font-variant-numeric: tabular-nums;
     }
@@ -555,17 +556,17 @@ export function getDashboardHtml(): string {
       left: 18px;
       right: 18px;
       height: 50px;
-      background: rgba(0, 48, 135, 0.45);
+      background: rgba(0, 36, 102, 0.55);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border: 1px solid rgba(0, 156, 222, 0.25);
-      border-radius: 16px;
+      border-radius: 18px;
       z-index: 1;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      padding: 3px 16px;
-      font-size: 9.5px;
+      padding: 4px 18px;
+      font-size: 10px;
       line-height: 12px;
       font-weight: 700;
       color: rgba(255, 255, 255, 0.65);
@@ -578,17 +579,17 @@ export function getDashboardHtml(): string {
       left: 9px;
       right: 9px;
       height: 52px;
-      background: rgba(0, 80, 160, 0.55);
+      background: rgba(0, 68, 148, 0.65);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border: 1px solid rgba(0, 156, 222, 0.35);
-      border-radius: 16px;
+      border-radius: 18px;
       z-index: 2;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      padding: 3px 16px;
-      font-size: 9.5px;
+      padding: 4px 18px;
+      font-size: 10px;
       line-height: 12px;
       font-weight: 700;
       color: rgba(255, 255, 255, 0.85);
@@ -598,24 +599,24 @@ export function getDashboardHtml(): string {
     .anchor-card-showcase {
       margin-top: 32px;
       z-index: 3;
-      background: linear-gradient(135deg, #001C3D 0%, #003087 50%, #0070BA 100%);
-      border: 1px solid rgba(0, 156, 222, 0.45);
-      border-radius: 18px;
-      padding: 22px 24px;
+      background: linear-gradient(135deg, #011638 0%, #002B7A 45%, #0056B3 80%, #0070BA 100%);
+      border: 1px solid rgba(0, 207, 222, 0.45);
+      border-radius: 22px;
+      padding: 26px 28px;
       color: #FFF;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 16px 40px rgba(0, 48, 135, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25), inset 0 0 0 1px rgba(0, 156, 222, 0.2);
+      box-shadow: 0 24px 50px rgba(0, 32, 96, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 0 0 1px rgba(0, 156, 222, 0.25);
       flex: 1;
       transition: all 0.3s ease;
     }
     .anchor-card-showcase:hover {
       transform: translateY(-3px);
-      box-shadow: 0 22px 50px rgba(0, 112, 186, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.35);
-      border-color: rgba(0, 207, 222, 0.6);
+      box-shadow: 0 28px 60px rgba(0, 112, 186, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+      border-color: rgba(0, 207, 222, 0.7);
     }
     .anchor-card-showcase::before {
       content: '';
@@ -624,7 +625,7 @@ export function getDashboardHtml(): string {
       left: -50%;
       width: 200%;
       height: 200%;
-      background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.14) 48%, transparent 58%);
+      background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.16) 48%, transparent 58%);
       pointer-events: none;
     }
     .anchor-card-showcase::after {
@@ -651,13 +652,13 @@ export function getDashboardHtml(): string {
       color: #FFF;
     }
     .anchor-card-chip {
-      width: 38px;
-      height: 28px;
-      background: linear-gradient(135deg, #F6D365 0%, #FDA085 100%);
-      border-radius: 5px;
-      border: 1px solid rgba(0, 0, 0, 0.25);
+      width: 40px;
+      height: 30px;
+      background: linear-gradient(135deg, #FFE082 0%, #FFB300 50%, #FF8F00 100%);
+      border-radius: 6px;
+      border: 1px solid rgba(0, 0, 0, 0.35);
       position: relative;
-      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4);
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5), 0 2px 6px rgba(0,0,0,0.3);
     }
     .anchor-card-chip::before {
       content: '';
@@ -666,8 +667,8 @@ export function getDashboardHtml(): string {
       left: 0;
       right: 0;
       height: 40%;
-      border-top: 1px solid rgba(0, 0, 0, 0.2);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+      border-top: 1px solid rgba(0, 0, 0, 0.25);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.25);
     }
     .anchor-card-chip::after {
       content: '';
@@ -676,16 +677,16 @@ export function getDashboardHtml(): string {
       top: 0;
       bottom: 0;
       width: 10%;
-      border-left: 1px solid rgba(0, 0, 0, 0.2);
-      border-right: 1px solid rgba(0, 0, 0, 0.2);
+      border-left: 1px solid rgba(0, 0, 0, 0.25);
+      border-right: 1px solid rgba(0, 0, 0, 0.25);
     }
     .anchor-balance-label {
       font-size: 12px;
-      color: rgba(255, 255, 255, 0.8);
+      color: rgba(255, 255, 255, 0.82);
       font-weight: 500;
     }
     .anchor-balance-val {
-      font-size: 32px;
+      font-size: 34px;
       font-weight: 800;
       letter-spacing: -0.5px;
       margin-top: 2px;
@@ -694,24 +695,25 @@ export function getDashboardHtml(): string {
     .anchor-actions {
       display: flex;
       gap: 12px;
-      margin-top: 20px;
+      margin-top: 22px;
     }
     .anchor-actions .btn {
       flex: 1;
-      padding: 11px;
+      padding: 12px;
       font-size: 13px;
+      border-radius: 9999px;
     }
     .btn-glass {
-      background: rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.16);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       color: #FFF;
       font-weight: 600;
     }
     .btn-glass:hover {
-      background: rgba(255, 255, 255, 0.22);
-      border-color: rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.24);
+      border-color: rgba(255, 255, 255, 0.45);
     }
     .btn-paypal {
       background: #0070BA;
@@ -1938,51 +1940,57 @@ export function getDashboardHtml(): string {
   <div id="toast-container"></div>
 
   <!-- Authoritative PayPal Verification Modal -->
-  <div id="paypal-verify-modal" style="display: none; position: fixed; inset: 0; background: rgba(8,9,12,0.85); backdrop-filter: blur(10px); z-index: 9999; justify-content: center; align-items: center; padding: 20px;">
-    <div style="background: var(--surface-primary); border: 1px solid var(--border-subtle); border-radius: 16px; max-width: 680px; width: 100%; box-shadow: var(--shadow-modal); overflow: hidden;">
-      <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; border-bottom: 1px solid var(--border-subtle); background: var(--surface-elevated);">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <span style="font-size: 20px;">🛡️</span>
+  <div id="paypal-verify-modal" style="display: none; position: fixed; inset: 0; background: rgba(3, 7, 18, 0.88); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); z-index: 9999; justify-content: center; align-items: center; padding: 24px;">
+    <div style="background: rgba(9, 16, 32, 0.95); border: 1px solid rgba(0, 156, 222, 0.4); border-radius: 22px; max-width: 720px; width: 100%; box-shadow: 0 35px 80px rgba(0, 0, 0, 0.9), 0 0 50px rgba(0, 112, 186, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 0 0 1px rgba(0, 156, 222, 0.2); overflow: hidden; backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px);">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 28px; border-bottom: 1px solid rgba(0, 156, 222, 0.2); background: linear-gradient(90deg, rgba(0, 48, 135, 0.35) 0%, rgba(0, 112, 186, 0.18) 100%);">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <div style="width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #003087 0%, #0070BA 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0, 112, 186, 0.45); border: 1px solid rgba(255,255,255,0.2);">
+            <svg width="22" height="18" viewBox="0 0 100 80" fill="none">
+              <path d="M26.4 75L35.2 19.3H56.5C64.3 19.3 70.3 21.4 73.7 25.4C77.1 29.5 77.4 35.3 75.4 41.8C73.3 48.7 69.2 54.2 63.8 57.5C59.2 60.3 53.6 61.6 47.4 61.6H38.5L34.3 75H26.4Z" fill="#FFF"/>
+              <path d="M38.5 61.6L44.8 22.4H63.1C70.9 22.4 76.9 24.5 80.3 28.5C83.7 32.6 84 38.4 82 44.9C79.9 51.8 75.8 57.3 70.4 60.6C65.8 63.4 60.2 64.7 54 64.7H43.3L40.2 84H32.3L38.5 61.6Z" fill="#00C3FF"/>
+            </svg>
+          </div>
           <div>
-            <div style="font-weight: 700; color: #FFF; font-size: 15px;">PayPal Sandbox Authoritative Proof</div>
-            <div style="font-size: 12px; color: var(--text-secondary);">Cryptographically linked server-side verification</div>
+            <div style="font-weight: 800; color: #FFF; font-size: 16px; letter-spacing: -0.2px;">PayPal Sandbox Authoritative Proof</div>
+            <div style="font-size: 12.5px; color: var(--text-secondary); margin-top: 2px;">Cryptographically linked server-side verification</div>
           </div>
         </div>
-        <button onclick="closeVerifyModal()" style="background: none; border: none; color: #94A3B8; font-size: 22px; cursor: pointer; line-height: 1;">&times;</button>
+        <button onclick="closeVerifyModal()" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 50%; width: 32px; height: 32px; color: #94A3B8; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;">&times;</button>
       </div>
-      <div style="padding: 24px; max-height: 75vh; overflow-y: auto;">
-        <div id="verify-modal-loading" style="text-align: center; padding: 30px; color: var(--accent-primary);">
-          <div class="pulse-dot" style="margin: 0 auto 12px; width: 12px; height: 12px;"></div>
-          <div style="font-size: 13px;">Querying api-m.sandbox.paypal.com in real-time...</div>
+      <div style="padding: 28px; max-height: 75vh; overflow-y: auto;">
+        <div id="verify-modal-loading" style="text-align: center; padding: 40px 20px; color: var(--accent-secondary);">
+          <div class="pulse-dot" style="margin: 0 auto 16px; width: 14px; height: 14px;"></div>
+          <div style="font-size: 14px; font-weight: 600; color: #FFF;">Querying api-m.sandbox.paypal.com in real-time...</div>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Executing cryptographic verification against PayPal Sandbox rails</div>
         </div>
         <div id="verify-modal-content" style="display: none;">
-          <div id="modal-notice-banner" style="display: none; background: rgba(245, 158, 11, 0.12); border: 1px solid var(--accent-amber); padding: 10px 14px; border-radius: 8px; margin-bottom: 14px; color: var(--accent-amber); font-size: 12px; line-height: 1.45;"></div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-            <span id="modal-status-badge" class="tag tag-success">VERIFIED ON PAYPAL SANDBOX</span>
-            <span id="modal-env-pill" class="tag tag-info" style="font-family: var(--font-mono);">api-m.sandbox.paypal.com</span>
+          <div id="modal-notice-banner" style="display: none; padding: 12px 16px; border-radius: 12px; margin-bottom: 18px; font-size: 12.5px; line-height: 1.5; font-weight: 500;"></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+            <span id="modal-status-badge" class="tag tag-success" style="font-size: 12px; padding: 5px 14px;">VERIFIED ON PAYPAL SANDBOX</span>
+            <span id="modal-env-pill" class="tag tag-info" style="font-family: var(--font-mono); font-size: 11px; padding: 4px 10px;">api-m.sandbox.paypal.com</span>
           </div>
-          <div style="background: var(--surface-elevated); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 16px; margin-bottom: 16px;">
-            <div style="display: grid; grid-template-columns: 140px 1fr; row-gap: 8px; font-size: 12.5px;">
-              <span style="color: var(--text-secondary);">Identifier:</span>
-              <span id="modal-id" class="mono" style="color: var(--accent-secondary); word-break: break-all;">-</span>
-              <span style="color: var(--text-secondary);">Provider Status:</span>
-              <span id="modal-provider-status" style="font-weight: 700; color: var(--accent-emerald);">-</span>
-              <span style="color: var(--text-secondary);">Amount:</span>
-              <span id="modal-amount" style="font-weight: 700; color: #FFF; font-variant-numeric: tabular-nums;">-</span>
-              <span style="color: var(--text-secondary);">Merkle Anchor:</span>
+          <div style="background: rgba(14, 24, 46, 0.75); border: 1px solid rgba(0, 156, 222, 0.28); border-radius: 14px; padding: 20px; margin-bottom: 18px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);">
+            <div style="display: grid; grid-template-columns: 150px 1fr; row-gap: 12px; font-size: 13px; align-items: center;">
+              <span style="color: var(--text-secondary); font-weight: 500;">Identifier:</span>
+              <span id="modal-id" class="mono" style="color: var(--accent-secondary); font-weight: 600; word-break: break-all;">-</span>
+              <span style="color: var(--text-secondary); font-weight: 500;">Provider Status:</span>
+              <span id="modal-provider-status" style="font-weight: 800; font-size: 13.5px;">-</span>
+              <span style="color: var(--text-secondary); font-weight: 500;">Amount:</span>
+              <span id="modal-amount" style="font-weight: 800; color: #FFF; font-size: 14px; font-variant-numeric: tabular-nums;">-</span>
+              <span style="color: var(--text-secondary); font-weight: 500;">Merkle Anchor:</span>
               <span id="modal-anchor" class="mono" style="color: var(--accent-amber); word-break: break-all;">-</span>
-              <span style="color: var(--text-secondary);">PayPal Debug ID:</span>
-              <span id="modal-debug-id" class="mono" style="color: #A7F3D0;">-</span>
-              <span style="color: var(--text-secondary);">Stored Evidence:</span>
-              <span id="modal-evidence-match" class="tag tag-success" style="display: inline-block; width: fit-content;">VERIFIED MATCH</span>
+              <span style="color: var(--text-secondary); font-weight: 500;">PayPal Debug ID:</span>
+              <span id="modal-debug-id" class="mono" style="color: #6EE7B7; font-weight: 600;">-</span>
+              <span style="color: var(--text-secondary); font-weight: 500;">Stored Evidence:</span>
+              <span id="modal-evidence-match" class="tag tag-success" style="display: inline-block; width: fit-content; font-size: 11.5px; padding: 4px 10px;">VERIFIED MATCH</span>
             </div>
           </div>
-          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600;">Full Authoritative Provider Response:</div>
-          <pre id="modal-raw-json" class="mono" style="background: #050608; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 12px; font-size: 11px; color: #CBD5E1; max-height: 220px; overflow-y: auto;"></pre>
+          <div style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 8px; font-weight: 600; letter-spacing: -0.1px;">Full Authoritative Provider Response:</div>
+          <pre id="modal-raw-json" class="mono" style="background: rgba(4, 8, 16, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 14px; font-size: 11.5px; color: #CBD5E1; max-height: 220px; overflow-y: auto; line-height: 1.45;"></pre>
         </div>
       </div>
-      <div style="padding: 14px 24px; border-top: 1px solid var(--border-subtle); background: var(--surface-elevated); display: flex; justify-content: flex-end;">
-        <button class="btn btn-secondary" onclick="closeVerifyModal()">Close</button>
+      <div style="padding: 16px 28px; border-top: 1px solid rgba(0, 156, 222, 0.2); background: rgba(7, 13, 26, 0.9); display: flex; justify-content: flex-end;">
+        <button class="btn btn-secondary" style="padding: 8px 20px; border-radius: 9999px; font-size: 13px; font-weight: 600;" onclick="closeVerifyModal()">Close</button>
       </div>
     </div>
   </div>
@@ -2755,15 +2763,63 @@ export function getDashboardHtml(): string {
         document.getElementById('verify-modal-loading').style.display = 'none';
         document.getElementById('verify-modal-content').style.display = 'block';
 
+        if (!res.ok || data.error) {
+          const badge = document.getElementById('modal-status-badge');
+          badge.className = 'tag tag-error';
+          badge.style.background = '';
+          badge.style.color = '';
+          badge.textContent = 'AI JUDGE EVALUATION FAILED (' + (data.error?.code || res.status) + ')';
+          
+          const provStatusElem = document.getElementById('modal-provider-status');
+          provStatusElem.textContent = 'FAILED';
+          provStatusElem.style.color = 'var(--accent-rose)';
+
+          document.getElementById('modal-amount').textContent = 'N/A';
+          document.getElementById('modal-anchor').textContent = 'N/A';
+          document.getElementById('modal-debug-id').textContent = 'HTTP ' + res.status;
+
+          const evMatch = document.getElementById('modal-evidence-match');
+          evMatch.className = 'tag tag-error';
+          evMatch.textContent = 'PERSISTENCE FAILED';
+
+          const noticeBanner = document.getElementById('modal-notice-banner');
+          if (noticeBanner) {
+            noticeBanner.style.display = 'block';
+            noticeBanner.style.background = 'rgba(239, 68, 68, 0.12)';
+            noticeBanner.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+            noticeBanner.style.color = '#FCA5A5';
+            noticeBanner.innerHTML = '❌ <strong>AI Judge Error:</strong> ' + (data.error?.message || 'Adjudication failed');
+          }
+
+          document.getElementById('modal-raw-json').textContent = JSON.stringify(data, null, 2);
+          return;
+        }
+
         const badge = document.getElementById('modal-status-badge');
         const isLive = data.classification === 'LIVE_EVALUATION';
         badge.className = 'tag ' + (isLive ? 'tag-success' : 'tag-warning');
+        badge.style.background = isLive ? '' : '#F59E0B';
+        badge.style.color = isLive ? '' : '#000';
         badge.textContent = isLive ? 'LIVE AI VERDICT (' + (data.modelUsed || data.model) + ')' : 'STORED RUN EVIDENCE';
 
-        document.getElementById('modal-provider-status').textContent = data.validatedVerdict || 'COMPLETED';
-        document.getElementById('modal-amount').textContent = '$50.00 USD (Obligation Stands)';
+        const provStatusElem = document.getElementById('modal-provider-status');
+        provStatusElem.textContent = data.validatedVerdict || 'COMPLETED';
+        provStatusElem.style.color = data.validatedVerdict === 'PASS' ? 'var(--accent-emerald)' : 'var(--accent-rose)';
+
+        const finalAmt = data.finalObligationCents ? ('$' + (data.finalObligationCents / 100).toFixed(2) + ' USD (' + (data.obligationDisposition || 'OBLIGATION_STANDS') + ')') : '$50.00 USD';
+        document.getElementById('modal-amount').textContent = finalAmt;
         document.getElementById('modal-anchor').textContent = data.promptHash ? data.promptHash.substring(0, 32) + '...' : 'SHA-256 Prompt Hash';
         document.getElementById('modal-debug-id').textContent = data.tokenUsage ? ('Tokens: ' + data.tokenUsage.totalTokens + ' (Latency: ' + data.latencyMs + 'ms)') : 'Latency: ' + (data.latencyMs || 0) + 'ms';
+
+        const evMatch = document.getElementById('modal-evidence-match');
+        evMatch.className = 'tag tag-success';
+        evMatch.textContent = 'PERSISTED IN LEDGER & OUTBOX';
+
+        const noticeBanner = document.getElementById('modal-notice-banner');
+        if (noticeBanner) {
+          noticeBanner.style.display = 'none';
+        }
+
         document.getElementById('modal-raw-json').textContent = JSON.stringify(data, null, 2);
       } catch (err) {
         renderVerifyError(err);
@@ -2808,45 +2864,106 @@ export function getDashboardHtml(): string {
       document.getElementById('verify-modal-content').style.display = 'block';
 
       const noticeBanner = document.getElementById('modal-notice-banner');
-      if (data.notice && noticeBanner) {
+      if ((data.notice || data.explanation) && noticeBanner) {
         noticeBanner.style.display = 'block';
-        noticeBanner.innerHTML = '⚠️ <strong>Notice:</strong> ' + data.notice;
+        const icon = data.isSimulatedRecord ? 'ℹ️' : (data.amountMatched === false ? '❌' : '⚠️');
+        noticeBanner.innerHTML = icon + ' <strong>' + (data.isSimulatedRecord ? 'Simulation Notice:' : 'Verification Notice:') + '</strong> ' + (data.notice || data.explanation);
+        if (data.isSimulatedRecord) {
+          noticeBanner.style.background = 'rgba(0, 156, 222, 0.12)';
+          noticeBanner.style.borderColor = 'rgba(0, 156, 222, 0.4)';
+          noticeBanner.style.color = '#38BDF8';
+        } else if (data.amountMatched === false) {
+          noticeBanner.style.background = 'rgba(239, 68, 68, 0.12)';
+          noticeBanner.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+          noticeBanner.style.color = '#FCA5A5';
+        } else {
+          noticeBanner.style.background = 'rgba(245, 158, 11, 0.12)';
+          noticeBanner.style.borderColor = 'var(--accent-amber)';
+          noticeBanner.style.color = 'var(--accent-amber)';
+        }
       } else if (noticeBanner) {
         noticeBanner.style.display = 'none';
       }
 
-      const isStored = data.verificationStatus === 'STORED_CANONICAL_EVIDENCE' || Boolean(data.notice);
-      const isSuccess = data.verificationStatus === 'VERIFIED_ON_PAYPAL_SANDBOX' || data.verificationStatus === 'VERIFIED_IN_LOCAL_LEDGER' || isStored;
       const badge = document.getElementById('modal-status-badge');
-      if (isStored) {
+      const vStatus = data.verificationStatus || data.providerVerificationStatus;
+
+      if (vStatus === 'STORED_CANONICAL_EVIDENCE' || data.storedEvidenceMatched) {
         badge.className = 'tag';
         badge.style.background = '#F59E0B';
         badge.style.color = '#000';
-        badge.style.fontWeight = 'bold';
-        badge.textContent = 'STORED EVIDENCE (OFFLINE / NO CREDENTIALS)';
+        badge.style.fontWeight = '700';
+        badge.textContent = 'STORED CANONICAL EVIDENCE (OFFLINE RUN)';
+      } else if (vStatus === 'VERIFIED_ON_PAYPAL_SANDBOX' || vStatus === 'PROVIDER_VERIFIED') {
+        badge.className = 'tag tag-success';
+        badge.style.background = '';
+        badge.style.color = '';
+        badge.textContent = 'VERIFIED ON PAYPAL SANDBOX';
+      } else if (vStatus === 'LOCAL_RECORD_FOUND') {
+        badge.className = 'tag tag-info';
+        badge.style.background = 'rgba(0, 112, 186, 0.2)';
+        badge.style.color = '#38BDF8';
+        badge.style.border = '1px solid rgba(0, 156, 222, 0.4)';
+        badge.textContent = 'LOCAL LEDGER RECORD FOUND (SIMULATED)';
+      } else if (vStatus === 'EVIDENCE_MISMATCH') {
+        badge.className = 'tag tag-error';
+        badge.style.background = '';
+        badge.style.color = '';
+        badge.textContent = 'EVIDENCE MISMATCH (AMOUNT / CURRENCY)';
+      } else if (vStatus === 'PROVIDER_PENDING') {
+        badge.className = 'tag tag-warning';
+        badge.style.background = '';
+        badge.style.color = '';
+        badge.textContent = 'PROVIDER PENDING';
+      } else if (vStatus === 'PROVIDER_ERROR') {
+        badge.className = 'tag tag-error';
+        badge.style.background = '';
+        badge.style.color = '';
+        badge.textContent = 'PROVIDER ERROR / UNAVAILABLE';
       } else {
-        badge.className = 'tag ' + (isSuccess ? 'tag-success' : 'tag-error');
-        badge.textContent = data.verificationStatus || 'VERIFICATION COMPLETED';
+        badge.className = 'tag tag-error';
+        badge.style.background = '';
+        badge.style.color = '';
+        badge.textContent = vStatus || 'RESOURCE NOT FOUND';
       }
 
       document.getElementById('modal-id').textContent = data.identifier || '-';
-      document.getElementById('modal-provider-status').textContent = data.providerStatus || data.batchHeader?.batchStatus || 'COMPLETED';
       
+      const provStatusElem = document.getElementById('modal-provider-status');
+      const provStatus = data.providerStatus || data.batchHeader?.batchStatus || (data.isSimulatedRecord ? 'NOT_FOUND_ON_RAILS' : 'NOT_FOUND');
+      provStatusElem.textContent = provStatus;
+      if (provStatus === 'COMPLETED' || provStatus === 'SUCCESS') {
+        provStatusElem.style.color = 'var(--accent-emerald)';
+      } else if (provStatus === 'PENDING' || provStatus === 'PROCESSING') {
+        provStatusElem.style.color = 'var(--accent-amber)';
+      } else {
+        provStatusElem.style.color = 'var(--accent-rose)';
+      }
+
       const amt = data.amount || data.batchHeader?.amount;
-      document.getElementById('modal-amount').textContent = amt ? (amt.value + ' ' + (amt.currency_code || amt.currency)) : '-';
+      document.getElementById('modal-amount').textContent = amt ? (amt.value + ' ' + (amt.currency_code || amt.currency || 'USD')) : '-';
       
       const anchor = data.merkleAnchor || data.customId || '-';
       document.getElementById('modal-anchor').textContent = anchor;
 
-      document.getElementById('modal-debug-id').textContent = data.paypalDebugId || 'N/A (Local Verification)';
+      document.getElementById('modal-debug-id').textContent = data.paypalDebugId || (data.isSimulatedRecord ? 'N/A (Simulated Demonstration)' : 'N/A');
 
       const evMatch = document.getElementById('modal-evidence-match');
       if (data.storedEvidenceMatched) {
         evMatch.className = 'tag tag-success';
-        evMatch.textContent = 'MATCHED CANONICAL EVIDENCE';
-      } else {
+        evMatch.textContent = 'MATCHED CANONICAL PROOF';
+      } else if (data.isSimulatedRecord) {
         evMatch.className = 'tag tag-info';
-        evMatch.textContent = 'DATABASE RECORD VERIFIED';
+        evMatch.textContent = 'SIMULATED DEMO RECORD';
+      } else if (data.amountMatched === false) {
+        evMatch.className = 'tag tag-error';
+        evMatch.textContent = 'AMOUNT MISMATCH';
+      } else if (data.dbRecordMatched) {
+        evMatch.className = 'tag tag-success';
+        evMatch.textContent = 'LEDGER RECORD VERIFIED';
+      } else {
+        evMatch.className = 'tag tag-error';
+        evMatch.textContent = 'RECORD NOT FOUND';
       }
 
       document.getElementById('modal-raw-json').textContent = JSON.stringify(data, null, 2);

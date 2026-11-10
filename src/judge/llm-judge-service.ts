@@ -307,34 +307,79 @@ EVALUATION RULES:
     const sanitizedRawResponse = this.sanitize(rawResponseText);
     const sanitizedReasons = reasons.map((r) => this.sanitize(r));
 
-    // 6. Persist Cryptographic Event in Ledger Outbox
-    db.prepare(`
-      INSERT INTO system_events (event_id, event_type, cycle_id, payload_json)
-      VALUES (?, 'AI_SLA_EVALUATED', ?, ?)
-    `).run(
-      evaluationId,
-      context.cycleId,
-      JSON.stringify({
+    // 6. Persist Cryptographic Event in Ledger Outbox within Atomic Transaction
+    db.withTransaction(() => {
+      const cycleId = context.cycleId || 'cyc_ai_live';
+      let debtorId = context.debtorAgentId || 'agent_demo_debtor';
+      let creditorId = context.creditorAgentId || 'agent_demo_creditor';
+      if (debtorId === creditorId) {
+        creditorId = `${debtorId}_creditor`;
+      }
+
+      // 6.1 Ensure Parent: debtor agent in agents registry
+      const debtorKey = crypto.createHash('sha256').update(`ed25519_pk_${debtorId}`).digest('hex');
+      db.prepare(`
+        INSERT INTO agents (agent_id, name, role, public_key, paypal_receiver_email)
+        VALUES (?, ?, 'Autonomous Debtor Agent', ?, ?)
+        ON CONFLICT(agent_id) DO NOTHING
+      `).run(debtorId, debtorId, debtorKey, `${debtorId}@nexus.local`);
+
+      // 6.2 Ensure Parent: creditor agent in agents registry
+      const creditorKey = crypto.createHash('sha256').update(`ed25519_pk_${creditorId}`).digest('hex');
+      db.prepare(`
+        INSERT INTO agents (agent_id, name, role, public_key, paypal_receiver_email)
+        VALUES (?, ?, 'Autonomous Creditor Agent', ?, ?)
+        ON CONFLICT(agent_id) DO NOTHING
+      `).run(creditorId, creditorId, creditorKey, `${creditorId}@nexus.local`);
+
+      // 6.3 Ensure Parent: settlement_cycles
+      db.prepare(`
+        INSERT INTO settlement_cycles (cycle_id, status)
+        VALUES (?, 'CREATED')
+        ON CONFLICT(cycle_id) DO NOTHING
+      `).run(cycleId);
+
+      // 6.4 Ensure Parent: tasks
+      const amountCents = context.amountCents || 5000;
+      const title = context.title || 'Autonomous Task SLA Evaluation';
+      const slaRef = context.contractTerms?.contractRef || 'SLA-DEFAULT-01';
+
+      db.prepare(`
+        INSERT INTO tasks (task_id, cycle_id, debtor_agent_id, creditor_agent_id, title, sla_contract_ref, amount_cents, status)
+        VALUES (?, ?, ?, ?, ?, ?, ?, 'SUBMITTED')
+        ON CONFLICT(task_id) DO NOTHING
+      `).run(context.taskId, cycleId, debtorId, creditorId, title, slaRef, amountCents);
+
+      // 6.5 Persist Child: system_events in Ledger Outbox
+      db.prepare(`
+        INSERT INTO system_events (event_id, event_type, cycle_id, payload_json)
+        VALUES (?, 'AI_SLA_EVALUATED', ?, ?)
+      `).run(
         evaluationId,
-        taskId: context.taskId,
-        provider,
-        model,
-        modelUsed,
-        fallbackTriggered,
-        aiAvailable,
-        promptHash,
-        validatedVerdict,
-        confidenceScore,
-        obligationDisposition,
-        finalObligationCents,
-        contractualCreditCents,
-        clampedCreditBps,
-        authorizedCreditCents,
-        injectionAttemptDetected,
-        reasons: sanitizedReasons,
-        tokenUsage,
-      })
-    );
+        cycleId,
+        JSON.stringify({
+          evaluationId,
+          taskId: context.taskId,
+          provider,
+          model,
+          modelUsed,
+          fallbackTriggered,
+          aiAvailable,
+          promptHash,
+          validatedVerdict,
+          confidenceScore,
+          obligationDisposition,
+          finalObligationCents,
+          contractualCreditCents,
+          clampedCreditBps,
+          authorizedCreditCents,
+          injectionAttemptDetected,
+          reasons: sanitizedReasons,
+          tokenUsage,
+          evaluatedAt,
+        })
+      );
+    });
 
     return {
       evaluationId,
