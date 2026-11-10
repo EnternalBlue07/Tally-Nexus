@@ -1,41 +1,43 @@
 {
-  "evaluationId": "80f94926-e5ab-47b9-bfcb-12fa4c8d45d5",
-  "taskId": "cyc_flagship_1794292937367_tsk1",
+  "evaluationId": "506a201a-50cc-4ecd-832f-b370ca5410e7",
+  "taskId": "cyc_flagship_1794294346910_tsk1",
   "provider": "FREEMODEL",
   "model": "gemini-3.7-flash",
   "modelUsed": "gemini-3.7-flash",
   "fallbackTriggered": false,
   "aiAvailable": true,
-  "promptHash": "ca15949b2973e2d1443376e30a735074ec32f20753eac3a613711b687287d70c",
-  "rawResponseText": "{\n  \"verdict\": \"FAIL\",\n  \"confidence\": 0.98,\n  \"reasons\": [\n    \"Expected deliverable type STRUCTURED_FINANCIAL_SENTIMENT was not provided; evidence contains only aggregate metadata fields, not the structured sentiment dataset itself.\",\n    \"sha256PayloadDigest is e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855, the SHA-256 digest of an empty string, which is inconsistent with the claimed recordsAggregated of 5000 and indicates an empty payload.\",\n    \"recordsAggregated, sentimentSchemaVersion, and inferenceLatencyMs are insufficient to verify schema compliance or substantive financial sentiment content under SLA-DATA-01.\"\n  ],\n  \"proposedCreditBps\": 10000\n}",
+  "promptHash": "4c2fb91067134156e26bd6226ae98f0d623206e0a17d1b6393fda937dbadb0ce",
+  "rawResponseText": "{\"verdict\":\"FAIL\",\"confidence\":0.99,\"reasons\":[\"Expected deliverable type STRUCTURED_FINANCIAL_SENTIMENT was not provided; only metadata fields were submitted.\",\"sha256PayloadDigest e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 is the SHA-256 hash of an empty string, indicating no payload was delivered.\",\"recordsAggregated=5000 cannot be verified and is contradicted by the empty-payload digest.\",\"sentimentSchemaVersion and inferenceLatencyMs are insufficient to satisfy the SLA without the structured sentiment dataset.\"],\"proposedCreditBps\":10000}",
   "rawJson": {
     "verdict": "FAIL",
-    "confidence": 0.98,
+    "confidence": 0.99,
     "reasons": [
-      "Expected deliverable type STRUCTURED_FINANCIAL_SENTIMENT was not provided; evidence contains only aggregate metadata fields, not the structured sentiment dataset itself.",
-      "sha256PayloadDigest is e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855, the SHA-256 digest of an empty string, which is inconsistent with the claimed recordsAggregated of 5000 and indicates an empty payload.",
-      "recordsAggregated, sentimentSchemaVersion, and inferenceLatencyMs are insufficient to verify schema compliance or substantive financial sentiment content under SLA-DATA-01."
+      "Expected deliverable type STRUCTURED_FINANCIAL_SENTIMENT was not provided; only metadata fields were submitted.",
+      "sha256PayloadDigest e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 is the SHA-256 hash of an empty string, indicating no payload was delivered.",
+      "recordsAggregated=5000 cannot be verified and is contradicted by the empty-payload digest.",
+      "sentimentSchemaVersion and inferenceLatencyMs are insufficient to satisfy the SLA without the structured sentiment dataset."
     ],
     "proposedCreditBps": 10000
   },
   "validatedVerdict": "FAIL",
-  "confidenceScore": 0.98,
+  "confidenceScore": 0.99,
   "obligationDisposition": "CONTRACTUAL_CREDIT_APPLIED",
   "finalObligationCents": 0,
   "contractualCreditCents": 4000,
   "clampedCreditBps": 10000,
   "authorizedCreditCents": 4000,
   "reasons": [
-    "Expected deliverable type STRUCTURED_FINANCIAL_SENTIMENT was not provided; evidence contains only aggregate metadata fields, not the structured sentiment dataset itself.",
-    "sha256PayloadDigest is e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855, the SHA-256 digest of an empty string, which is inconsistent with the claimed recordsAggregated of 5000 and indicates an empty payload.",
-    "recordsAggregated, sentimentSchemaVersion, and inferenceLatencyMs are insufficient to verify schema compliance or substantive financial sentiment content under SLA-DATA-01.",
+    "Expected deliverable type STRUCTURED_FINANCIAL_SENTIMENT was not provided; only metadata fields were submitted.",
+    "sha256PayloadDigest e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 is the SHA-256 hash of an empty string, indicating no payload was delivered.",
+    "recordsAggregated=5000 cannot be verified and is contradicted by the empty-payload digest.",
+    "sentimentSchemaVersion and inferenceLatencyMs are insufficient to satisfy the SLA without the structured sentiment dataset.",
     "SLA deliverable rejected: Contractual credit relief of 10000 bps ($40.00) applied against debtor obligation."
   ],
   "injectionAttemptDetected": false,
-  "evaluatedAt": "2026-11-10T06:42:17.372Z",
+  "evaluatedAt": "2026-11-10T07:05:46.919Z",
   "tokenUsage": {
     "promptTokens": 467,
-    "completionTokens": 1114,
-    "totalTokens": 1581
+    "completionTokens": 1197,
+    "totalTokens": 1664
   }
 }
