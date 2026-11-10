@@ -18,23 +18,23 @@ export function getDashboardHtml(): string {
 
   <style>
     :root {
-      /* Official PayPal Enterprise & Developer Platform Theme (Deep Midnight Navy & Signature Blues) */
-      --bg-primary: #040914;
-      --bg-secondary: #071224;
-      --surface-primary: rgba(11, 23, 44, 0.72);
-      --surface-elevated: rgba(16, 34, 64, 0.82);
-      --surface-secondary: #0A172C;
-      --surface-hover: rgba(0, 112, 186, 0.1);
+      /* Official PayPal Enterprise & Developer Platform Light Glassmorphic Theme */
+      --bg-primary: #F4F8FD;
+      --bg-secondary: #FFFFFF;
+      --surface-primary: rgba(255, 255, 255, 0.9);
+      --surface-elevated: #FFFFFF;
+      --surface-secondary: #F8FAFD;
+      --surface-hover: rgba(0, 112, 186, 0.08);
       
-      --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-glass: rgba(0, 112, 186, 0.22);
-      --card-border: rgba(0, 112, 186, 0.22);
-      --border-active: #009CDE;
+      --border-subtle: rgba(0, 112, 186, 0.12);
+      --border-glass: rgba(0, 112, 186, 0.15);
+      --card-border: rgba(0, 112, 186, 0.14);
+      --border-active: #0070BA;
 
-      --text-main: #F8FAFC;
-      --text-secondary: #94A3B8;
+      --text-main: #0B1E3F;
+      --text-secondary: #475569;
       --text-muted: #64748B;
-      --text-subtle: #475569;
+      --text-subtle: #94A3B8;
 
       /* Signature PayPal Brand Colors */
       --paypal-blue: #0070BA;
@@ -44,19 +44,19 @@ export function getDashboardHtml(): string {
       
       --accent-primary: #0070BA;
       --accent-secondary: #009CDE;
-      --accent-gradient: linear-gradient(135deg, #003087 0%, #0070BA 55%, #009CDE 100%);
-      --accent-glow: 0 0 28px rgba(0, 112, 186, 0.4);
+      --accent-gradient: linear-gradient(135deg, #0070BA 0%, #003087 100%);
+      --accent-glow: 0 4px 20px rgba(0, 112, 186, 0.25);
 
       /* Semantic Financial Values */
-      --accent-emerald: #10B981;
-      --accent-amber: #F59E0B;
-      --accent-rose: #EF4444;
-      --accent-cyan: #00CFDE;
+      --accent-emerald: #059669;
+      --accent-amber: #D97706;
+      --accent-rose: #DC2626;
+      --accent-cyan: #0284C7;
       --accent-turquoise: #009CDE;
 
-      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4);
-      --shadow-card: 0 10px 30px -5px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      --shadow-modal: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(0, 112, 186, 0.25);
+      --shadow-sm: 0 2px 6px rgba(0, 112, 186, 0.06);
+      --shadow-card: 0 10px 30px rgba(0, 112, 186, 0.08), 0 1px 3px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 1);
+      --shadow-modal: 0 25px 60px rgba(0, 48, 135, 0.18), 0 0 35px rgba(0, 112, 186, 0.12);
 
       --sidebar-width: 250px;
       --topbar-height: 72px;
@@ -68,6 +68,9 @@ export function getDashboardHtml(): string {
     
     body {
       background-color: var(--bg-primary);
+      background: radial-gradient(circle at 85% 0%, rgba(0, 156, 222, 0.14) 0%, transparent 45%),
+                  radial-gradient(circle at 15% 15%, rgba(0, 112, 186, 0.09) 0%, transparent 40%),
+                  #F4F8FD;
       color: var(--text-main);
       font-family: var(--font-sans);
       line-height: 1.55;
@@ -90,11 +93,13 @@ export function getDashboardHtml(): string {
       background: var(--bg-primary);
     }
 
-    /* Fixed Left Sidebar */
+    /* Fixed Left Sidebar - PayPal Light Theme */
     aside.sidebar {
       width: var(--sidebar-width);
-      background: var(--bg-secondary);
-      border-right: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-right: 1px solid rgba(0, 112, 186, 0.12);
       display: flex;
       flex-direction: column;
       position: fixed;
@@ -104,6 +109,7 @@ export function getDashboardHtml(): string {
       z-index: 1000;
       overflow-y: auto;
       scrollbar-width: none;
+      box-shadow: 2px 0 16px rgba(0, 48, 135, 0.04);
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
     aside.sidebar::-webkit-scrollbar { display: none; }
@@ -113,30 +119,31 @@ export function getDashboardHtml(): string {
       display: flex;
       align-items: center;
       gap: 12px;
-      border-bottom: 1px solid var(--border-subtle);
+      border-bottom: 1px solid rgba(0, 112, 186, 0.1);
     }
     .brand-icon {
       width: 40px; height: 40px;
-      background: var(--accent-gradient);
+      background: linear-gradient(135deg, #0070BA 0%, #003087 100%);
       border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
       font-weight: 800; font-size: 16px; color: #FFF;
-      box-shadow: 0 4px 18px rgba(0, 112, 186, 0.45);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 14px rgba(0, 112, 186, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       flex-shrink: 0;
     }
     .brand-title {
       font-size: 17px;
       font-weight: 800;
       letter-spacing: -0.3px;
-      color: var(--text-main);
+      color: #0B1E3F;
     }
     .brand-subtitle {
       font-size: 11px;
-      color: var(--text-secondary);
+      color: #64748B;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      font-weight: 500;
     }
 
     /* Sidebar Navigation Groups */
@@ -144,11 +151,11 @@ export function getDashboardHtml(): string {
       padding: 16px 14px 4px 14px;
     }
     .nav-group-title {
-      font-size: 10px;
+      font-size: 10.5px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      color: var(--text-subtle);
+      color: #94A3B8;
       padding: 0 10px 8px 10px;
     }
     .sidebar-nav-btn {
@@ -157,30 +164,30 @@ export function getDashboardHtml(): string {
       align-items: center;
       gap: 10px;
       padding: 9px 12px;
-      border-radius: 10px;
+      border-radius: 12px;
       background: none;
       border: 1px solid transparent;
-      color: var(--text-secondary);
+      color: #475569;
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       text-align: left;
       transition: all 0.15s ease;
       margin-bottom: 3px;
     }
     .sidebar-nav-btn:hover {
-      color: var(--text-main);
-      background: var(--surface-hover);
+      color: #0B1E3F;
+      background: #F0F7FF;
     }
     .sidebar-nav-btn.active {
-      color: #FFF;
-      background: rgba(0, 112, 186, 0.16);
-      border-color: rgba(0, 156, 222, 0.35);
-      font-weight: 600;
-      box-shadow: 0 2px 12px rgba(0, 112, 186, 0.2);
+      color: #0070BA;
+      background: #EBF4FC;
+      border-color: rgba(0, 112, 186, 0.25);
+      font-weight: 700;
+      box-shadow: 0 2px 10px rgba(0, 112, 186, 0.1);
     }
     .sidebar-nav-btn.active .nav-icon {
-      color: var(--accent-secondary);
+      color: #0070BA;
     }
     .nav-icon {
       font-size: 15px;
@@ -188,7 +195,7 @@ export function getDashboardHtml(): string {
       align-items: center;
       justify-content: center;
       width: 20px;
-      color: var(--text-subtle);
+      color: #64748B;
       transition: color 0.15s ease;
     }
     .sidebar-nav-btn.active .nav-indicator {
@@ -196,27 +203,27 @@ export function getDashboardHtml(): string {
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: var(--accent-secondary);
-      box-shadow: 0 0 10px var(--accent-secondary);
+      background: #0070BA;
+      box-shadow: 0 0 8px rgba(0, 112, 186, 0.5);
     }
 
     /* Sidebar User / System Bottom Footer */
     .sidebar-footer {
       margin-top: auto;
       padding: 16px;
-      border-top: 1px solid var(--border-subtle);
+      border-top: 1px solid rgba(0, 112, 186, 0.1);
       display: flex;
       align-items: center;
       gap: 10px;
-      background: rgba(0, 0, 0, 0.2);
+      background: #F8FAFD;
     }
     .user-avatar {
       width: 36px; height: 36px;
       border-radius: 10px;
-      background: linear-gradient(135deg, #0A1B36 0%, #040914 100%);
-      border: 1px solid var(--border-glass);
+      background: #EBF4FC;
+      border: 1px solid rgba(0, 112, 186, 0.22);
       display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 13px; color: var(--accent-secondary);
+      font-weight: 800; font-size: 13px; color: #0070BA;
       flex-shrink: 0;
     }
     .user-info {
@@ -225,15 +232,16 @@ export function getDashboardHtml(): string {
     }
     .user-name {
       font-size: 12.5px;
-      font-weight: 600;
-      color: var(--text-main);
+      font-weight: 700;
+      color: #0B1E3F;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .user-role {
       font-size: 11px;
-      color: var(--accent-primary);
+      color: #0070BA;
+      font-weight: 600;
     }
 
     /* Main App Area */
@@ -248,13 +256,13 @@ export function getDashboardHtml(): string {
       max-width: 100%;
     }
 
-    /* Top Toolbar */
+    /* Top Toolbar - PayPal Light Glassmorphism */
     header.topbar {
       height: var(--topbar-height);
-      background: rgba(7, 18, 36, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border-glass);
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 112, 186, 0.12);
       padding: 0 32px;
       display: flex;
       align-items: center;
@@ -263,6 +271,7 @@ export function getDashboardHtml(): string {
       top: 0;
       z-index: 900;
       gap: 18px;
+      box-shadow: 0 2px 12px rgba(0, 48, 135, 0.03);
     }
 
     /* Search / Command Palette Bar - Sleek Single-Line Pill */
@@ -270,10 +279,10 @@ export function getDashboardHtml(): string {
       display: inline-flex;
       align-items: center;
       gap: 12px;
-      background: rgba(11, 23, 44, 0.75);
+      background: #FFFFFF;
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(0, 156, 222, 0.32);
+      border: 1px solid rgba(0, 112, 186, 0.22);
       padding: 7px 16px;
       border-radius: 9999px;
       width: 340px;
@@ -284,16 +293,16 @@ export function getDashboardHtml(): string {
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       flex-shrink: 0;
       user-select: none;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      box-shadow: 0 2px 8px rgba(0, 48, 135, 0.04);
     }
     .command-search:hover {
-      border-color: rgba(0, 156, 222, 0.7);
-      background: rgba(16, 34, 64, 0.92);
-      box-shadow: 0 0 20px rgba(0, 112, 186, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      border-color: #0070BA;
+      background: #FFFFFF;
+      box-shadow: 0 0 18px rgba(0, 112, 186, 0.18);
       transform: translateY(-1px);
     }
     .command-search-icon {
-      color: var(--accent-secondary);
+      color: #0070BA;
       font-size: 14px;
       display: flex;
       align-items: center;
@@ -302,7 +311,7 @@ export function getDashboardHtml(): string {
     }
     .command-search-text {
       font-size: 12.5px;
-      color: var(--text-secondary);
+      color: #64748B;
       flex: 1;
       white-space: nowrap;
       overflow: hidden;
@@ -311,27 +320,26 @@ export function getDashboardHtml(): string {
       letter-spacing: -0.1px;
     }
     .command-key {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
       border-radius: 9999px;
       padding: 3px 10px;
       font-size: 10px;
       font-family: var(--font-mono);
-      font-weight: 600;
-      color: #94A3B8;
+      font-weight: 700;
+      color: #475569;
       flex-shrink: 0;
       letter-spacing: 0.3px;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
 
-    /* Command Palette Modal Styling */
+    /* Command Palette Modal Styling - PayPal Light */
     .palette-dialog {
-      background: rgba(10, 18, 36, 0.97);
-      border: 1px solid rgba(0, 156, 222, 0.45);
+      background: rgba(255, 255, 255, 0.98);
+      border: 1px solid rgba(0, 112, 186, 0.25);
       border-radius: 22px;
       max-width: 680px;
       width: 100%;
-      box-shadow: 0 35px 80px rgba(0, 0, 0, 0.9), 0 0 45px rgba(0, 112, 186, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      box-shadow: 0 35px 80px rgba(0, 48, 135, 0.22), 0 0 45px rgba(0, 112, 186, 0.1);
       overflow: hidden;
       backdrop-filter: blur(32px);
       -webkit-backdrop-filter: blur(32px);
@@ -346,7 +354,7 @@ export function getDashboardHtml(): string {
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      color: var(--text-muted);
+      color: #64748B;
       padding: 10px 14px 6px 14px;
     }
     .palette-item {
@@ -363,8 +371,8 @@ export function getDashboardHtml(): string {
       user-select: none;
     }
     .palette-item:hover, .palette-item.selected {
-      background: rgba(0, 156, 222, 0.14);
-      border-color: rgba(0, 156, 222, 0.38);
+      background: #EBF4FC;
+      border-color: rgba(0, 112, 186, 0.3);
       transform: translateX(2px);
     }
     .palette-item-left {
@@ -377,8 +385,8 @@ export function getDashboardHtml(): string {
       width: 32px;
       height: 32px;
       border-radius: 9px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: #F1F5F9;
+      border: 1px solid #E2E8F0;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -387,21 +395,20 @@ export function getDashboardHtml(): string {
       transition: all 0.15s ease;
     }
     .palette-item:hover .palette-item-icon, .palette-item.selected .palette-item-icon {
-      background: rgba(0, 156, 222, 0.28);
-      border-color: rgba(0, 156, 222, 0.55);
-      box-shadow: 0 0 12px rgba(0, 112, 186, 0.35);
+      background: #D8ECFD;
+      border-color: #0070BA;
     }
     .palette-item-title {
       font-size: 13.5px;
-      font-weight: 600;
-      color: #F8FAFC;
+      font-weight: 700;
+      color: #0B1E3F;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .palette-item-subtitle {
       font-size: 11.5px;
-      color: var(--text-secondary);
+      color: #64748B;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -409,12 +416,12 @@ export function getDashboardHtml(): string {
     }
     .palette-item-badge {
       font-size: 10.5px;
-      font-weight: 600;
+      font-weight: 700;
       padding: 3px 9px;
       border-radius: 9999px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--text-muted);
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
+      color: #475569;
       flex-shrink: 0;
       font-family: var(--font-mono);
       letter-spacing: 0.3px;
@@ -434,19 +441,19 @@ export function getDashboardHtml(): string {
       letter-spacing: 0.2px; font-variant-numeric: tabular-nums;
     }
     .badge-sandbox {
-      background: rgba(0, 112, 186, 0.16);
-      color: var(--accent-secondary);
-      border: 1px solid rgba(0, 156, 222, 0.35);
+      background: #ECFDF5;
+      color: #059669;
+      border: 1px solid #A7F3D0;
     }
     .badge-live-stream {
-      background: rgba(16, 185, 129, 0.14);
-      color: var(--accent-emerald);
-      border: 1px solid rgba(16, 185, 129, 0.35);
+      background: #EFF6FF;
+      color: #0284C7;
+      border: 1px solid #BAE6FD;
     }
     .badge-sponsor {
-      background: rgba(255, 255, 255, 0.06);
-      color: #CBD5E1;
-      border: 1px solid var(--border-subtle);
+      background: #FEF3C7;
+      color: #D97706;
+      border: 1px solid #FDE68A;
     }
     .pulse-dot {
       width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: pulse 2s infinite;
@@ -541,22 +548,22 @@ export function getDashboardHtml(): string {
     }
 
     /* ==========================================================================
-       FINTECH EXECUTIVE CARDS & METRIC HIERARCHY
+       FINTECH EXECUTIVE CARDS & METRIC HIERARCHY - PAYPAL LIGHT GLASSMORPHISM
        ========================================================================== */
     .card {
-      background: rgba(8, 15, 30, 0.78);
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(28px);
       -webkit-backdrop-filter: blur(28px);
-      border: 1px solid rgba(0, 156, 222, 0.28);
+      border: 1px solid rgba(0, 112, 186, 0.14);
       border-radius: 24px;
       padding: 26px 30px;
-      box-shadow: 0 18px 48px -8px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 0 24px rgba(0, 112, 186, 0.12);
+      box-shadow: 0 10px 30px rgba(0, 112, 186, 0.07), 0 1px 3px rgba(0, 0, 0, 0.02), inset 0 1px 0 rgba(255, 255, 255, 1);
       position: relative;
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .card:hover {
-      border-color: rgba(0, 156, 222, 0.52);
-      box-shadow: 0 22px 52px -6px rgba(0, 112, 186, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 0 28px rgba(0, 156, 222, 0.2);
+      border-color: rgba(0, 112, 186, 0.35);
+      box-shadow: 0 16px 40px rgba(0, 112, 186, 0.12), inset 0 1px 0 rgba(255, 255, 255, 1);
       transform: translateY(-2px);
     }
     .card-header {
@@ -569,8 +576,8 @@ export function getDashboardHtml(): string {
     }
     .card-title {
       font-size: 16px;
-      font-weight: 700;
-      color: var(--text-main);
+      font-weight: 800;
+      color: #0B1E3F;
       letter-spacing: -0.2px;
       display: flex;
       align-items: center;
@@ -578,12 +585,12 @@ export function getDashboardHtml(): string {
     }
     .card-desc {
       font-size: 12.5px;
-      color: var(--text-secondary);
+      color: #64748B;
       margin-top: 4px;
       line-height: 1.55;
     }
 
-    /* Metric Icon Badges */
+    /* Metric Icon Badges - Light Soft Pastels */
     .metric-icon-box {
       width: 38px;
       height: 38px;
@@ -594,32 +601,32 @@ export function getDashboardHtml(): string {
       font-size: 16px;
       margin-right: 10px;
       flex-shrink: 0;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      box-shadow: 0 2px 8px rgba(0, 112, 186, 0.08);
     }
     .metric-icon-cyan {
-      background: rgba(0, 156, 222, 0.16);
-      border: 1px solid rgba(0, 156, 222, 0.35);
-      color: #38BDF8;
+      background: #EBF4FC;
+      border: 1px solid rgba(0, 112, 186, 0.18);
+      color: #0070BA;
     }
     .metric-icon-blue {
-      background: rgba(0, 112, 186, 0.18);
-      border: 1px solid rgba(0, 112, 186, 0.4);
-      color: #60A5FA;
+      background: #EFF6FF;
+      border: 1px solid rgba(0, 112, 186, 0.22);
+      color: #0070BA;
     }
     .metric-icon-amber {
-      background: rgba(245, 158, 11, 0.16);
-      border: 1px solid rgba(245, 158, 11, 0.35);
-      color: #FBBF24;
+      background: #FEF3C7;
+      border: 1px solid #FDE68A;
+      color: #D97706;
     }
     .metric-icon-emerald {
-      background: rgba(16, 185, 129, 0.16);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      color: #34D399;
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      color: #059669;
     }
     .metric-icon-purple {
-      background: rgba(147, 51, 234, 0.18);
-      border: 1px solid rgba(168, 85, 247, 0.4);
-      color: #C084FC;
+      background: #F3E8FF;
+      border: 1px solid #E9D5FF;
+      color: #9333EA;
     }
 
     /* Executive Hero Grid Layout */
@@ -630,22 +637,22 @@ export function getDashboardHtml(): string {
       margin-bottom: 26px;
     }
 
-    /* Primary Balance Chart Card */
+    /* Primary Balance Chart Card - PayPal Light Theme */
     .balance-chart-card {
-      background: rgba(8, 15, 30, 0.75);
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(0, 156, 222, 0.25);
+      border: 1px solid rgba(0, 112, 186, 0.14);
       border-radius: 22px;
       padding: 28px 30px;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 18px 48px -8px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 0 0 1px rgba(0, 112, 186, 0.15);
+      box-shadow: 0 10px 30px rgba(0, 112, 186, 0.07), inset 0 1px 0 rgba(255, 255, 255, 1);
       transition: all 0.25s ease;
     }
     .balance-chart-card:hover {
-      border-color: rgba(0, 156, 222, 0.48);
-      box-shadow: 0 22px 52px -6px rgba(0, 112, 186, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+      border-color: rgba(0, 112, 186, 0.35);
+      box-shadow: 0 16px 40px rgba(0, 112, 186, 0.12), inset 0 1px 0 rgba(255, 255, 255, 1);
     }
     .balance-chart-header {
       display: flex;
@@ -655,15 +662,15 @@ export function getDashboardHtml(): string {
     }
     .balance-label {
       font-size: 12px;
-      color: var(--text-secondary);
-      font-weight: 600;
+      color: #64748B;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.6px;
     }
     .balance-main-num {
       font-size: 38px;
       font-weight: 800;
-      color: #FFF;
+      color: #0B1E3F;
       letter-spacing: -0.8px;
       display: flex;
       align-items: baseline;
@@ -676,24 +683,24 @@ export function getDashboardHtml(): string {
       font-weight: 700;
       padding: 4px 10px;
       border-radius: 20px;
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      color: var(--accent-emerald);
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      color: #059669;
       letter-spacing: 0.2px;
     }
     .chart-time-filter {
       display: flex;
       gap: 4px;
-      background: rgba(4, 9, 20, 0.6);
+      background: #F1F5F9;
       backdrop-filter: blur(8px);
       padding: 3px;
       border-radius: 10px;
-      border: 1px solid var(--border-subtle);
+      border: 1px solid #E2E8F0;
     }
     .time-pill {
       background: none;
       border: none;
-      color: var(--text-secondary);
+      color: #64748B;
       font-size: 11.5px;
       font-weight: 600;
       padding: 5px 12px;
@@ -702,9 +709,9 @@ export function getDashboardHtml(): string {
       transition: all 0.15s ease;
     }
     .time-pill.active {
-      background: rgba(0, 112, 186, 0.25);
+      background: #0070BA;
       color: #FFF;
-      border: 1px solid rgba(0, 156, 222, 0.4);
+      border: none;
       box-shadow: 0 2px 8px rgba(0, 112, 186, 0.25);
     }
 
@@ -959,29 +966,27 @@ export function getDashboardHtml(): string {
       margin-top: 16px;
     }
     .step-card {
-      background: rgba(8, 15, 30, 0.75);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(0, 156, 222, 0.28);
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
       border-radius: 18px;
       padding: 18px 16px;
       font-size: 12px;
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 112, 186, 0.05);
     }
     .step-card:hover {
-      border-color: rgba(0, 156, 222, 0.55);
+      border-color: #0070BA;
       transform: translateY(-2px);
-      box-shadow: 0 12px 28px rgba(0, 112, 186, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      box-shadow: 0 8px 20px rgba(0, 112, 186, 0.12);
     }
     .step-card.done {
-      border-color: rgba(16, 185, 129, 0.45);
-      background: linear-gradient(135deg, rgba(8, 15, 30, 0.9) 0%, rgba(16, 185, 129, 0.08) 100%);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 0 18px rgba(16, 185, 129, 0.12);
+      border-color: #86EFAC;
+      background: #F0FDF4;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.08);
     }
     .step-num {
       font-weight: 800; font-size: 11px;
-      color: var(--accent-secondary);
+      color: #0070BA;
       text-transform: uppercase;
       margin-bottom: 6px;
       letter-spacing: 0.5px;
@@ -989,8 +994,8 @@ export function getDashboardHtml(): string {
       align-items: center;
       gap: 5px;
     }
-    .step-title { font-weight: 700; color: #FFF; font-size: 13px; letter-spacing: -0.1px; }
-    .step-desc { color: #94A3B8; font-size: 11px; margin-top: 6px; line-height: 1.5; }
+    .step-title { font-weight: 700; color: #0B1E3F; font-size: 13px; letter-spacing: -0.1px; }
+    .step-desc { color: #64748B; font-size: 11px; margin-top: 6px; line-height: 1.5; }
 
     /* ==========================================================================
        HACKATHON JUDGE BRIEFING PANEL
@@ -1017,104 +1022,107 @@ export function getDashboardHtml(): string {
     }
 
     /* ==========================================================================
-       DATA TABLES & AG GRID THEME
+       DATA TABLES - PAYPAL LIGHT THEME
        ========================================================================== */
     .table-responsive {
       width: 100%;
       overflow-x: auto;
       border-radius: 18px;
-      border: 1px solid rgba(0, 156, 222, 0.25);
-      background: rgba(4, 9, 20, 0.7);
-      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      border: 1px solid #E2E8F0;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 6px 20px rgba(0, 112, 186, 0.04);
       margin-top: 8px;
     }
     table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
     th {
       padding: 14px 18px;
-      background: rgba(10, 23, 44, 0.95);
-      color: #94A3B8;
+      background: #F8FAFD;
+      color: #475569;
       font-weight: 700;
-      border-bottom: 1px solid rgba(0, 156, 222, 0.25);
+      border-bottom: 2px solid #E2E8F0;
       text-transform: uppercase;
       font-size: 11px;
       letter-spacing: 0.6px;
     }
     td {
       padding: 14px 18px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      color: #E2E8F0;
+      border-bottom: 1px solid #F1F5F9;
+      color: #0F172A;
       font-variant-numeric: tabular-nums;
     }
     tr:last-child td { border-bottom: none; }
-    tr:hover td { background: rgba(0, 112, 186, 0.1); }
+    tr:hover td { background: #F0F7FF; }
 
-    /* Custom AG Grid Dark Theme with PayPal Blue Highlights */
+    /* Custom AG Grid Light Theme with PayPal Blue Highlights */
     .ag-theme-nexus-dark,
-    .ag-theme-alpine-dark {
-      --ag-background-color: #071224;
-      --ag-header-background-color: #0A1B36;
-      --ag-odd-row-background-color: #09162D;
-      --ag-border-color: rgba(0, 112, 186, 0.22);
-      --ag-header-foreground-color: #94A3B8;
-      --ag-foreground-color: #F8FAFC;
-      --ag-data-color: #E2E8F0;
-      --ag-selected-row-background-color: rgba(0, 112, 186, 0.22);
-      --ag-row-hover-color: rgba(0, 112, 186, 0.1);
+    .ag-theme-alpine-dark,
+    .ag-theme-alpine {
+      --ag-background-color: #FFFFFF;
+      --ag-header-background-color: #F8FAFD;
+      --ag-odd-row-background-color: #FBFDFF;
+      --ag-border-color: #E2E8F0;
+      --ag-header-foreground-color: #475569;
+      --ag-foreground-color: #0F172A;
+      --ag-data-color: #0F172A;
+      --ag-selected-row-background-color: #EBF4FC;
+      --ag-row-hover-color: #F0F7FF;
       --ag-font-family: var(--font-sans);
       --ag-font-size: 12.5px;
       --ag-grid-size: 6px;
       --ag-row-height: 42px;
       --ag-header-height: 44px;
-      border: 1px solid rgba(0, 112, 186, 0.25);
+      border: 1px solid #E2E8F0;
       border-radius: 14px 14px 0 0;
       overflow: hidden;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 4px 20px rgba(0, 112, 186, 0.05);
     }
     .ag-theme-nexus-dark .ag-header-cell,
-    .ag-theme-alpine-dark .ag-header-cell {
+    .ag-theme-alpine-dark .ag-header-cell,
+    .ag-theme-alpine .ag-header-cell {
       font-weight: 700;
       text-transform: uppercase;
       font-size: 11px;
       letter-spacing: 0.5px;
-      color: #94A3B8;
+      color: #475569;
     }
     .grid-status-bar {
       display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
-      background: rgba(8, 15, 30, 0.85); border: 1px solid rgba(0, 112, 186, 0.25); border-top: none;
-      padding: 14px 22px; border-radius: 0 0 18px 18px; color: var(--text-secondary);
+      background: #FFFFFF; border: 1px solid #E2E8F0; border-top: none;
+      padding: 14px 22px; border-radius: 0 0 18px 18px; color: #64748B;
+      box-shadow: 0 4px 12px rgba(0, 112, 186, 0.04);
     }
     .grid-status-pill {
       display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(4, 9, 20, 0.75); border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 9999px; padding: 6px 14px; font-size: 12px; color: #CBD5E1;
-      font-variant-numeric: tabular-nums; box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+      background: #F8FAFD; border: 1px solid #E2E8F0;
+      border-radius: 9999px; padding: 6px 14px; font-size: 12px; color: #334155;
+      font-variant-numeric: tabular-nums; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
       transition: all 0.2s ease;
     }
     .grid-status-pill:hover {
-      border-color: rgba(0, 156, 222, 0.4); background: rgba(10, 20, 40, 0.9);
+      border-color: #0070BA; background: #EBF4FC; color: #0070BA;
     }
     .status-chip-proof {
       display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(0, 112, 186, 0.15); border: 1px solid rgba(0, 156, 222, 0.35);
-      color: var(--accent-secondary); padding: 5px 12px; border-radius: 9999px; font-size: 11.5px; font-weight: 600; cursor: pointer;
+      background: #EBF4FC; border: 1px solid rgba(0, 112, 186, 0.22);
+      color: #0070BA; padding: 6px 14px; border-radius: 9999px; font-size: 12px; font-weight: 700; cursor: pointer;
       transition: all 0.15s ease; font-variant-numeric: tabular-nums;
+      box-shadow: 0 1px 3px rgba(0, 112, 186, 0.08);
     }
     .status-chip-proof:hover {
-      background: rgba(0, 112, 186, 0.25); border-color: var(--accent-primary); transform: translateY(-1px);
+      background: #D8ECFD; border-color: #0070BA; transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 112, 186, 0.18);
     }
 
     /* ==========================================================================
-       PAYPAL STYLE FEE MODEL CAPSULE & ROUNDED PARAMETER BLOCKS
+       PAYPAL STYLE FEE MODEL CAPSULE - LIGHT GLASSMORPHISM
        ========================================================================== */
     .fee-model-capsule {
       border-radius: 26px;
-      background: radial-gradient(ellipse at 85% 120%, rgba(147, 51, 234, 0.18) 0%, transparent 60%),
-                  radial-gradient(ellipse at 15% 120%, rgba(0, 112, 186, 0.25) 0%, transparent 60%),
-                  rgba(8, 14, 28, 0.88);
+      background: rgba(255, 255, 255, 0.94);
       backdrop-filter: blur(28px);
       -webkit-backdrop-filter: blur(28px);
-      border: 1px solid rgba(0, 156, 222, 0.35);
-      box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 0 24px rgba(0, 112, 186, 0.14);
+      border: 1px solid rgba(0, 112, 186, 0.18);
+      box-shadow: 0 10px 30px rgba(0, 112, 186, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
       padding: 16px 26px;
       margin-bottom: 24px;
       display: flex;
@@ -1186,16 +1194,16 @@ export function getDashboardHtml(): string {
       display: flex;
       align-items: center;
       gap: 8px;
-      background: rgba(4, 9, 20, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: #F8FAFD;
+      border: 1px solid #CBD5E1;
       border-radius: 14px;
       padding: 4px 10px 4px 6px;
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
       transition: all 0.2s ease;
     }
     .fee-chip:hover, .fee-chip:focus-within {
-      border-color: rgba(0, 156, 222, 0.55);
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5), 0 0 14px rgba(0, 112, 186, 0.25);
+      border-color: #0070BA;
+      box-shadow: 0 0 12px rgba(0, 112, 186, 0.18);
     }
     .fee-chip-icon {
       width: 28px;
@@ -1209,23 +1217,21 @@ export function getDashboardHtml(): string {
       flex-shrink: 0;
     }
     .fee-icon-amber {
-      background: rgba(245, 158, 11, 0.18);
-      border: 1px solid rgba(245, 158, 11, 0.4);
-      color: #FBBF24;
-      box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);
+      background: #FEF3C7;
+      border: 1px solid #FDE68A;
+      color: #D97706;
     }
     .fee-icon-purple {
-      background: rgba(147, 51, 234, 0.2);
-      border: 1px solid rgba(168, 85, 247, 0.4);
-      color: #C084FC;
-      box-shadow: 0 2px 6px rgba(147, 51, 234, 0.2);
+      background: #F3E8FF;
+      border: 1px solid #E9D5FF;
+      color: #9333EA;
     }
     .fee-input-val {
       width: 44px;
       text-align: center;
       border: none;
       background: transparent;
-      color: #FFFFFF;
+      color: #0B1E3F;
       font-size: 14.5px;
       font-weight: 800;
       font-family: var(--font-sans);
@@ -1239,7 +1245,7 @@ export function getDashboardHtml(): string {
     .fee-unit {
       font-size: 12px;
       font-weight: 700;
-      color: #94A3B8;
+      color: #64748B;
     }
     .btn-recalc-glow {
       display: inline-flex;
@@ -1296,20 +1302,20 @@ export function getDashboardHtml(): string {
     .tag-error { background: rgba(239,68,68,0.14); color: var(--accent-rose); border: 1px solid rgba(239,68,68,0.35); }
 
     .search-input {
-      background: rgba(4, 9, 20, 0.85);
-      border: 1px solid rgba(0, 156, 222, 0.3);
-      color: #FFF;
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      color: #0B1E3F;
       padding: 10px 20px;
       border-radius: 9999px;
       font-size: 13px;
       min-width: 280px;
       font-family: var(--font-sans);
-      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
     }
     .search-input:focus {
       outline: none;
-      border-color: var(--accent-secondary);
-      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5), 0 0 16px rgba(0, 156, 222, 0.35);
+      border-color: #0070BA;
+      box-shadow: 0 0 14px rgba(0, 112, 186, 0.2);
     }
 
     /* Live Stream Log */
@@ -1567,83 +1573,191 @@ export function getDashboardHtml(): string {
         <!-- 1. OVERVIEW TAB (RECONSTRUCTED WITH HERO FINTECH CARDS & CHARTS) -->
         <div id="tab-overview" class="tab-content active">
 
-          <!-- HACKATHON JUDGE BRIEFING PANEL -->
-          <div class="card" id="judge-briefing-panel">
-          <div class="card-header" style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px; margin-bottom: 14px;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="font-size: 20px;">⚖️</span>
-              <div>
-                <span class="card-title" style="color: var(--accent-primary); font-size: 16px; letter-spacing: -0.3px;">HACKATHON JUDGE BRIEFING PANEL</span>
-                <div class="card-desc">Three Core Technical Innovations &bull; Verified Evidence Links &bull; 30-Second Guided Tour</div>
+          <!-- HACKATHON JUDGE BRIEFING PANEL - EXACT PAYPAL LIGHT THEME MATCH -->
+          <div class="card" id="judge-briefing-panel" style="background: rgba(255, 255, 255, 0.94); border: 1px solid rgba(0, 112, 186, 0.16); box-shadow: 0 12px 36px rgba(0, 112, 186, 0.08), inset 0 1px 0 #FFFFFF; border-radius: 24px; padding: 24px 28px; margin-bottom: 26px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 14px;">
+              <div style="display: flex; align-items: center; gap: 14px;">
+                <!-- Authentic PayPal Double-P Icon -->
+                <div style="width: 44px; height: 44px; border-radius: 14px; background: #FFFFFF; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0, 112, 186, 0.15); border: 1px solid rgba(0, 112, 186, 0.18); flex-shrink: 0;">
+                  <svg width="26" height="30" viewBox="0 0 100 115" fill="none">
+                    <path d="M26.4 105L37.8 24.3H68.5C79.8 24.3 88.5 27.3 93.4 33.1C98.3 38.9 98.7 47.3 95.8 56.6C92.8 66.5 86.9 74.4 79.1 79.1C72.5 83.1 64.4 85 55.4 85H42.7L36.6 105H26.4Z" fill="#003087"/>
+                    <path d="M43.7 85L52.8 28.7H79.1C90.3 28.7 99 31.7 103.9 37.5C108.8 43.3 109.2 51.7 106.3 61C103.3 70.9 97.4 78.8 89.6 83.5C83 87.5 74.9 89.4 65.9 89.4H50.5L46.1 110H34.7L43.7 85Z" fill="#0070BA"/>
+                  </svg>
+                </div>
+                <div style="width: 1px; height: 34px; background: #E2E8F0;"></div>
+                <div>
+                  <h2 style="font-size: 21px; font-weight: 800; color: #0B1E3F; letter-spacing: -0.4px; margin: 0;">Hackathon Judge Briefing Panel</h2>
+                  <div style="font-size: 13px; color: #64748B; margin-top: 3px; font-weight: 500;">Three Core Technical Innovations &bull; Verified Evidence Links &bull; 30-Second Guided Tour</div>
+                </div>
+              </div>
+              <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <a href="https://github.com/EnternalBlue07/Tally-Nexus" target="_blank" style="display: inline-flex; align-items: center; gap: 7px; background: #FFFFFF; border: 1px solid #CBD5E1; color: #0F172A; border-radius: 9999px; padding: 8px 18px; font-size: 12.5px; font-weight: 600; text-decoration: none; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: all 0.2s ease;">
+                  <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                  <span>Public GitHub Repo</span> <span style="font-size: 11px; opacity: 0.7;">↗</span>
+                </a>
+                <a href="https://youtu.be/tally-nexus-demo" target="_blank" style="display: inline-flex; align-items: center; gap: 7px; background: linear-gradient(135deg, #0070BA 0%, #003087 100%); color: #FFFFFF; border-radius: 9999px; padding: 8px 20px; font-size: 12.5px; font-weight: 700; text-decoration: none; box-shadow: 0 4px 14px rgba(0, 112, 186, 0.35); border: none; transition: all 0.2s ease;">
+                  <span>▶</span> <span>3-Min Demo Video</span> <span style="font-size: 11px; opacity: 0.85;">↗</span>
+                </a>
+                <button onclick="toggleJudgePanel()" style="display: inline-flex; align-items: center; gap: 6px; background: #FFFFFF; border: 1px solid #CBD5E1; color: #0F172A; border-radius: 9999px; padding: 8px 16px; font-size: 12px; font-weight: 600; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: all 0.2s ease;">
+                  <span>Collapse / Expand</span> <span style="font-size: 10px; opacity: 0.7;">∨</span>
+                </button>
               </div>
             </div>
-            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-              <a href="https://github.com/EnternalBlue07/Tally-Nexus" target="_blank" class="tag tag-info" style="text-decoration: none; font-weight: 600;">📂 Public GitHub Repo</a>
-              <a href="https://youtu.be/tally-nexus-demo" target="_blank" class="tag tag-success" style="text-decoration: none; font-weight: 600;">🎥 3-Min Demo Video</a>
-              <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="toggleJudgePanel()">Collapse / Expand</button>
+
+            <div id="judge-panel-body">
+              <!-- 3 Headline Cards Grid matching user screenshot -->
+              <div class="judge-panel-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 20px;">
+                
+                <!-- CARD 1: ROYAL BLUE GRADIENT HERO CARD -->
+                <div style="background: linear-gradient(145deg, #0070BA 0%, #003087 100%); border-radius: 22px; padding: 24px; color: #FFFFFF; position: relative; box-shadow: 0 14px 32px rgba(0, 112, 186, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3); border: 1px solid rgba(255, 255, 255, 0.18); display: flex; flex-direction: column; justify-content: space-between;">
+                  <!-- Top Right Watermark PayPal Logo -->
+                  <div style="position: absolute; top: 18px; right: 20px; opacity: 0.25; pointer-events: none;">
+                    <svg width="24" height="28" viewBox="0 0 100 115" fill="none">
+                      <path d="M26.4 105L37.8 24.3H68.5C79.8 24.3 88.5 27.3 93.4 33.1C98.3 38.9 98.7 47.3 95.8 56.6C92.8 66.5 86.9 74.4 79.1 79.1C72.5 83.1 64.4 85 55.4 85H42.7L36.6 105H26.4Z" fill="#FFF"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                      <div style="width: 38px; height: 38px; border-radius: 11px; background: rgba(255, 255, 255, 0.95); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #0070BA; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12); flex-shrink: 0;">
+                        ⚙️
+                      </div>
+                      <span style="font-weight: 800; font-size: 15.5px; color: #FFFFFF; letter-spacing: -0.2px;">1. AI-Assisted SLA Evaluation</span>
+                    </div>
+                    <p style="font-size: 12.5px; color: rgba(255, 255, 255, 0.94); line-height: 1.6; margin-bottom: 20px;">
+                      Autonomous task deliverables adjudicated via <strong>FreeModel (Gemini 3.7 Flash)</strong> with automatic <strong>DeepSeek v4.1 Flash</strong> failover. Purely advisory; zero access to money movement, enforced by deterministic credit clamps.
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button onclick="testLiveAiJudge()" style="display: inline-flex; align-items: center; gap: 6px; background: #FFFFFF; color: #0070BA; font-weight: 700; border-radius: 9999px; padding: 9px 18px; font-size: 12.5px; border: none; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15); cursor: pointer; transition: all 0.2s ease;">
+                      <span>▶</span> <span>Run Live AI Evaluation</span>
+                    </button>
+                    <a href="/api/judge/evaluate" target="_blank" style="display: inline-flex; align-items: center; background: rgba(255, 255, 255, 0.2); color: #FFFFFF; border: 1px solid rgba(255, 255, 255, 0.35); border-radius: 9999px; padding: 9px 16px; font-size: 12.5px; font-weight: 600; text-decoration: none; transition: all 0.2s ease;">
+                      Live Route
+                    </a>
+                  </div>
+                </div>
+
+                <!-- CARD 2: CRISP WHITE GLASSMORPHIC CARD -->
+                <div style="background: rgba(255, 255, 255, 0.96); border-radius: 22px; padding: 24px; border: 1px solid rgba(0, 112, 186, 0.14); box-shadow: 0 10px 28px rgba(0, 112, 186, 0.06), inset 0 1px 0 #FFFFFF; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                      <div style="width: 38px; height: 38px; border-radius: 11px; background: #EBF4FC; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #0070BA; border: 1px solid rgba(0, 112, 186, 0.18); flex-shrink: 0;">
+                        🥞
+                      </div>
+                      <span style="font-weight: 800; font-size: 15.5px; color: #0B1E3F; letter-spacing: -0.2px;">2. Deterministic Netting & PayPal Rails</span>
+                    </div>
+                    <p style="font-size: 12.5px; color: #475569; line-height: 1.6; margin-bottom: 20px;">
+                      Compresses circular bilateral agent debt by <strong>65.38% to 99.4%</strong>. Settles conserved net debtor balances via <strong>PayPal Orders v2 capture ($1.00)</strong> and creditor disbursements via <strong>PayPal Payouts v1 ($0.50 + $0.50)</strong>.
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="status-chip-proof" onclick="verifyPayPalCapture('7PV82720RX415822V')">
+                      <span style="color: #0070BA; font-weight: 800;">🅿️</span> Verify Live Capture
+                    </button>
+                    <button class="status-chip-proof" onclick="verifyPayPalPayout('N4M49PUHNCNQ4')">
+                      <span style="color: #0070BA; font-weight: 800;">🅿️</span> Verify Live Payout
+                    </button>
+                  </div>
+                </div>
+
+                <!-- CARD 3: CRISP WHITE GLASSMORPHIC CARD -->
+                <div style="background: rgba(255, 255, 255, 0.96); border-radius: 22px; padding: 24px; border: 1px solid rgba(0, 112, 186, 0.14); box-shadow: 0 10px 28px rgba(0, 112, 186, 0.06), inset 0 1px 0 #FFFFFF; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                      <div style="width: 38px; height: 38px; border-radius: 11px; background: #EBF4FC; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #0070BA; border: 1px solid rgba(0, 112, 186, 0.18); flex-shrink: 0;">
+                        🛡️
+                      </div>
+                      <span style="font-weight: 800; font-size: 15.5px; color: #0B1E3F; letter-spacing: -0.2px;">3. Verifiable Subledger & Cryptography</span>
+                    </div>
+                    <p style="font-size: 12.5px; color: #475569; line-height: 1.6; margin-bottom: 20px;">
+                      Double-entry subledger asserted by <strong>14 SQLite database triggers</strong>, Ed25519 RFC 8785 signatures, cryptographic SHA-256 Merkle tree anchors, and mathematical zero-variance (<strong>Δ = $0.00</strong>).
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="status-chip-proof" onclick="switchTab('ledger')">
+                      📊 View Trial Balance
+                    </button>
+                    <button class="status-chip-proof" onclick="switchTab('security')">
+                      🛡️ Invariant Center
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- 30-Second Guided Tour Container matching user screenshot -->
+              <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 20px; padding: 18px 22px; box-shadow: 0 6px 20px rgba(0, 112, 186, 0.04);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+                  <span style="font-size: 13.5px; font-weight: 800; color: #0B1E3F; display: flex; align-items: center; gap: 6px;">
+                    <span style="color: #0070BA; font-size: 16px;">⚡</span> 30-Second Tour for Judges (6 Guided Clicks)
+                  </span>
+                  <span style="font-size: 12px; color: #64748B; font-weight: 500;">Follow steps 1 – 6 to independently inspect end-to-end clearing</span>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px;">
+                  
+                  <div onclick="tourStep(1)" style="flex: 1; min-width: 150px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 14px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; box-shadow: 0 2px 6px rgba(0, 112, 186, 0.04); transition: all 0.2s ease;">
+                    <div style="width: 24px; height: 24px; border-radius: 50%; background: #EBF4FC; color: #0070BA; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+                    <span style="font-size: 18px;">🏛️</span>
+                    <div>
+                      <div style="font-size: 12px; font-weight: 800; color: #0B1E3F;">Clearing Room</div>
+                      <div style="font-size: 10.5px; color: #64748B;">Open Overview</div>
+                    </div>
+                  </div>
+                  <span style="color: #94A3B8; font-weight: 700; font-size: 14px;">›</span>
+
+                  <div onclick="tourStep(2)" style="flex: 1; min-width: 150px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 14px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; box-shadow: 0 2px 6px rgba(0, 112, 186, 0.04); transition: all 0.2s ease;">
+                    <div style="width: 24px; height: 24px; border-radius: 50%; background: #EBF4FC; color: #0070BA; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+                    <span style="font-size: 18px;">🚀</span>
+                    <div>
+                      <div style="font-size: 12px; font-weight: 800; color: #0B1E3F;">Run Flagship</div>
+                      <div style="font-size: 10.5px; color: #64748B;">Execute 5-agent sim</div>
+                    </div>
+                  </div>
+                  <span style="color: #94A3B8; font-weight: 700; font-size: 14px;">›</span>
+
+                  <div onclick="tourStep(3)" style="flex: 1; min-width: 150px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 14px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; box-shadow: 0 2px 6px rgba(0, 112, 186, 0.04); transition: all 0.2s ease;">
+                    <div style="width: 24px; height: 24px; border-radius: 50%; background: #EBF4FC; color: #0070BA; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+                    <span style="font-size: 18px;">🤖</span>
+                    <div>
+                      <div style="font-size: 12px; font-weight: 800; color: #0B1E3F;">AI SLA Verdict</div>
+                      <div style="font-size: 10.5px; color: #64748B;">Inspect clamp</div>
+                    </div>
+                  </div>
+                  <span style="color: #94A3B8; font-weight: 700; font-size: 14px;">›</span>
+
+                  <div onclick="tourStep(4)" style="flex: 1; min-width: 150px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 14px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; box-shadow: 0 2px 6px rgba(0, 112, 186, 0.04); transition: all 0.2s ease;">
+                    <div style="width: 24px; height: 24px; border-radius: 50%; background: #EBF4FC; color: #0070BA; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">4</div>
+                    <span style="font-size: 18px;">🪙</span>
+                    <div>
+                      <div style="font-size: 12px; font-weight: 800; color: #0B1E3F;">Net Positions</div>
+                      <div style="font-size: 10.5px; color: #64748B;">$130 &rarr; $45 net</div>
+                    </div>
+                  </div>
+                  <span style="color: #94A3B8; font-weight: 700; font-size: 14px;">›</span>
+
+                  <div onclick="tourStep(5)" style="flex: 1; min-width: 150px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 14px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; box-shadow: 0 2px 6px rgba(0, 112, 186, 0.04); transition: all 0.2s ease;">
+                    <div style="width: 24px; height: 24px; border-radius: 50%; background: #EBF4FC; color: #0070BA; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">5</div>
+                    <span style="font-size: 18px;">🅿️</span>
+                    <div>
+                      <div style="font-size: 12px; font-weight: 800; color: #0B1E3F;">PayPal Proof</div>
+                      <div style="font-size: 10.5px; color: #64748B;">Live Debug-ID</div>
+                    </div>
+                  </div>
+                  <span style="color: #94A3B8; font-weight: 700; font-size: 14px;">›</span>
+
+                  <div onclick="tourStep(6)" style="flex: 1; min-width: 150px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 14px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; box-shadow: 0 2px 6px rgba(0, 112, 186, 0.04); transition: all 0.2s ease;">
+                    <div style="width: 24px; height: 24px; border-radius: 50%; background: #EBF4FC; color: #0070BA; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">6</div>
+                    <span style="font-size: 18px;">🔒</span>
+                    <div>
+                      <div style="font-size: 12px; font-weight: 800; color: #0B1E3F;">Merkle Ledger</div>
+                      <div style="font-size: 10.5px; color: #64748B;">&Delta; = $0.00 proof</div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
             </div>
           </div>
-
-          <div id="judge-panel-body">
-            <!-- 3 Headline Claims Grid -->
-            <div class="judge-panel-grid">
-              <div style="background: rgba(8, 15, 30, 0.75); border: 1px solid rgba(0, 156, 222, 0.35); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-radius: 18px; padding: 20px; box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);">
-                <div style="color: var(--accent-secondary); font-weight: 800; font-size: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
-                  <span>🤖</span> <span>1. AI-Assisted SLA Evaluation</span>
-                </div>
-                <p style="font-size: 12px; color: #CBD5E1; line-height: 1.55; margin-bottom: 14px;">
-                  Autonomous task deliverables adjudicated via <strong>FreeModel (Gemini 3.7 Flash)</strong> with automatic <strong>DeepSeek v4.1 Flash</strong> failover. Purely advisory: zero access to money movement, enforced by deterministic credit clamps.
-                </p>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                  <button class="status-chip-proof" onclick="testLiveAiJudge()">⚡ Run Live AI Evaluation</button>
-                  <a href="/api/judge/evaluate" target="_blank" class="tag tag-info" style="font-size: 10.5px; text-decoration: none; padding: 4px 10px; border-radius: 9999px;">Live Route</a>
-                </div>
-              </div>
-
-              <div style="background: rgba(8, 15, 30, 0.75); border: 1px solid rgba(16, 185, 129, 0.35); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-radius: 18px; padding: 20px; box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);">
-                <div style="color: var(--accent-emerald); font-weight: 800; font-size: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
-                  <span>💳</span> <span>2. Deterministic Netting & PayPal Rails</span>
-                </div>
-                <p style="font-size: 12px; color: #CBD5E1; line-height: 1.55; margin-bottom: 14px;">
-                  Compresses circular bilateral agent debt by <strong>65.38% to 99.4%</strong>. Settles conserved net debtor balances via <strong>PayPal Orders v2</strong> capture ($1.00) and creditor disbursements via <strong>PayPal Payouts v1</strong> ($0.50 + $0.50).
-                </p>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                  <button class="status-chip-proof" onclick="verifyPayPalCapture('7PV82720RX415822V')">🔍 Verify Live Capture</button>
-                  <button class="status-chip-proof" onclick="verifyPayPalPayout('N4M49PUHNCNQ4')">🔍 Verify Live Payout</button>
-                </div>
-              </div>
-
-              <div style="background: rgba(8, 15, 30, 0.75); border: 1px solid rgba(0, 112, 186, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-radius: 18px; padding: 20px; box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);">
-                <div style="color: var(--accent-secondary); font-weight: 800; font-size: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
-                  <span>🔒</span> <span>3. Verifiable Subledger & Cryptography</span>
-                </div>
-                <p style="font-size: 12px; color: #CBD5E1; line-height: 1.55; margin-bottom: 14px;">
-                  Double-entry subledger asserted by <strong>14 SQLite database triggers</strong>, Ed25519 RFC 8785 signatures, cryptographic SHA-256 Merkle tree anchors, and mathematical zero-variance (<span class="mono">Δ = $0.00</span>).
-                </p>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                  <button class="status-chip-proof" onclick="switchTab('ledger')">📊 View Trial Balance</button>
-                  <button class="status-chip-proof" onclick="switchTab('security')">🛡️ Invariant Center</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- 30-Second Guided Tour with Rounded Pill Buttons & Emojis -->
-            <div style="background: rgba(4, 9, 20, 0.75); border: 1px solid rgba(0, 156, 222, 0.28); border-radius: 18px; padding: 16px 20px; margin-top: 14px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
-                <span style="font-size: 12px; font-weight: 700; color: #F1F5F9; text-transform: uppercase; letter-spacing: 0.6px; display: flex; align-items: center; gap: 6px;">⏱️ 30-Second Tour for Judges <span style="font-size: 11px; opacity: 0.7;">(6 Guided Clicks)</span></span>
-                <span style="font-size: 11.5px; color: var(--text-secondary);">Follow steps 1 &rarr; 6 to independently inspect end-to-end clearing</span>
-              </div>
-              <div class="judge-tour-grid">
-                <button class="btn btn-secondary tour-step-btn" id="tour-step-1" style="font-size: 11.5px; padding: 10px 12px; text-align: left; border-radius: 14px;" onclick="tourStep(1)"><strong>1. 🏛️ Clearing Room</strong><br><span style="color: var(--text-secondary); font-size: 10.5px;">Open Overview</span></button>
-                <button class="btn btn-secondary tour-step-btn" id="tour-step-2" style="font-size: 11.5px; padding: 10px 12px; text-align: left; border-radius: 14px;" onclick="tourStep(2)"><strong>2. 🚀 Run Flagship</strong><br><span style="color: var(--text-secondary); font-size: 10.5px;">Execute 5-agent sim</span></button>
-                <button class="btn btn-secondary tour-step-btn" id="tour-step-3" style="font-size: 11.5px; padding: 10px 12px; text-align: left; border-radius: 14px;" onclick="tourStep(3)"><strong>3. 🤖 AI SLA Verdict</strong><br><span style="color: var(--text-secondary); font-size: 10.5px;">Inspect clamp</span></button>
-                <button class="btn btn-secondary tour-step-btn" id="tour-step-4" style="font-size: 11.5px; padding: 10px 12px; text-align: left; border-radius: 14px;" onclick="tourStep(4)"><strong>4. ⚖️ Net Positions</strong><br><span style="color: var(--text-secondary); font-size: 10.5px;">$130 &rarr; $45 net</span></button>
-                <button class="btn btn-secondary tour-step-btn" id="tour-step-5" style="font-size: 11.5px; padding: 10px 12px; text-align: left; border-radius: 14px;" onclick="tourStep(5)"><strong>5. 🛡️ PayPal Proof</strong><br><span style="color: var(--text-secondary); font-size: 10.5px;">Live Debug-ID</span></button>
-                <button class="btn btn-secondary tour-step-btn" id="tour-step-6" style="font-size: 11.5px; padding: 10px 12px; text-align: left; border-radius: 14px;" onclick="tourStep(6)"><strong>6. 🔒 Merkle Ledger</strong><br><span style="color: var(--text-secondary); font-size: 10.5px;">Δ = $0.00 proof</span></button>
-              </div>
-            </div>
-          </div>
-        </div>
 
           <!-- EXECUTIVE HERO GRID (AREA CHART + FEATURED PAYPAL ENTERPRISE CARD STACK) -->
           <div class="hero-fintech-grid">
@@ -1670,19 +1784,19 @@ export function getDashboardHtml(): string {
                 <svg viewBox="0 0 700 180" style="width: 100%; height: 100%; overflow: visible;">
                   <defs>
                     <linearGradient id="paypalChartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stop-color="#009CDE" stop-opacity="0.45" />
-                      <stop offset="60%" stop-color="#0070BA" stop-opacity="0.15" />
-                      <stop offset="100%" stop-color="#040914" stop-opacity="0.0" />
+                      <stop offset="0%" stop-color="#009CDE" stop-opacity="0.32" />
+                      <stop offset="60%" stop-color="#0070BA" stop-opacity="0.1" />
+                      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.0" />
                     </linearGradient>
                     <filter id="glowPaypal" x="-20%" y="-20%" width="140%" height="140%">
-                      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#009CDE" flood-opacity="0.6"/>
+                      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0070BA" flood-opacity="0.25"/>
                     </filter>
                   </defs>
                   
                   <!-- Horizontal Grid Lines -->
-                  <line x1="0" y1="30" x2="700" y2="30" stroke="rgba(255,255,255,0.05)" stroke-dasharray="3 3"/>
-                  <line x1="0" y1="80" x2="700" y2="80" stroke="rgba(255,255,255,0.05)" stroke-dasharray="3 3"/>
-                  <line x1="0" y1="130" x2="700" y2="130" stroke="rgba(255,255,255,0.05)" stroke-dasharray="3 3"/>
+                  <line x1="0" y1="30" x2="700" y2="30" stroke="rgba(0,112,186,0.08)" stroke-dasharray="3 3"/>
+                  <line x1="0" y1="80" x2="700" y2="80" stroke="rgba(0,112,186,0.08)" stroke-dasharray="3 3"/>
+                  <line x1="0" y1="130" x2="700" y2="130" stroke="rgba(0,112,186,0.08)" stroke-dasharray="3 3"/>
 
                   <!-- Filled Area -->
                   <path d="M 0 140 
@@ -1701,22 +1815,22 @@ export function getDashboardHtml(): string {
                            C 300 60, 340 100, 390 70 
                            C 440 40, 480 80, 530 50 
                            C 580 20, 620 90, 700 60" 
-                        fill="none" stroke="#009CDE" stroke-width="2.5" filter="url(#glowPaypal)" />
+                        fill="none" stroke="#0070BA" stroke-width="2.5" filter="url(#glowPaypal)" />
 
-                  <!-- Active Pin Tooltip (Matching Reference: 09 Dec, 2024 / 9,780.90 USD in Dark Glass) -->
-                  <circle cx="480" cy="80" r="5" fill="#FFF" stroke="#009CDE" stroke-width="3" />
+                  <!-- Active Pin Tooltip (Light Glassmorphic) -->
+                  <circle cx="480" cy="80" r="5" fill="#0070BA" stroke="#FFFFFF" stroke-width="2.5" />
                   <g transform="translate(415, 12)">
-                    <rect width="130" height="46" rx="10" fill="#0A1832" stroke="rgba(0, 156, 222, 0.45)" filter="drop-shadow(0 6px 16px rgba(0,0,0,0.7))" />
-                    <text x="14" y="20" font-size="10" font-weight="600" fill="#8BA2C4" font-family="var(--font-sans)">09 Dec, 2024 ↗</text>
-                    <text x="14" y="37" font-size="13" font-weight="800" fill="#FFFFFF" font-family="var(--font-sans)">$9,780.90 USD</text>
+                    <rect width="130" height="46" rx="10" fill="#FFFFFF" stroke="#0070BA" stroke-width="1.5" filter="drop-shadow(0 4px 14px rgba(0,112,186,0.18))" />
+                    <text x="14" y="20" font-size="10" font-weight="600" fill="#64748B" font-family="var(--font-sans)">09 Dec, 2024 ↗</text>
+                    <text x="14" y="37" font-size="13" font-weight="800" fill="#0070BA" font-family="var(--font-sans)">$9,780.90 USD</text>
                   </g>
                 </svg>
               </div>
 
               <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; font-size: 11.5px; color: var(--text-secondary);">
-                <span>Average annual compression: <strong style="color: #FFF;">84.2%</strong></span>
+                <span>Average annual compression: <strong style="color: #0B1E3F;">84.2%</strong></span>
                 <div style="display: flex; gap: 14px;">
-                  <span><span style="display:inline-block;width:8px;height:8px;background:#FFF;border-radius:2px;margin-right:4px;"></span>Actual gross</span>
+                  <span><span style="display:inline-block;width:8px;height:8px;background:#CBD5E1;border-radius:2px;margin-right:4px;"></span>Actual gross</span>
                   <span><span style="display:inline-block;width:8px;height:8px;background:var(--accent-emerald);border-radius:2px;margin-right:4px;"></span>Conserved net</span>
                 </div>
               </div>
@@ -1726,8 +1840,8 @@ export function getDashboardHtml(): string {
             <div class="anchor-card-stack-wrapper">
               <!-- Header matching reference -->
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 0 4px;">
-                <div style="font-size: 15px; font-weight: 700; color: #FFF; letter-spacing: -0.2px;">My cards</div>
-                <button class="btn btn-secondary" style="font-size: 11.5px; padding: 4px 12px; border-radius: 9999px; background: rgba(11, 23, 44, 0.7); border: 1px solid var(--border-glass); color: #CBD5E1; cursor: pointer;">+ Add new</button>
+                <div style="font-size: 15px; font-weight: 800; color: #0B1E3F; letter-spacing: -0.2px;">My cards</div>
+                <button class="btn btn-secondary" style="font-size: 11.5px; padding: 4px 14px; border-radius: 9999px; background: #FFFFFF; border: 1px solid #CBD5E1; color: #475569; cursor: pointer;">+ Add new</button>
               </div>
 
               <div style="position: relative; flex: 1; display: flex; flex-direction: column;">
@@ -2443,10 +2557,10 @@ export function getDashboardHtml(): string {
 
   <div id="toast-container"></div>
 
-  <!-- Authoritative PayPal Verification Modal -->
-  <div id="paypal-verify-modal" style="display: none; position: fixed; inset: 0; background: rgba(3, 7, 18, 0.88); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); z-index: 9999; justify-content: center; align-items: center; padding: 24px;">
-    <div style="background: rgba(9, 16, 32, 0.95); border: 1px solid rgba(0, 156, 222, 0.4); border-radius: 22px; max-width: 720px; width: 100%; box-shadow: 0 35px 80px rgba(0, 0, 0, 0.9), 0 0 50px rgba(0, 112, 186, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 0 0 1px rgba(0, 156, 222, 0.2); overflow: hidden; backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px);">
-      <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 28px; border-bottom: 1px solid rgba(0, 156, 222, 0.2); background: linear-gradient(90deg, rgba(0, 48, 135, 0.35) 0%, rgba(0, 112, 186, 0.18) 100%);">
+  <!-- Authoritative PayPal Verification Modal - Light Theme -->
+  <div id="paypal-verify-modal" style="display: none; position: fixed; inset: 0; background: rgba(11, 30, 63, 0.45); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 9999; justify-content: center; align-items: center; padding: 24px;">
+    <div style="background: #FFFFFF; border: 1px solid rgba(0, 112, 186, 0.25); border-radius: 22px; max-width: 720px; width: 100%; box-shadow: 0 35px 80px rgba(0, 48, 135, 0.22), 0 0 40px rgba(0, 112, 186, 0.1); overflow: hidden; backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px);">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 28px; border-bottom: 1px solid rgba(0, 112, 186, 0.15); background: linear-gradient(90deg, #EBF4FC 0%, #FFFFFF 100%);">
         <div style="display: flex; align-items: center; gap: 14px;">
           <div style="width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #003087 0%, #0070BA 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0, 112, 186, 0.45); border: 1px solid rgba(255,255,255,0.2);">
             <svg width="22" height="18" viewBox="0 0 100 80" fill="none">
@@ -2473,14 +2587,14 @@ export function getDashboardHtml(): string {
             <span id="modal-status-badge" class="tag tag-success" style="font-size: 12px; padding: 5px 14px;">VERIFIED ON PAYPAL SANDBOX</span>
             <span id="modal-env-pill" class="tag tag-info" style="font-family: var(--font-mono); font-size: 11px; padding: 4px 10px;">api-m.sandbox.paypal.com</span>
           </div>
-          <div style="background: rgba(14, 24, 46, 0.75); border: 1px solid rgba(0, 156, 222, 0.28); border-radius: 14px; padding: 20px; margin-bottom: 18px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);">
+          <div style="background: #F8FAFD; border: 1px solid rgba(0, 112, 186, 0.18); border-radius: 14px; padding: 20px; margin-bottom: 18px; box-shadow: 0 2px 8px rgba(0, 112, 186, 0.04);">
             <div style="display: grid; grid-template-columns: 150px 1fr; row-gap: 12px; font-size: 13px; align-items: center;">
-              <span style="color: var(--text-secondary); font-weight: 500;">Identifier:</span>
-              <span id="modal-id" class="mono" style="color: var(--accent-secondary); font-weight: 600; word-break: break-all;">-</span>
-              <span style="color: var(--text-secondary); font-weight: 500;">Provider Status:</span>
-              <span id="modal-provider-status" style="font-weight: 800; font-size: 13.5px;">-</span>
-              <span style="color: var(--text-secondary); font-weight: 500;">Amount:</span>
-              <span id="modal-amount" style="font-weight: 800; color: #FFF; font-size: 14px; font-variant-numeric: tabular-nums;">-</span>
+              <span style="color: #64748B; font-weight: 600;">Identifier:</span>
+              <span id="modal-id" class="mono" style="color: #0070BA; font-weight: 700; word-break: break-all;">-</span>
+              <span style="color: #64748B; font-weight: 600;">Provider Status:</span>
+              <span id="modal-provider-status" style="font-weight: 800; font-size: 13.5px; color: #0B1E3F;">-</span>
+              <span style="color: #64748B; font-weight: 600;">Amount:</span>
+              <span id="modal-amount" style="font-weight: 800; color: #0B1E3F; font-size: 14px; font-variant-numeric: tabular-nums;">-</span>
               <span style="color: var(--text-secondary); font-weight: 500;">Merkle Anchor:</span>
               <span id="modal-anchor" class="mono" style="color: var(--accent-amber); word-break: break-all;">-</span>
               <span style="color: var(--text-secondary); font-weight: 500;">PayPal Debug ID:</span>
@@ -2499,10 +2613,10 @@ export function getDashboardHtml(): string {
     </div>
   </div>
 
-  <!-- Interactive Merkle Proof & Ed25519 Cryptographic Modal (AG Grid Custom Widget) -->
-  <div id="merkle-proof-modal" style="display: none; position: fixed; inset: 0; background: rgba(4, 9, 20, 0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); z-index: 10000; justify-content: center; align-items: center; padding: 20px;">
-    <div style="background: var(--surface-primary); border: 1px solid rgba(0, 156, 222, 0.4); border-radius: 18px; max-width: 700px; width: 100%; box-shadow: var(--shadow-modal); overflow: hidden; backdrop-filter: blur(20px);">
-      <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; border-bottom: 1px solid var(--border-subtle); background: var(--surface-elevated);">
+  <!-- Interactive Merkle Proof & Ed25519 Cryptographic Modal - Light Theme -->
+  <div id="merkle-proof-modal" style="display: none; position: fixed; inset: 0; background: rgba(11, 30, 63, 0.45); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 10000; justify-content: center; align-items: center; padding: 20px;">
+    <div style="background: #FFFFFF; border: 1px solid rgba(0, 112, 186, 0.25); border-radius: 22px; max-width: 700px; width: 100%; box-shadow: 0 35px 80px rgba(0, 48, 135, 0.22); overflow: hidden; backdrop-filter: blur(20px);">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; border-bottom: 1px solid rgba(0, 112, 186, 0.12); background: #F8FAFD;">
         <div style="display: flex; align-items: center; gap: 10px;">
           <span style="font-size: 20px;">🛡️</span>
           <div>
