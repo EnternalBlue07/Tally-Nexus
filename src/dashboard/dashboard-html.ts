@@ -2746,9 +2746,9 @@ export function getDashboardHtml(): string {
               <span id="modal-provider-status" style="font-weight: 800; font-size: 13.5px; color: #0B1E3F;">-</span>
               <span style="color: #64748B; font-weight: 600;">Amount:</span>
               <span id="modal-amount" style="font-weight: 800; color: #0B1E3F; font-size: 14px; font-variant-numeric: tabular-nums;">-</span>
-              <span style="color: var(--text-secondary); font-weight: 500;">Merkle Anchor:</span>
+              <span id="modal-label-anchor" style="color: var(--text-secondary); font-weight: 500;">Merkle Anchor:</span>
               <span id="modal-anchor" class="mono" style="color: var(--accent-amber); word-break: break-all;">-</span>
-              <span style="color: var(--text-secondary); font-weight: 500;">PayPal Debug ID:</span>
+              <span id="modal-label-debug" style="color: var(--text-secondary); font-weight: 500;">PayPal Debug ID:</span>
               <span id="modal-debug-id" class="mono" style="color: #6EE7B7; font-weight: 600;">-</span>
               <span style="color: var(--text-secondary); font-weight: 500;">Stored Evidence:</span>
               <span id="modal-evidence-match" class="tag tag-success" style="display: inline-block; width: fit-content; font-size: 11.5px; padding: 4px 10px;">VERIFIED MATCH</span>
@@ -4371,6 +4371,11 @@ export function getDashboardHtml(): string {
       const modalSub = document.getElementById('verify-modal-header-sub');
       if (modalSub) modalSub.textContent = 'Live FreeModel (Gemini 3.7 / DeepSeek) evaluation with deterministic clamping';
 
+      const labelAnchor = document.getElementById('modal-label-anchor');
+      if (labelAnchor) labelAnchor.textContent = 'Prompt Digest:';
+      const labelDebug = document.getElementById('modal-label-debug');
+      if (labelDebug) labelDebug.textContent = 'AI Telemetry:';
+
       document.getElementById('modal-id').textContent = 'Live SLA AI Adjudication';
       document.getElementById('modal-provider-status').textContent = 'EVALUATING...';
       try {
@@ -4490,6 +4495,11 @@ export function getDashboardHtml(): string {
     function renderVerifyResult(data) {
       document.getElementById('verify-modal-loading').style.display = 'none';
       document.getElementById('verify-modal-content').style.display = 'block';
+
+      const labelAnchor = document.getElementById('modal-label-anchor');
+      if (labelAnchor) labelAnchor.textContent = 'Merkle Anchor:';
+      const labelDebug = document.getElementById('modal-label-debug');
+      if (labelDebug) labelDebug.textContent = 'PayPal Debug ID:';
 
       const noticeBanner = document.getElementById('modal-notice-banner');
       const badge = document.getElementById('modal-status-badge');
