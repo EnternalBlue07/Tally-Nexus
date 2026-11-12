@@ -220,7 +220,7 @@ docs/
 ├── deployment/         # Docker Containerization & Render Blueprint
 ├── design/             # Design Tokens, Visual QA & Playwright Tests
 ├── submission/         # Official Hackathon Submission & Demo Script
-└── reports/            # Phase 5–10 Verification & Integrity Reports
+└── reports/            # Consolidated Phase 1–12 Chronicle & Release Audits
 ```
 
 | Area | Primary Document | Description |
@@ -239,7 +239,7 @@ docs/
 | **Deployment Guide** | [`docs/deployment/DEPLOYMENT_PLAN.md`](./docs/deployment/DEPLOYMENT_PLAN.md) | Cloud deployment architecture and Render blueprint guide |
 | **Judge Demo Script** | [`docs/submission/DEMO_SCRIPT.md`](./docs/submission/DEMO_SCRIPT.md) | Chronological 180-second live demo narration and storyboard |
 | **Official Submission** | [`docs/submission/SUBMISSION.md`](./docs/submission/SUBMISSION.md) | Complete hackathon submission narrative and technical links |
-| **Organization Report** | [`docs/reports/REPOSITORY_ORGANIZATION_REPORT.md`](./docs/reports/REPOSITORY_ORGANIZATION_REPORT.md) | Phase 10 repository cleanup and link audit report |
+| **Phase Chronicle & Audits** | [`docs/reports/PHASE_CHRONICLE_AND_RELEASE_AUDITS.md`](./docs/reports/PHASE_CHRONICLE_AND_RELEASE_AUDITS.md) | Complete Phase 1–12 engineering chronicle, safety audits, and release verdict |
 
 ---
 

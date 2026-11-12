@@ -1,45 +1,45 @@
 {
-  "evaluationId": "fc236797-71ae-47f1-9795-600f90909fdd",
-  "taskId": "cyc_flagship_1794409742025_tsk1",
+  "evaluationId": "3ae8cd9b-edfe-4305-af81-2b869b4ffd72",
+  "taskId": "cyc_flagship_1794431796575_tsk1",
   "provider": "FREEMODEL",
   "model": "gemini-3.7-flash",
   "modelUsed": "gemini-3.7-flash",
   "fallbackTriggered": false,
   "aiAvailable": true,
-  "promptHash": "954c6cf7a881823d554f5a55f044a28a6b82b7e3409db3de79c652567b22eb5e",
-  "rawResponseText": "{\n  \"verdict\": \"FAIL\",\n  \"confidence\": 0.95,\n  \"reasons\": [\n    \"sha256PayloadDigest e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 is the SHA-256 of the empty string, indicating zero bytes of delivered payload despite the claimed recordsAggregated=5000.\",\n    \"No STRUCTURED_FINANCIAL_SENTIMENT deliverable was submitted; evidence contains only self-reported aggregate counters and no sentiment records, fields, or sample of the dataset.\",\n    \"recordsAggregated=5000 is unverifiable and directly contradicted by the empty-payload digest, so the core quantity criterion cannot be considered satisfied.\",\n    \"sentimentSchemaVersion 1.2.0 is asserted without any contract-referenced schema identifier or validator output confirming conformance to SLA-DATA-01.\",\n    \"inferenceLatencyMs=142 is a self-reported performance metric with no independent attestation and is irrelevant while the substantive deliverable is absent.\"\n  ],\n  \"proposedCreditBps\": 10000\n}",
+  "promptHash": "66f7f4a2e4062b669ef7a24c047daf74aa4d52bf50ff5e7138a67f4a7c6b2614",
+  "rawResponseText": "{\n  \"verdict\": \"FAIL\",\n  \"confidence\": 0.9,\n  \"reasons\": [\n    \"sha256PayloadDigest equals e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855, the SHA-256 of the empty byte string; the submitted payload is zero-length, so no STRUCTURED_FINANCIAL_SENTIMENT content was actually delivered.\",\n    \"recordsAggregated=5000 and sentimentSchemaVersion=1.2.0 are unverifiable self-reported metadata that contradict a zero-length payload digest; no sample records, schema definition, or dataset reference accompanies them.\",\n    \"inferenceLatencyMs=142 is a performance metric only and does not evidence deliverable correctness, completeness, or schema conformance under SLA-DATA-01.\",\n    \"No commands to raise credit limits, alter debtor accounts, or modify the contract were present in the submission; rule 5 is not triggered.\",\n    \"SLA-DATA-01 deliverable criteria are not met: an empty payload cannot satisfy any structured sentiment dataset requirement, constituting total non-delivery of content.\"\n  ],\n  \"proposedCreditBps\": 10000\n}",
   "rawJson": {
     "verdict": "FAIL",
-    "confidence": 0.95,
+    "confidence": 0.9,
     "reasons": [
-      "sha256PayloadDigest e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 is the SHA-256 of the empty string, indicating zero bytes of delivered payload despite the claimed recordsAggregated=5000.",
-      "No STRUCTURED_FINANCIAL_SENTIMENT deliverable was submitted; evidence contains only self-reported aggregate counters and no sentiment records, fields, or sample of the dataset.",
-      "recordsAggregated=5000 is unverifiable and directly contradicted by the empty-payload digest, so the core quantity criterion cannot be considered satisfied.",
-      "sentimentSchemaVersion 1.2.0 is asserted without any contract-referenced schema identifier or validator output confirming conformance to SLA-DATA-01.",
-      "inferenceLatencyMs=142 is a self-reported performance metric with no independent attestation and is irrelevant while the substantive deliverable is absent."
+      "sha256PayloadDigest equals e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855, the SHA-256 of the empty byte string; the submitted payload is zero-length, so no STRUCTURED_FINANCIAL_SENTIMENT content was actually delivered.",
+      "recordsAggregated=5000 and sentimentSchemaVersion=1.2.0 are unverifiable self-reported metadata that contradict a zero-length payload digest; no sample records, schema definition, or dataset reference accompanies them.",
+      "inferenceLatencyMs=142 is a performance metric only and does not evidence deliverable correctness, completeness, or schema conformance under SLA-DATA-01.",
+      "No commands to raise credit limits, alter debtor accounts, or modify the contract were present in the submission; rule 5 is not triggered.",
+      "SLA-DATA-01 deliverable criteria are not met: an empty payload cannot satisfy any structured sentiment dataset requirement, constituting total non-delivery of content."
     ],
     "proposedCreditBps": 10000
   },
   "validatedVerdict": "FAIL",
-  "confidenceScore": 0.95,
+  "confidenceScore": 0.9,
   "obligationDisposition": "CONTRACTUAL_CREDIT_APPLIED",
   "finalObligationCents": 0,
   "contractualCreditCents": 4000,
   "clampedCreditBps": 10000,
   "authorizedCreditCents": 4000,
   "reasons": [
-    "sha256PayloadDigest e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 is the SHA-256 of the empty string, indicating zero bytes of delivered payload despite the claimed recordsAggregated=5000.",
-    "No STRUCTURED_FINANCIAL_SENTIMENT deliverable was submitted; evidence contains only self-reported aggregate counters and no sentiment records, fields, or sample of the dataset.",
-    "recordsAggregated=5000 is unverifiable and directly contradicted by the empty-payload digest, so the core quantity criterion cannot be considered satisfied.",
-    "sentimentSchemaVersion 1.2.0 is asserted without any contract-referenced schema identifier or validator output confirming conformance to SLA-DATA-01.",
-    "inferenceLatencyMs=142 is a self-reported performance metric with no independent attestation and is irrelevant while the substantive deliverable is absent.",
+    "sha256PayloadDigest equals e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855, the SHA-256 of the empty byte string; the submitted payload is zero-length, so no STRUCTURED_FINANCIAL_SENTIMENT content was actually delivered.",
+    "recordsAggregated=5000 and sentimentSchemaVersion=1.2.0 are unverifiable self-reported metadata that contradict a zero-length payload digest; no sample records, schema definition, or dataset reference accompanies them.",
+    "inferenceLatencyMs=142 is a performance metric only and does not evidence deliverable correctness, completeness, or schema conformance under SLA-DATA-01.",
+    "No commands to raise credit limits, alter debtor accounts, or modify the contract were present in the submission; rule 5 is not triggered.",
+    "SLA-DATA-01 deliverable criteria are not met: an empty payload cannot satisfy any structured sentiment dataset requirement, constituting total non-delivery of content.",
     "SLA deliverable rejected: Contractual credit relief of 10000 bps ($40.00) applied against debtor obligation."
   ],
   "injectionAttemptDetected": false,
-  "evaluatedAt": "2026-11-11T15:09:02.037Z",
+  "evaluatedAt": "2026-11-11T21:16:36.582Z",
   "tokenUsage": {
     "promptTokens": 933,
-    "completionTokens": 792,
-    "totalTokens": 1725
+    "completionTokens": 1296,
+    "totalTokens": 2229
   }
 }

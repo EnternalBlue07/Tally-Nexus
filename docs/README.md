@@ -1,33 +1,23 @@
-# Tally Nexus — Technical Documentation Index
+# Tally Nexus — Technical Documentation Hub
 
-Welcome to the central documentation hub for **Tally Nexus**, an institutional-grade autonomous agent clearinghouse providing deterministic bilateral debt compression, subledger finality, and authoritative PayPal Sandbox settlement rails.
-
----
-
-## 🧭 Navigation Index
-
-### 1. Product & Planning
-Strategic requirements, user journeys, feature definitions, and roadmap planning for multi-agent financial clearance.
-
-- **[Product Requirements Document (PRD)](./architecture/PRD.md)**: Foundational specification of functional, operational, and financial requirements.
-- **[Product Vision & Value Proposition](./architecture/PRODUCT.md)**: Institutional overview of autonomous agent economies and netting economics.
-- **[Implementation Roadmap](./architecture/IMPLEMENTATION_ROADMAP.md)**: Milestone tracking from zero-variance math to real sandbox execution.
+Welcome to the central documentation index for **Tally Nexus**, an institutional-grade autonomous agent clearinghouse providing deterministic bilateral debt compression, subledger finality, and authoritative PayPal Sandbox settlement rails.
 
 ---
 
-### 2. Architecture & Engineering
-Distributed system architecture, cyclic debt resolution algorithms, and invariant engines.
+## 🧭 System Documentation Index
 
-- **[System Architecture Guide](./architecture/ARCHITECTURE.md)**: High-level system topology, module boundaries, and concurrency model.
-- **[Final Master Plan](./architecture/FINAL_MASTER_PLAN.md)**: Complete technical blueprint and verification workstreams.
-- **[Final Architectural Decisions](./architecture/FINAL_ARCHITECTURE_DECISIONS.md)**: Formal RFC-style architectural choices and trade-off rationales.
-- **[Decision Log](./architecture/DECISIONS.md)**: Chronological record of technical design decisions and invariant guarantees.
-- **[Execution Flow & Lifecycle](./architecture/FLOW.md)**: End-to-end lifecycle flow from agent task to cryptographic subledger seal.
-- **[Core Design Blueprint](./architecture/DESIGN.md)**: Mathematical models for multilateral netting and debt cycle compression.
+### 1. Architecture & Core Specifications
+System architecture, execution lifecycle, mathematical netting models, and canonical Architecture Decision Records (ADRs).
+
+- **[Product Requirements Document (PRD)](./architecture/PRD.md)**: Master specification of functional, operational, and financial clearing requirements.
+- **[System Architecture Guide](./architecture/ARCHITECTURE.md)**: High-level system topology, module boundaries, concurrency model, and data flows.
+- **[Mathematical Netting & Algorithm Design](./architecture/DESIGN.md)**: Mathematical formulations for $O(V+E)$ graph condensation and cycle cancellation.
+- **[Execution Lifecycle & Flow Diagrams](./architecture/FLOW.md)**: End-to-end lifecycle flow from agent task commissioning to cryptographic subledger seal.
+- **[Architecture Decision Records (ADR-001 to ADR-022)](./architecture/DECISIONS.md)**: Canonical record of all 22 architectural choices, rationale, and consequences.
 
 ---
 
-### 3. API & Database Specifications
+### 2. API & Database Specifications
 Authoritative REST interfaces, event streaming specs, and SQLite relational schema with safety triggers.
 
 - **[REST & SSE API Specification](./api/API_SPEC.md)**: Complete endpoint contract, authentication rules, rate limits, and SSE schemas.
@@ -35,7 +25,7 @@ Authoritative REST interfaces, event streaming specs, and SQLite relational sche
 
 ---
 
-### 4. PayPal Integration & Rails
+### 3. PayPal Integration & Payment Rails
 Deterministic bridge between mathematical multilateral netting and real-world banking rails.
 
 - **[PayPal Integration Design](./integrations/paypal/PAYPAL_INTEGRATION_DESIGN.md)**: End-to-end integration architecture for Orders v2 captures and Payouts v1 disbursements.
@@ -46,7 +36,7 @@ Deterministic bridge between mathematical multilateral netting and real-world ba
 
 ---
 
-### 5. Security, Cryptography & Compliance
+### 4. Security, Cryptography & Compliance
 Threat modeling, RFC 8785 canonical JSON, Ed25519 signatures, and license audits.
 
 - **[Security Threat Model](./security/SECURITY_THREAT_MODEL.md)**: 5-point adversarial threat model covering spoofing, tampering, replay, and insolvency attacks.
@@ -55,14 +45,14 @@ Threat modeling, RFC 8785 canonical JSON, Ed25519 signatures, and license audits
 
 ---
 
-### 6. Testing, Quality Assurance & Verification
+### 5. Testing, Quality Assurance & Verification
 Testing strategies, property-based tests, crash durability, and multi-agent simulation suites.
 
 - **[Test Strategy & Harness](./testing/TEST_STRATEGY.md)**: Unit, integration, adversarial security, and end-to-end simulation methodology (216/216 passing vitest suites).
 
 ---
 
-### 7. UI / UX Design & Playwright Browser QA
+### 6. UI / UX Design & Playwright Browser QA
 Design system tokens, spatial ergonomics, glassmorphic layout, and automated browser verification.
 
 - **[Design Direction](./design/DESIGN_DIRECTION.md)**: Philosophy of the PayPal-inspired institutional financial command center.
@@ -74,14 +64,14 @@ Design system tokens, spatial ergonomics, glassmorphic layout, and automated bro
 
 ---
 
-### 8. Deployment & Operations
+### 7. Deployment & Operations
 Production containerization, zero-downtime execution, and hosting configuration.
 
 - **[Deployment Plan](./deployment/DEPLOYMENT_PLAN.md)**: Docker container setup, Render web service config, and environment injection.
 
 ---
 
-### 9. Hackathon Submission Dossier
+### 8. Hackathon Submission Dossier
 Official judging artifacts, demonstration scripts, and submission package.
 
 - **[Official Submission Dossier](./submission/SUBMISSION.md)**: Complete project submission document detailing problem, solution, architecture, and live links.
@@ -89,19 +79,7 @@ Official judging artifacts, demonstration scripts, and submission package.
 
 ---
 
-### 10. Historical Implementation Reports
-Chronological milestone verification reports and evidence ledgers from development phases.
+### 9. Engineering Chronicle & Audit Reports
+Consolidated milestone verification reports, safety audits, and release assessments.
 
-- **[Final Implementation Readiness Report](./reports/final/FINAL_IMPLEMENTATION_READINESS_REPORT.md)**: Milestone readiness certification across all 10 core capabilities.
-- **[Phase 9.5 UI Visual Reconstruction Report](./reports/phase-9/UI_VISUAL_RECONSTRUCTION_REPORT.md)**: Complete design system token repair, 30s tour grid, and Playwright verification.
-- **[Phase 9 Cross-System Integrity Report](./reports/phase-9/PHASE_9_CROSS_SYSTEM_INTEGRITY_REPORT.md)**: End-to-end audit of AI Judge persistence and authoritative PayPal Sandbox verification.
-- **[Phase 9 Design Transformation Report](./reports/phase-9/PHASE_9_DESIGN_TRANSFORMATION_REPORT.md)**: Initial migration to the official PayPal Enterprise theme.
-- **[Phase 8 Release Checklist](./reports/phase-8/PHASE_8_RELEASE_CHECKLIST.md)**: Pre-release validation and security sign-off.
-- **[Phase 7 Submission Report](./reports/phase-7/PHASE_7_SUBMISSION_REPORT.md)**: Submission readiness and judging workflow integration.
-- **[Phase 6 Final Report](./reports/phase-6/PHASE_6_FINAL_REPORT.md)**: Verification of multi-agent simulation and netting benchmarks.
-- **[Phase 5.23 Verification Report](./reports/phase-5/PHASE_5_23_FINAL_INDEPENDENT_VERIFICATION_REPORT.md)**: Independent third-party security verification.
-- **[Phase 5.21 Adversarial Audit Report](./reports/phase-5/PHASE_5_21_ADVERSARIAL_AUDIT_REPORT.md)**: Attack resilience and exploit resistance testing.
-- **[Phase 5.20 Safety Hardening Report](./reports/phase-5/PHASE_5_20_INDEPENDENT_SAFETY_HARDENING_REPORT.md)**: Core ledger trigger assertions and crash recovery tests.
-- **[Phase 5.19 Recovery & Cure Report](./reports/phase-5/PHASE_5_19_FINAL_RECOVERY_SAFETY_CURE_REPORT.md)**: Self-healing return workflows and invariant enforcement.
-- **[Historical Progress Tracker](./reports/progress.txt)**: Chronological commit and workstream progress log.
-
+- **[Phase Implementation Chronicle & Release Audits](./reports/PHASE_CHRONICLE_AND_RELEASE_AUDITS.md)**: Comprehensive chronicle consolidating Phases 1 through 12, the 23-subphase safety hardening retrospective, the 1,500 IOU enterprise scale benchmarks, and the 8/8 Phase 12 Quality Gates assessment.
